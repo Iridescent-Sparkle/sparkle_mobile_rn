@@ -10,5 +10,5 @@ const customTheme = {
   loading_icon_color: '#6D63FD',
   loading_icon_size: 70,
   tag_primary_color: '#6D63FD',
-};
-export default customTheme;
+}
+export default customTheme

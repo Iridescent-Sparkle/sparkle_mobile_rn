@@ -86,4 +86,4 @@ export const themeColor = {
   clear: 'rgba(0,0,0,0)',
   /* 背景蓝色 */
   backgroundBlue: '#EBF6FF',
-};
+}

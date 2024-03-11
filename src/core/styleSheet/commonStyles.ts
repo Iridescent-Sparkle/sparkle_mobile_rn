@@ -1,10 +1,10 @@
-import type {ImageStyle, TextStyle, ViewStyle} from 'react-native';
+import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-type TypeStyle = ViewStyle | TextStyle | ImageStyle;
+type TypeStyle = ViewStyle | TextStyle | ImageStyle
 
 export const styles = {
   border(): TypeStyle {
-    return {};
+    return {}
   },
   margin(a: any, b?: any, c?: any, d?: any): TypeStyle {
     if (arguments.length === 1) {
@@ -13,7 +13,7 @@ export const styles = {
         marginRight: a,
         marginBottom: a,
         marginLeft: a,
-      };
+      }
     }
     if (arguments.length === 2) {
       return {
@@ -21,7 +21,7 @@ export const styles = {
         marginRight: b,
         marginBottom: a,
         marginLeft: b,
-      };
+      }
     }
     if (arguments.length === 3) {
       return {
@@ -29,14 +29,14 @@ export const styles = {
         marginRight: b,
         marginBottom: c,
         marginLeft: b,
-      };
+      }
     }
     return {
       marginTop: a,
       marginRight: b,
       marginBottom: c,
       marginLeft: d,
-    };
+    }
   },
   padding(a: any, b?: any, c?: any, d?: any): TypeStyle {
     if (arguments.length === 1) {
@@ -45,7 +45,7 @@ export const styles = {
         paddingRight: a,
         paddingBottom: a,
         paddingLeft: a,
-      };
+      }
     }
     if (arguments.length === 2) {
       return {
@@ -53,7 +53,7 @@ export const styles = {
         paddingRight: b,
         paddingBottom: a,
         paddingLeft: b,
-      };
+      }
     }
     if (arguments.length === 3) {
       return {
@@ -61,13 +61,13 @@ export const styles = {
         paddingRight: b,
         paddingBottom: c,
         paddingLeft: b,
-      };
+      }
     }
     return {
       paddingTop: a,
       paddingRight: b,
       paddingBottom: c,
       paddingLeft: d,
-    };
+    }
   },
-};
+}

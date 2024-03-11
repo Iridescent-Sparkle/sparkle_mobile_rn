@@ -1,23 +1,23 @@
-import {useState} from 'react';
-import {Text} from 'react-native';
+import { useState } from 'react'
+import { Text } from 'react-native'
 
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-import {create} from '@/core/styleSheet';
+} from 'react-native-confirmation-code-field'
+import { create } from '@/core/styleSheet'
 
-const CELL_COUNT = 4;
+const CELL_COUNT = 4
 
 function App() {
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [value, setValue] = useState('')
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT })
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
-  });
+  })
 
   return (
     <>
@@ -31,21 +31,22 @@ function App() {
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
         textContentType="oneTimeCode"
-        renderCell={({index, symbol, isFocused}) => (
+        renderCell={({ index, symbol, isFocused }) => (
           <Text
             key={index}
             style={[styles.cell, isFocused && styles.focusCell]}
-            onLayout={getCellOnLayoutHandler(index)}>
+            onLayout={getCellOnLayoutHandler(index)}
+          >
             {symbol || (isFocused ? <Cursor /> : null)}
           </Text>
         )}
       />
     </>
-  );
+  )
 }
 
 const styles = create({
-  codeFieldRoot: {marginTop: 20},
+  codeFieldRoot: { marginTop: 20 },
   cell: {
     width: 144,
     height: 108,
@@ -61,6 +62,6 @@ const styles = create({
     borderColor: '#5288FB',
     backgroundColor: '#EEF4FF',
   },
-});
+})
 
-export default App;
+export default App

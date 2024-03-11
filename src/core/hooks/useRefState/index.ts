@@ -1,1 +1,1 @@
-export {default as useRefState} from './useRefState';
+export { default as useRefState } from './useRefState'
