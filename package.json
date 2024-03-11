@@ -46,7 +46,8 @@
     "react-native-video": "^5.2.1",
     "react-native-web": "~0.19.6",
     "react-native-webview": "13.2.2",
-    "twemoji": "~14.0.2"
+    "twemoji": "~14.0.2",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.8.0",
