@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image'
 import { Space } from '@fruits-chain/react-native-xiaoshu'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 function UserCard() {
   return (
@@ -37,12 +38,12 @@ const styles = create({
   },
   tip: {
     fontSize: 30,
-    color: '#898989',
+    color: themeColor.black65,
   },
   name: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#21201F',
+    color: themeColor.black85,
   },
   button: {
     width: 80,

@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image'
 import Feather from 'react-native-vector-icons/Feather'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 function Login() {
   const [form] = Form.useForm()
@@ -106,7 +107,7 @@ const styles = create({
   },
   accountTip: {
     fontSize: 24,
-    color: '#A9A9A9',
+    color: themeColor.black45,
   },
   button: {
     width: '100%',

@@ -4,6 +4,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
   title: string
@@ -43,12 +44,12 @@ const styles = create({
     lineHeight: 80,
     fontSize: 42,
     fontWeight: '700',
-    color: '#212121',
+    color: themeColor.black85,
   },
   name: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#21201F',
+    color: themeColor.black85,
   },
   button: {
     width: 80,

@@ -39,7 +39,7 @@ const styles = create({
   titleText: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#212121',
+    color: themeColor.black85,
     marginVertical: 32,
   },
   itemWrapper: {
@@ -54,7 +54,7 @@ const styles = create({
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#363636',
+    color: themeColor.black65,
   },
   desc: {
     fontSize: 28,

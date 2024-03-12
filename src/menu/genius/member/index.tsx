@@ -2,23 +2,54 @@ import React from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import RecruitListHeader from '../../../components/recruit/recruit-list/recruit-job-header'
-import BaseCollapseCard from './components/base-collapse-card'
-import MemberUserCard from './components/user-info-card'
 import MemberContactInfoCard from './components/contact-info-card'
+import MemberProjectsInfoCard from './components/projects-info-card'
+import MemberResumeCvCard from './components/resume-cv-card'
+import MemberSkillsInfoCard from './components/skills-info-card'
+import MemberSummaryCard from './components/summary-info-card'
+import MemberUserCard from './components/user-info-card'
+import MemberVolunteerInfoCard from './components/volunteer-info-card'
+import MemberWorkExperienceCard from './components/work-experience-card'
+import MemberExpectedSalaryCard from './components/expected-salary-card'
+import MemberEducationInfoCard from './components/education-info-card'
 import { create } from '@/core/styleSheet'
 
-const DATA = [
+const listData = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
+    id: '1',
+    component: <MemberContactInfoCard />,
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
+    id: '2',
+    component: <MemberSummaryCard />,
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
+    id: '3',
+    component: <MemberExpectedSalaryCard />,
+  },
+  {
+    id: '4',
+    component: <MemberWorkExperienceCard />,
+  },
+  {
+    id: '5',
+    component: <MemberEducationInfoCard />,
+  },
+  {
+    id: '6',
+    component: <MemberProjectsInfoCard />,
+  },
+  {
+    id: '7',
+    component: <MemberVolunteerInfoCard />,
+  },
+  {
+    id: '8',
+    component: <MemberSkillsInfoCard />,
+  },
+  {
+    id: '9',
+    component: <MemberResumeCvCard />,
   },
 ]
 
@@ -27,9 +58,8 @@ export default function GeniusMember() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <RecruitListHeader title="个人信息" />
       <MemberUserCard />
-      <FlatList style={styles.list} data={DATA} renderItem={() => <MemberContactInfoCard />} keyExtractor={item => item.id} />
+      <FlatList style={styles.list} data={listData} renderItem={item => item.item.component} keyExtractor={item => item.id} />
     </View>
   )
 }

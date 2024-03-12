@@ -32,7 +32,7 @@ const styles = create({
   titleText: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#393939',
+    color: themeColor.black65,
   },
 })
 

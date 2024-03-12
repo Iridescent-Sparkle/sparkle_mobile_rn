@@ -48,11 +48,11 @@ const styles = create({
   name: {
     fontSize: 38,
     fontWeight: '700',
-    color: '#212120',
+    color: themeColor.black85,
   },
   work: {
     fontSize: 28,
-    color: '#6A6A6A',
+    color: themeColor.black65,
   },
   button: {
     width: 80,

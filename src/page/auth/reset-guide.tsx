@@ -6,6 +6,7 @@ import React, { useEffect } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 function ResetGuide() {
   // const router = useRouter()
@@ -97,10 +98,10 @@ const styles = create({
     backgroundColor: '#EEF5FF',
   },
   desc: {
-    color: '#868587',
+    color: themeColor.black45,
   },
   content: {
-    color: '#2E2E2E',
+    color: themeColor.black65,
     fontWeight: '700',
   },
   button: {

@@ -1,6 +1,7 @@
 import { Tag } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
 import { create } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
   title: string
@@ -32,7 +33,7 @@ const styles = create({
   titleText: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#212121',
+    color: themeColor.black85,
     marginVertical: 32,
   },
   tagWrapper: {

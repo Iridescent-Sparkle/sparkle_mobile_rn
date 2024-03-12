@@ -7,11 +7,12 @@ import GeniusDeliver from './deliver'
 import GeniusChat from './chat'
 import GeniusMember from './member'
 import { pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 const Tab = createBottomTabNavigator()
 export default function GeniusTabLayout() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: '#6D63FD' }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: themeColor.primary }}>
       <Tab.Screen
         name="index"
         component={GeniusHome}

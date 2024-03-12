@@ -96,7 +96,7 @@ const styles = create({
   },
   result: {
     fontSize: 32,
-    color: '#212121',
+    color: themeColor.black65,
     fontWeight: '700',
   },
   list: {
@@ -111,6 +111,6 @@ const styles = create({
   tip: {
     textAlign: 'center',
     fontSize: 32,
-    color: '#2C2C2C',
+    color: themeColor.black65,
   },
 })

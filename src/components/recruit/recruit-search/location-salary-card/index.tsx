@@ -43,7 +43,7 @@ const styles = create({
   text: {
     marginLeft: 32,
     fontSize: 32,
-    color: '#363636',
+    color: themeColor.black65,
     fontWeight: '500',
   },
   unit: {

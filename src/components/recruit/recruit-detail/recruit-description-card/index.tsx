@@ -2,6 +2,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { Space } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
   title: string
@@ -17,7 +18,7 @@ function RecruitDescriptionCard(props: Props) {
       {
         data.map((text, index) => (
           <Space key={index} direction="horizontal" style={styles.desc}>
-            <FontAwesome name="circle" size={pxToDp(8)} color="#5B5B5B" />
+            <FontAwesome name="circle" size={pxToDp(8)} color={themeColor.black45} />
             <Text style={styles.text}>{text}</Text>
           </Space>
         ))
@@ -34,7 +35,7 @@ const styles = create({
   titleText: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#212121',
+    color: themeColor.black85,
     marginVertical: 32,
   },
   desc: {
@@ -42,7 +43,7 @@ const styles = create({
     alignItems: 'center',
   },
   text: {
-    color: '#5B5B5B',
+    color: themeColor.black65,
     fontSize: 24,
     lineHeight: 36,
   },

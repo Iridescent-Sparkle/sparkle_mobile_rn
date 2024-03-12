@@ -2,6 +2,7 @@ import { Text, View } from 'react-native'
 import React from 'react'
 import RenderHtml from 'react-native-render-html'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
   title: string
@@ -27,11 +28,11 @@ const styles = create({
   title: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#212121',
+    color: themeColor.black85,
     marginVertical: 32,
   },
   content: {
-    color: '#5B5B5B',
+    color: themeColor.black65,
     fontSize: 24,
     lineHeight: 36,
   },

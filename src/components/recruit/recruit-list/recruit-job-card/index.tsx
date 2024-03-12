@@ -6,6 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { pxToDp } from '../../../../core/styleSheet/index'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
 
@@ -48,11 +49,11 @@ const styles = create({
   title: {
     fontSize: 34,
     fontWeight: '700',
-    color: '#21201F',
+    color: themeColor.black85,
   },
   company: {
     fontSize: 28,
-    color: '#636363',
+    color: themeColor.black65,
   },
   logo: {
     width: 108,

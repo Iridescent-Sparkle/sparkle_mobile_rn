@@ -6,11 +6,12 @@ import BossMember from './member'
 import BossChat from './chat'
 import BossManage from './manage'
 import { pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 const Tab = createBottomTabNavigator()
 export default function BossTabLayout() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: '#6D63FD' }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: themeColor.primary }}>
       <Tab.Screen
         name="index"
         component={BossHome}

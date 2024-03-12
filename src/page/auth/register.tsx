@@ -4,6 +4,7 @@ import { ScrollView, Text, View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import VerifyCode from '../../core/components/VerifyCodeButton'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 function Register() {
   const [form] = Form.useForm()
@@ -111,7 +112,7 @@ const styles = create({
   },
   accountTip: {
     fontSize: 24,
-    color: '#A9A9A9',
+    color: themeColor.black45,
   },
   button: {
     width: '100%',

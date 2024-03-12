@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { KeyboardAvoidingView, Text } from 'react-native'
 import VerifyCodeCard from '../../core/components/VerifyCodeCard'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 function VerificationCode() {
   // const router = useRouter()
@@ -53,7 +54,7 @@ const styles = create({
   },
   seconds: {
     fontSize: 32,
-    color: '#296EFD',
+    color: themeColor.primary,
   },
   button: {
     width: '100%',

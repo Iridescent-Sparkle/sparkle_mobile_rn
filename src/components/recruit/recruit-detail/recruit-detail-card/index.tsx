@@ -49,7 +49,7 @@ const styles = create({
   title: {
     fontSize: 34,
     fontWeight: '700',
-    color: '#21201F',
+    color: themeColor.black85,
   },
   company: {
     fontSize: 28,
@@ -68,14 +68,14 @@ const styles = create({
   },
   address: {
     fontSize: 32,
-    color: '#636363',
+    color: themeColor.black65,
   },
   salary: {
     fontSize: 28,
     color: themeColor.primary,
   },
   deadline: {
-    color: '#616161',
+    color: themeColor.black65,
     fontSize: 24,
   },
 })
