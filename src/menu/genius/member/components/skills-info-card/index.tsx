@@ -2,12 +2,9 @@
  * @Date: 2024-03-12 16:51:31
  * @Description: C端个人信息编辑卡片
  */
-import { Text, View } from 'react-native'
+import { Tag } from '@fruits-chain/react-native-xiaoshu'
+import { View } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
-import Feather from 'react-native-vector-icons/Feather'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Card, Tag } from '@fruits-chain/react-native-xiaoshu'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'

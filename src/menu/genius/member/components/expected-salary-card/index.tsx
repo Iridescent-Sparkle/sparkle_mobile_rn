@@ -25,7 +25,7 @@ const styles = create({
   info: {
     fontSize: 32,
     fontWeight: '600',
-    color: themeColor.black85,
+    color: themeColor.black65,
   },
 })
 

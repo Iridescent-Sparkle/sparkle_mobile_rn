@@ -18,19 +18,19 @@ function MemberContactInfoCard() {
       <Card>
         <View style={styles.info}>
           <Ionicons name="location-outline" size={pxToDp(36)} color="black" />
-          <Text>
+          <Text style={styles.text}>
             New York. United States
           </Text>
         </View>
         <View style={styles.info}>
           <Feather name="phone" size={pxToDp(36)} color="black" />
-          <Text>
+          <Text style={styles.text}>
             +1 111 467 378 399
           </Text>
         </View>
         <View style={styles.info}>
           <MaterialCommunityIcons name="email-outline" size={pxToDp(36)} color="black" />
-          <Text>
+          <Text style={styles.text}>
             andrew_ainsley@yourdomain.com
           </Text>
         </View>
@@ -45,7 +45,10 @@ const styles = create({
     alignItems: 'center',
     gap: 32,
     height: 56,
+  },
+  text: {
     color: themeColor.black65,
+    fontWeight: '700',
   },
 })
 

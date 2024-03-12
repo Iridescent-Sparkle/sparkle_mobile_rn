@@ -4,14 +4,11 @@
  */
 import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
 import { Text } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
-import { IMAGE_PREFIX } from '@/core/constants'
 
 function MemberResumeCvCard() {
   return (

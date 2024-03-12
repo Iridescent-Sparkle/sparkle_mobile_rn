@@ -2,17 +2,12 @@
  * @Date: 2024-03-12 16:51:31
  * @Description: C端信息编辑基础卡片
  */
-import { Button, Card } from '@fruits-chain/react-native-xiaoshu'
+import { Card } from '@fruits-chain/react-native-xiaoshu'
 import type { ReactNode } from 'react'
 import { View } from 'react-native'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Foundation from 'react-native-vector-icons/Foundation'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Entypo from 'react-native-vector-icons/Entypo'
-import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { create, pxToDp } from '@/core/styleSheet'
 
 interface Props {
   title: string
@@ -51,7 +46,7 @@ const styles = create({
   titleText: {
     fontSize: 36,
     fontWeight: '700',
-    color: themeColor.black65,
+    color: themeColor.black85,
   },
 })
 

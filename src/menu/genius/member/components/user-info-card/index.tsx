@@ -3,6 +3,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Space } from '@fruits-chain/react-native-xiaoshu'
+import Feather from 'react-native-vector-icons/Feather'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { themeColor } from '@/core/styleSheet/themeColor'
@@ -16,9 +17,10 @@ function MemberUserCard() {
           <Text style={styles.name}>Andrew</Text>
           <Text style={styles.work}>UI/UX Designer</Text>
         </Space>
+        <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} />
       </View>
       <View style={styles.button}>
-        <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+        <Feather name="settings" size={pxToDp(46)} color={themeColor.black85} />
       </View>
     </View>
   )
@@ -43,7 +45,7 @@ const styles = create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 32,
+    gap: 16,
   },
   name: {
     fontSize: 38,
@@ -55,10 +57,10 @@ const styles = create({
     color: themeColor.black65,
   },
   button: {
-    width: 80,
-    height: 80,
     justifyContent: 'center',
     alignItems: 'center',
+    width: 80,
+    height: 80,
   },
 })
 
