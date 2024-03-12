@@ -1,8 +1,10 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import RecruitListHeader from '../../components/recruit/recruit-list/recruit-job-header'
-import RecruitJobCard from '../../components/recruit/recruit-list/recruit-job-card'
+import RecruitListHeader from '../../../components/recruit/recruit-list/recruit-job-header'
+import BaseCollapseCard from './components/base-collapse-card'
+import MemberUserCard from './components/user-info-card'
+import MemberContactInfoCard from './components/contact-info-card'
 import { create } from '@/core/styleSheet'
 
 const DATA = [
@@ -26,8 +28,8 @@ export default function GeniusMember() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <RecruitListHeader title="个人信息" />
-
-      <FlatList style={styles.list} data={DATA} renderItem={() => <RecruitJobCard />} keyExtractor={item => item.id} />
+      <MemberUserCard />
+      <FlatList style={styles.list} data={DATA} renderItem={() => <MemberContactInfoCard />} keyExtractor={item => item.id} />
     </View>
   )
 }

@@ -1,12 +1,12 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Feather from 'react-native-vector-icons/Feather'
-import { pxToDp } from '../../core/styleSheet'
 import GeniusHome from './home'
 import GeniusCollect from './collect'
 import GeniusDeliver from './deliver'
 import GeniusChat from './chat'
 import GeniusMember from './member'
+import { pxToDp } from '@/core/styleSheet'
 
 const Tab = createBottomTabNavigator()
 export default function GeniusTabLayout() {
