@@ -7,6 +7,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Feather from 'react-native-vector-icons/Feather'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Card, Tag } from '@fruits-chain/react-native-xiaoshu'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
@@ -14,35 +15,35 @@ import { create, pxToDp } from '@/core/styleSheet'
 function MemberSkillsInfoCard() {
   return (
     <BaseCollapseCard title="拥有的技能" titleLeftExtra={<Entypo name="pie-chart" size={pxToDp(32)} color={themeColor.primary} />}>
-      <View style={styles.info}>
-        <Ionicons name="location-outline" size={pxToDp(36)} color="black" />
-        <Text>
-          New York. United States
-        </Text>
-      </View>
-      <View style={styles.info}>
-        <Feather name="phone" size={pxToDp(36)} color="black" />
-        <Text>
-          +1 111 467 378 399
-        </Text>
-      </View>
-      <View style={styles.info}>
-        <MaterialCommunityIcons name="email-outline" size={pxToDp(36)} color="black" />
-        <Text>
-          andrew_ainsley@yourdomain.com
-        </Text>
+      <View style={styles.card}>
+        <Tag type="ghost" color={themeColor.primary} size="l" innerStyle={styles.tag}>
+          New York  New York
+        </Tag>
+        <Tag type="ghost" color={themeColor.primary} size="l" innerStyle={styles.tag}>
+          New York.
+        </Tag>
+        <Tag type="ghost" color={themeColor.primary} size="l" innerStyle={styles.tag}>
+          New York
+        </Tag>
+        <Tag type="ghost" color={themeColor.primary} size="l" innerStyle={styles.tag}>
+          New York.
+        </Tag>
       </View>
     </BaseCollapseCard>
   )
 }
 
 const styles = create({
-  info: {
+  card: {
+    flexWrap: 'wrap',
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 32,
-    height: 56,
-    color: themeColor.black65,
+    gap: 24,
+  },
+  tag: {
+    borderRadius: 60,
+    borderWidth: 4,
+    height: 64,
+    paddingHorizontal: 24,
   },
 })
 

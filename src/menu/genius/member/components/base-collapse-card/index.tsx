@@ -27,15 +27,6 @@ function BaseCollapseCard(props: Props) {
     <View style={styles.container}>
       <Card
         loading={false}
-        // titleLeftExtra={<FontAwesome name="user" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<MaterialCommunityIcons name="file-document" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<Foundation name="graph-pie" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<MaterialCommunityIcons name="briefcase-variant" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<Entypo name="graduation-cap" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<MaterialCommunityIcons name="chart-box" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<FontAwesome6 name="user-group" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<Entypo name="pie-chart" size={pxToDp(32)} color={themeColor.primary} />}
-        // titleLeftExtra={<FontAwesome6 name="file-contract" size={pxToDp(32)} color={themeColor.primary} />}
         titleLeftExtra={titleLeftExtra}
         title={title}
         titleTextStyle={styles.titleText}

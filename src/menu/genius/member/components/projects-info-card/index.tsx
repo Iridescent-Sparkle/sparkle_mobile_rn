@@ -1,10 +1,11 @@
 /*
  * @Date: 2024-03-12 16:51:31
- * @Description: C端个人信息编辑卡片
+ * @Description: C端项目经历编辑卡片
  */
+import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
-import Feather from 'react-native-vector-icons/Feather'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
@@ -13,35 +14,69 @@ import { create, pxToDp } from '@/core/styleSheet'
 function MemberProjectsInfoCard() {
   return (
     <BaseCollapseCard title="项目经历" titleLeftExtra={<MaterialCommunityIcons name="chart-box" size={pxToDp(32)} color={themeColor.primary} />}>
-      <View style={styles.info}>
-        <Ionicons name="location-outline" size={pxToDp(36)} color="black" />
-        <Text>
-          New York. United States
-        </Text>
-      </View>
-      <View style={styles.info}>
-        <Feather name="phone" size={pxToDp(36)} color="black" />
-        <Text>
-          +1 111 467 378 399
-        </Text>
-      </View>
-      <View style={styles.info}>
-        <MaterialCommunityIcons name="email-outline" size={pxToDp(36)} color="black" />
-        <Text>
-          andrew_ainsley@yourdomain.com
-        </Text>
-      </View>
+      <Card>
+        <Space direction="horizontal" style={styles.header}>
+          <Space direction="horizontal" gap={pxToDp(32)}>
+            <View style={styles.logo}>
+              <MaterialCommunityIcons name="chart-box" size={pxToDp(64)} color={themeColor.primary} />
+            </View>
+            <Space gap={pxToDp(20)}>
+              <Text style={styles.title}>Event Booking App</Text>
+              <Text style={styles.company}>Interaction Designer</Text>
+              <Text style={styles.date}>May 2022 - Sept 2022 (4 months)</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>展示项目</Text>
+                <FontAwesome5 name="telegram-plane" size={pxToDp(32)} color={themeColor.primary} />
+              </View>
+            </Space>
+          </Space>
+          <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+        </Space>
+      </Card>
     </BaseCollapseCard>
   )
 }
 
 const styles = create({
-  info: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 124,
+    height: 124,
+    borderRadius: 62,
+    backgroundColor: themeColor.hazy,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: themeColor.black85,
+  },
+  company: {
+    fontSize: 28,
+    color: themeColor.black65,
+  },
+  date: {
+    fontSize: 24,
+    color: themeColor.black65,
+  },
+  button: {
+    width: 224,
+    height: 72,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 32,
-    height: 56,
-    color: themeColor.black65,
+    justifyContent: 'center',
+    gap: 12,
+    borderRadius: 48,
+    borderWidth: 4,
+    borderColor: themeColor.primary,
+  },
+  buttonText: {
+    color: themeColor.primary,
   },
 })
 

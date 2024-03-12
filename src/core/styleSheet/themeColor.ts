@@ -2,6 +2,7 @@
 export const themeColor = {
   /** 主题色: #6D63FD */
   primary: '#3274FE',
+  hazy: '#EFF5FF',
   /** 边框颜色: #EFF1F6 */
   border: '#EFF1F6',
   /** 输入框的placeholder颜色: #bfbfbf */

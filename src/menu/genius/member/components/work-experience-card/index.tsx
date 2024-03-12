@@ -1,47 +1,109 @@
 /*
  * @Date: 2024-03-12 16:51:31
- * @Description: C端个人信息编辑卡片
+ * @Description: C端工作经历卡片
  */
-import { Text, View } from 'react-native'
-import Feather from 'react-native-vector-icons/Feather'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
+import { Text } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 function MemberWorkExperienceCard() {
   return (
     <BaseCollapseCard title="工作经历" titleLeftExtra={<MaterialCommunityIcons name="briefcase-variant" size={pxToDp(32)} color={themeColor.primary} />}>
-      <View style={styles.info}>
-        <Ionicons name="location-outline" size={pxToDp(36)} color="black" />
-        <Text>
-          New York. United States
-        </Text>
-      </View>
-      <View style={styles.info}>
-        <Feather name="phone" size={pxToDp(36)} color="black" />
-        <Text>
-          +1 111 467 378 399
-        </Text>
-      </View>
-      <View style={styles.info}>
-        <MaterialCommunityIcons name="email-outline" size={pxToDp(36)} color="black" />
-        <Text>
-          andrew_ainsley@yourdomain.com
-        </Text>
-      </View>
+      <Card>
+        <Space direction="horizontal" style={styles.header}>
+          <Space direction="horizontal" gap={pxToDp(32)}>
+            <FastImage
+              style={styles.logo}
+              source={{
+                uri: `${IMAGE_PREFIX}/stars.png`,
+              }}
+            />
+            <Space gap={pxToDp(20)}>
+              <Text style={styles.title}>UI/UX Designer</Text>
+              <Text style={styles.company}>Google LLC</Text>
+              <Text style={styles.date}>
+                May 2019 - June 2021 (2 years)
+              </Text>
+            </Space>
+          </Space>
+          <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+        </Space>
+      </Card>
+      <Card>
+        <Space direction="horizontal" style={styles.header}>
+          <Space direction="horizontal" gap={pxToDp(32)}>
+            <FastImage
+              style={styles.logo}
+              source={{
+                uri: `${IMAGE_PREFIX}/stars.png`,
+              }}
+            />
+            <Space gap={pxToDp(20)}>
+              <Text style={styles.title}>UI/UX Designer</Text>
+              <Text style={styles.company}>Google LLC</Text>
+              <Text style={styles.date}>
+                May 2019 - June 2021 (2 years)
+              </Text>
+            </Space>
+          </Space>
+          <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+        </Space>
+      </Card>
+      <Card>
+        <Space direction="horizontal" style={styles.header}>
+          <Space direction="horizontal" gap={pxToDp(32)}>
+            <FastImage
+              style={styles.logo}
+              source={{
+                uri: `${IMAGE_PREFIX}/stars.png`,
+              }}
+            />
+            <Space gap={pxToDp(20)}>
+              <Text style={styles.title}>UI/UX Designer</Text>
+              <Text style={styles.company}>Google LLC</Text>
+              <Text style={styles.date}>
+                May 2019 - June 2021 (2 years)
+              </Text>
+            </Space>
+          </Space>
+          <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+        </Space>
+      </Card>
     </BaseCollapseCard>
   )
 }
 
 const styles = create({
-  info: {
+  header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 32,
-    height: 56,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: themeColor.black85,
+  },
+  company: {
+    fontSize: 28,
     color: themeColor.black65,
+  },
+  date: {
+    fontSize: 24,
+    color: themeColor.black65,
+  },
+  logo: {
+    width: 116,
+    height: 116,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: themeColor.black12,
   },
 })
 
