@@ -1,42 +1,22 @@
-import * as React from 'react'
-import { Pressable, SafeAreaView, Text, View } from 'react-native'
-import {
-  Container,
-  ConversationDetail,
-  TextInput,
-  useChatContext,
-} from 'react-native-chat-uikit'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-// 修改默认值
-const appKey = '1109240309169711#demo'
-const userId = 'iridescent'
-const userPs = '890224'
-const peerId = '<conversation ID>'
+const Stack = createNativeStackNavigator()
 
-function SendMessage() {
-  const [page, setPage] = React.useState(0)
-  const [id, setId] = React.useState(userId)
-  const [ps, setPs] = React.useState(userPs)
-  const [peer, setPeer] = React.useState(peerId)
-  const im = useChatContext()
+function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ConversationDetail
-        convId={peer}
-        convType={0}
-        onBack={() => {
-          setPage(0)
-        }}
-      />
-    </SafeAreaView>
-  )
-}
-
-function App(): React.JSX.Element {
-  return (
-    <Container options={{ appKey }}>
-      <SendMessage />
-    </Container>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Settings" component={Settings} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 
