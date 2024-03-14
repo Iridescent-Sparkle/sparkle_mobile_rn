@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Feather from 'react-native-vector-icons/Feather'
+import { useNavigation } from '@react-navigation/native'
 import GeniusHome from './home'
 import GeniusCollect from './collect'
 import GeniusDeliver from './deliver'
@@ -10,7 +11,11 @@ import { pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
 const Tab = createBottomTabNavigator()
-export default function GeniusTabLayout() {
+export default function GeniusTabLayout({ navigation: { navigate } }: any) {
+  useEffect(() => {
+    navigate('GeniusUpdateProfile')
+  }, [])
+
   return (
     <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: themeColor.primary }}>
       <Tab.Screen

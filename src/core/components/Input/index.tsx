@@ -1,14 +1,35 @@
+import type { TextInputProps } from '@fruits-chain/react-native-xiaoshu'
+import { Cell, TextInput } from '@fruits-chain/react-native-xiaoshu'
 import React from 'react'
-import { View } from 'react-native'
+import { create } from '@/core/styleSheet'
 
-interface Props {}
+interface Props extends TextInputProps {
+  title: string
+}
 
 function Input(props: Props) {
-  return (
-    <View>
+  const { title, ...textInputProps } = props
 
-    </View>
+  return (
+    <Cell
+      titleStyle={styles.title}
+      title={`${title}:`}
+      extra={(
+        <TextInput
+          bordered
+          size="l"
+          {...textInputProps}
+        />
+      )}
+    />
   )
 }
+
+const styles = create({
+  title: {
+    marginLeft: -20,
+    marginBottom: 20,
+  },
+})
 
 export default Input

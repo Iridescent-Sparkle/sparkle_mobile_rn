@@ -1,7 +1,7 @@
 import { Provider } from '@fruits-chain/react-native-xiaoshu'
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Container } from 'react-native-chat-uikit'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import RouteProvider from '@/route'
 import customTheme from '@/core/styleSheet/component'
 
