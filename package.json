@@ -25,6 +25,7 @@
     "@react-navigation/native": "^6.1.15",
     "@react-navigation/native-stack": "^6.9.24",
     "async-validator": "^4.2.5",
+    "axios": "^1.6.7",
     "date-fns": "^2.30.0",
     "pinyin-pro": "^3.18.3",
     "pure-uuid": "^1.6.3",

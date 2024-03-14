@@ -1,0 +1,58 @@
+import { Toast } from '@fruits-chain/react-native-xiaoshu'
+import type { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults } from 'axios'
+import axios from 'axios'
+
+interface CustomConfig {
+  showMsg?: boolean
+}
+
+export class Request {
+  private readonly axios: AxiosInstance
+
+  constructor(params: CreateAxiosDefaults) {
+    this.axios = axios.create(params)
+
+    this.axios.interceptors.request.use((config) => {
+      return config
+    }, (error) => {
+      return Promise.reject(error)
+    })
+
+    this.axios.interceptors.response.use((response) => {
+      return response
+    }, (error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  private request<T extends Record<string, any>>(requestConfig: AxiosRequestConfig, customConfig: CustomConfig = { showMsg: false }) {
+    return new Promise<T>((resolve, reject) => {
+      this.axios<T>(requestConfig).then((res) => {
+        resolve(res.data)
+      }).catch((error) => {
+        customConfig.showMsg && Toast.fail(error.message)
+        reject(error)
+      })
+    })
+  }
+
+  public post<T extends Record<string, any>, K extends Record<string, any>>(data: K, requestConfig: Omit<AxiosRequestConfig, 'method' | 'data'>, customConfig?: CustomConfig) {
+    return this.request<T>({
+      method: 'POST',
+      data,
+      ...requestConfig,
+    }, customConfig)
+  }
+
+  public get<T extends Record<string, any>, K extends Record<string, any>>(data: K, requestConfig: Omit<AxiosRequestConfig, 'method' | 'params'>, customConfig?: CustomConfig) {
+    return this.request<T>({
+      method: 'GET',
+      params: data,
+      ...requestConfig,
+    }, customConfig)
+  }
+}
+
+export const request = new Request({
+  baseURL: 'https://www.tuocad.com/tuo-cms',
+})
