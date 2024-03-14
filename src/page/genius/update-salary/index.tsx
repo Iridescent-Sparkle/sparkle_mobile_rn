@@ -6,18 +6,22 @@ import Input from '@/core/components/Input'
 import SingleSelect from '@/core/components/SingleSelect'
 import { create } from '@/core/styleSheet'
 
-export default function GeniusUpdateProfile() {
+export default function GeniusUpdateSalary() {
   const form = Form.useForm()
   const insets = useSafeAreaInsets()
+
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
         <Form form={form}>
           <Form.Item name="nickname">
-            <Input title="昵称" />
+            <Input title="最小值" />
           </Form.Item>
           <Form.Item name="nickname">
-            <SingleSelect title="职业"options={[]} />
+            <Input title="最大值" />
+          </Form.Item>
+          <Form.Item name="nickname">
+            <SingleSelect title="频率" options={[]} />
           </Form.Item>
         </Form>
       </View>

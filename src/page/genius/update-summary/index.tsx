@@ -2,22 +2,20 @@ import { Button } from '@fruits-chain/react-native-xiaoshu'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Form from '@/core/components/Form'
-import Input from '@/core/components/Input'
-import SingleSelect from '@/core/components/SingleSelect'
+import ImageUploader from '@/core/components/ImageUploader'
+import TextArea from '@/core/components/TextArea'
 import { create } from '@/core/styleSheet'
 
-export default function GeniusUpdateProfile() {
+export default function GeniusUpdateSummary() {
   const form = Form.useForm()
   const insets = useSafeAreaInsets()
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
         <Form form={form}>
+          <ImageUploader></ImageUploader>
           <Form.Item name="nickname">
-            <Input title="昵称" />
-          </Form.Item>
-          <Form.Item name="nickname">
-            <SingleSelect title="职业"options={[]} />
+            <TextArea title="总结" />
           </Form.Item>
         </Form>
       </View>

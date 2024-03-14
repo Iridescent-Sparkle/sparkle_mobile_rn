@@ -5,8 +5,12 @@ import Form from '@/core/components/Form'
 import ImageUploader from '@/core/components/ImageUploader'
 import Input from '@/core/components/Input'
 import { create } from '@/core/styleSheet'
+import RangeDatePicker from '@/core/components/RangeDatePicker'
+import TextArea from '@/core/components/TextArea'
+import Switch from '@/core/components/Switch'
+import SingleSelect from '@/core/components/SingleSelect'
 
-export default function GeniusUpdateContact() {
+export default function GeniusUpdateEducation() {
   const form = Form.useForm()
   const insets = useSafeAreaInsets()
 
@@ -15,14 +19,25 @@ export default function GeniusUpdateContact() {
       <View>
         <Form form={form}>
           <Form.Item name="nickname">
-
-            <Input title="地址" />
+            <Input title="学校" />
           </Form.Item>
           <Form.Item name="nickname">
-            <Input title="电话" />
+            <Input title="专业" />
           </Form.Item>
           <Form.Item name="nickname">
-            <Input title="邮箱" />
+            <RangeDatePicker title="起止时间" />
+          </Form.Item>
+          <Form.Item name="nickname">
+            <Switch title="是否毕业" />
+          </Form.Item>
+          <Form.Item name="nickname">
+            <Input title="绩点" />
+          </Form.Item>
+          <Form.Item name="nickname">
+            <SingleSelect title="满绩点" options={[]} />
+          </Form.Item>
+          <Form.Item name="nickname">
+            <TextArea title="经历描述" />
           </Form.Item>
         </Form>
       </View>

@@ -5,7 +5,7 @@ import { create } from '@/core/styleSheet'
 
 interface Props {
   title: string
-  onChange: (value: any) => void
+  onChange?: (value: any) => void
 }
 
 function Switch(props: Props) {
