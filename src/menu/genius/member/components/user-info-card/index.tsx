@@ -1,27 +1,38 @@
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
-import React from 'react'
-import { Text, View } from 'react-native'
+import React, { useContext } from 'react'
+import { Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Space } from '@fruits-chain/react-native-xiaoshu'
 import Feather from 'react-native-vector-icons/Feather'
+import { NavigationContext } from '@react-navigation/native'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
 function MemberUserCard() {
+  const navigation = useContext(NavigationContext)
+
+  const handleUserClick = () => {
+    navigation!.navigate('GeniusUpdateProfile')
+  }
+
+  const handleSettingClick = () => {
+    navigation!.navigate('Setting')
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.nameWrapper}>
+      <Pressable style={styles.nameWrapper} onPress={handleUserClick}>
         <FastImage style={styles.avatar} source={{ uri: `${IMAGE_PREFIX}/stars.png` }}></FastImage>
         <Space>
           <Text style={styles.name}>Andrew</Text>
           <Text style={styles.work}>UI/UX Designer</Text>
         </Space>
         <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} />
-      </View>
-      <View style={styles.button}>
+      </Pressable>
+      <Pressable style={styles.button} onPress={handleSettingClick}>
         <Feather name="settings" size={pxToDp(46)} color={themeColor.black85} />
-      </View>
+      </Pressable>
     </View>
   )
 }

@@ -12,7 +12,8 @@ const customTheme = {
   loading_icon_color: themeColor.primary,
   loading_icon_size: 70,
   tag_primary_color: themeColor.primary,
-  text_input_border_radio: 16,
-
+  text_input_light_accessory_background_color: themeColor.primary,
+  text_input_border_radio: 12,
+  uploader_image_border_radius: 999,
 }
 export default customTheme
