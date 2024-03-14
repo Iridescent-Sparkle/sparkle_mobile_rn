@@ -6,7 +6,7 @@ interface Props extends TextInputProps {
   title: string
 }
 
-function Input(props: Props) {
+function TextArea(props: Props) {
   const { title, ...textInputProps } = props
 
   return (
@@ -18,6 +18,7 @@ function Input(props: Props) {
         <TextInput
           bordered
           size="l"
+          type="textarea"
           {...textInputProps}
         />
       )}
@@ -25,4 +26,4 @@ function Input(props: Props) {
   )
 }
 
-export default Input
+export default TextArea

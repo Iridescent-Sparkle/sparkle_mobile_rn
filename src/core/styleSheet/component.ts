@@ -13,5 +13,6 @@ const customTheme = {
   loading_icon_size: 70,
   tag_primary_color: themeColor.primary,
   text_input_border_radio: 16,
+
 }
 export default customTheme
