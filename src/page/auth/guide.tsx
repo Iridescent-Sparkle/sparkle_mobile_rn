@@ -2,12 +2,16 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { Button } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create } from '@/core/styleSheet'
 
 function Guide() {
+  const navigation = useNavigation()
+
   const handleRegisterClick = () => {
-    // router.replace('/(auth)/register')
+    const pushAction = StackActions.push('Register')
+    navigation.dispatch(pushAction)
   }
 
   const handleLoginClick = () => {
@@ -36,6 +40,7 @@ const styles = create({
     flex: 1,
     paddingTop: 200,
     paddingHorizontal: 60,
+    backgroundColor: '#fff',
   },
   banner: {
     width: 630,

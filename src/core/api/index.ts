@@ -54,5 +54,5 @@ export class Request {
 }
 
 export const request = new Request({
-  baseURL: 'https://www.tuocad.com/tuo-cms',
+  baseURL: 'http://localhost:3000',
 })

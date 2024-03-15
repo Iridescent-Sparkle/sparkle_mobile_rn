@@ -1,24 +1,54 @@
-import { Button, Form, NumberInput, PasswordInput } from '@fruits-chain/react-native-xiaoshu'
-import React from 'react'
+import { Button, Form, NumberInput, PasswordInput, TextInput } from '@fruits-chain/react-native-xiaoshu'
+import React, { useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import VerifyCode from '../../core/components/VerifyCodeButton'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { getSmsCode } from '@/core/api/request/auth'
+import { useAppStore } from '@/store'
 
 function Register() {
   const [form] = Form.useForm()
+  const navigation = useNavigation()
+  const [phone, setPhone] = useState('')
+  const appStore = useAppStore()
 
   const handleLoginClick = () => {
-    // router.replace('/(auth)/login')
+    const pushAction = StackActions.replace('Login')
+    navigation.dispatch(pushAction)
   }
 
-  const getVerifyCode = async () => {}
-
   const handleForgetPassword = () => {
-    // router.push({
-    //   pathname: '/(auth)/(password)/forget-guide',
+    const pushAction = StackActions.push('ForgetGuide')
+    navigation.dispatch(pushAction)
+  }
+
+  const handlePhoneChange = (value: number) => {
+    setPhone(String(value))
+    return value
+  }
+
+  const getVerifyCode = async () => {
+    const phone = form.getFieldValue('phone')
+    const data = await getSmsCode({ phone })
+    return data.countDown
+  }
+
+  const handleRegisterClick = async () => {
+    const formValues = await form.validateFields()
+    // await appStore.register({
+    //   phone: String(formValues.phone),
+    //   username: String(formValues.phone),
+    //   captcha: String(formValues.captcha),
+    //   password: String(formValues.password),
+    //   confirmPassword: String(formValues.confirmPassword),
     // })
+    await appStore.login({
+      username: String(formValues.phone),
+      password: String(formValues.password),
+    })
   }
 
   return (
@@ -27,34 +57,66 @@ function Register() {
       <Form form={form}>
         <View style={styles.formItem}>
           <Feather name="phone" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-          <Form.Item name="phone">
-            <NumberInput style={styles.input} placeholder="请输入手机号" inputWidth={pxToDp(420)} />
+          <Form.Item
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: '请输入手机号',
+              },
+            ]}
+          >
+            <NumberInput style={styles.input} placeholder="请输入手机号" inputWidth={pxToDp(420)} onChange={handlePhoneChange} />
           </Form.Item>
         </View>
         <View style={styles.formItem}>
           <Feather name="lock" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-          <Form.Item name="password">
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: '请输入密码',
+              },
+            ]}
+          >
             <PasswordInput style={styles.input} placeholder="请输入密码" inputWidth={pxToDp(420)} />
           </Form.Item>
         </View>
         <View style={styles.formItem}>
           <Feather name="lock" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-          <Form.Item name="password">
+          <Form.Item
+            name="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: '请确认你的密码',
+              },
+            ]}
+          >
             <PasswordInput style={styles.input} placeholder="确认你的密码" inputWidth={pxToDp(420)} />
           </Form.Item>
         </View>
         <View style={styles.formItem}>
           <Feather name="code" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-          <Form.Item name="phone">
-            <NumberInput style={styles.input} placeholder="请输入验证码" inputWidth={pxToDp(400)} />
+          <Form.Item
+            name="captcha"
+            rules={[
+              {
+                required: true,
+                message: '请输入验证码',
+              },
+            ]}
+          >
+            <TextInput style={styles.input} placeholder="请输入验证码" inputWidth={pxToDp(400)} />
           </Form.Item>
-          <VerifyCode tel="" getVerifyCode={getVerifyCode} />
+          <VerifyCode tel={phone} getVerifyCode={getVerifyCode} />
         </View>
       </Form>
       <View style={styles.passwordTipWrapper}>
         <Text style={styles.passwordTip} onPress={handleForgetPassword}>忘记了密码？</Text>
       </View>
-      <Button type="primary" style={styles.button}>注册</Button>
+      <Button type="primary" style={styles.button} onPress={handleRegisterClick}>注册</Button>
       <View style={styles.accountTipWrapper}>
         <Text style={styles.accountTip}>已拥有账户？</Text>
       </View>
@@ -68,6 +130,7 @@ const styles = create({
     flex: 1,
     paddingTop: 80,
     paddingHorizontal: 60,
+    backgroundColor: '#fff',
   },
   title: {
     marginTop: 48,
