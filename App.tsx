@@ -4,8 +4,11 @@ import { Container } from 'react-native-chat-uikit'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import RouteProvider from '@/route'
 import customTheme from '@/core/styleSheet/component'
+import { useAppStore } from '@/store'
 
 function App() {
+  useAppStore().initData()
+
   return (
     <Provider theme={customTheme}>
       <ThemeProvider value={DefaultTheme}>
