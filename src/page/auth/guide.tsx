@@ -15,7 +15,8 @@ function Guide() {
   }
 
   const handleLoginClick = () => {
-    // router.replace('/(auth)/login')
+    const pushAction = StackActions.push('Login')
+    navigation.dispatch(pushAction)
   }
 
   return (

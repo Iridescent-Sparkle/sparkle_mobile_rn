@@ -1,14 +1,22 @@
 import { Cell } from '@fruits-chain/react-native-xiaoshu'
 import { View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import { useAppStore } from '../../store/index'
 import { create, pxToDp } from '@/core/styleSheet'
 
 export default function Setting() {
+  const appStore = useAppStore()
+
+  const handleLogout = () => {
+    appStore.setData({ token: '' })
+  }
   return (
     <View style={styles.container}>
       <Cell
         title="退出登录"
         isLink
+        onPress={handleLogout}
         titleExtra={(
           <View style={styles.icon}>
             <Feather name="log-out" size={pxToDp(32)} color="black" />

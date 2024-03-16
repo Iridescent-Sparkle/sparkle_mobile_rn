@@ -11,6 +11,7 @@ import Guide from '@/page/auth/guide'
 import Register from '@/page/auth/register'
 import Login from '@/page/auth/login'
 import ForgetGuide from '@/page/auth/forget-guide'
+import ResetPassword from '@/page/auth/reset-password'
 
 const Stack = createNativeStackNavigator()
 
@@ -38,7 +39,8 @@ function RouteProvider() {
               <Stack.Screen name="Guide" component={Guide} options={{ title: '' }} />
               <Stack.Screen name="Register" component={Register} options={{ title: '' }} />
               <Stack.Screen name="Login" component={Login} options={{ title: '' }} />
-              <Stack.Screen name="ForgetGuide" component={ForgetGuide} options={{ title: '' }} />
+              <Stack.Screen name="ForgetGuide" component={ForgetGuide} options={{ headerShown: false }} />
+              <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ title: '' }} />
             </Stack.Group>
             )}
 

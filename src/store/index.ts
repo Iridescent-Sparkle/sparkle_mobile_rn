@@ -8,6 +8,7 @@ interface State {
 }
 
 interface Action {
+  setData: (params: Partial<State>) => void
   register: (params: { username: string, captcha: string, confirmPassword: string, password: string, phone: string }) => void
   login: (params: { username: string, password: string }) => void
 }
@@ -15,6 +16,12 @@ interface Action {
 export const useAppStore = create<State & Action>(set => ({
   token: '',
   userInfo: {},
+  setData: (params) => {
+    set(state => ({
+      ...state,
+      ...params,
+    }))
+  },
   register: async (params) => {
     await register(params)
   },

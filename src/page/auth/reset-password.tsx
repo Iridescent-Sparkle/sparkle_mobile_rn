@@ -1,22 +1,24 @@
 import { Button, Form, PasswordInput } from '@fruits-chain/react-native-xiaoshu'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Feather from 'react-native-vector-icons/Feather'
-import { IMAGE_PREFIX } from '@/core/constants'
+import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
 import { create, pxToDp } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
+import { resetPassword } from '@/core/api/request/auth'
 
 function ResetPassword() {
   const [form] = Form.useForm()
-
-  useEffect(() => {
-    // navigation.setOptions({
-    //   headerTitle: '创建新密码',
-    // })
-  }, [])
-
-  const handleContinueClick = () => {
-    // router.push('/(auth)/(password)/verification-code')
+  const route = useRoute()
+  const navigation = useNavigation()
+  const handleConfrimClick = async () => {
+    const formValues = await form.validateFields()
+    await resetPassword({
+      username: route.params!.phone,
+      password: formValues.password,
+    })
+    navigation.dispatch(StackActions.replace('Login'))
   }
 
   return (
@@ -40,12 +42,12 @@ function ResetPassword() {
         </View>
         <View style={styles.formItem}>
           <Feather name="lock" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-          <Form.Item name="password">
+          <Form.Item name="confirmPassword">
             <PasswordInput style={styles.input} placeholder="确认你的密码" inputWidth={pxToDp(420)} />
           </Form.Item>
         </View>
       </Form>
-      <Button style={styles.button} onPress={handleContinueClick}>继续</Button>
+      <Button style={styles.button} onPress={handleConfrimClick}>提交</Button>
     </ScrollView>
   )
 }
@@ -54,6 +56,7 @@ const styles = create({
   container: {
     flex: 1,
     paddingHorizontal: 40,
+    backgroundColor: '#fff',
   },
   bannerWrapper: {
     width: '100%',

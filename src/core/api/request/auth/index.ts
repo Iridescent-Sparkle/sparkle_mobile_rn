@@ -22,3 +22,17 @@ export async function getSmsCode(params: { phone: string }) {
 
   return res.data
 }
+export async function validateSmsCode(params: { phone: string, code: string }) {
+  const res = await request.post(params, {
+    url: '/user/validateSmsCode',
+  })
+
+  return res.data
+}
+export async function resetPassword(params: { username: string, password: string }) {
+  const res = await request.post(params, {
+    url: '/user/resetPassword',
+  })
+
+  return res.data
+}

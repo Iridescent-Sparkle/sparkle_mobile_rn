@@ -3,24 +3,30 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Feather from 'react-native-vector-icons/Feather'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { useAppStore } from '@/store'
 
 function Login() {
   const [form] = Form.useForm()
+  const navigation = useNavigation()
+  const appStore = useAppStore()
 
   const handleRegisterClick = () => {
-    // router.replace('/(auth)/register')
+    const pushAction = StackActions.replace('Register')
+    navigation.dispatch(pushAction)
   }
 
   const handleForgetPassword = () => {
-    // router.push({
-    //   pathname: '/(auth)/(password)/reset-guide',
-    //   params: {
-    //     title: '修改密码',
-    //   },
-    // })
+    const pushAction = StackActions.push('ForgetGuide')
+    navigation.dispatch(pushAction)
+  }
+
+  const handleLoginClick = async () => {
+    const formValues = await form.validateFields()
+    appStore.login(formValues)
   }
 
   return (
@@ -36,7 +42,7 @@ function Login() {
       <Form form={form}>
         <View style={styles.formItem}>
           <Feather name="phone" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-          <Form.Item name="phone">
+          <Form.Item name="username">
             <NumberInput inputWidth={pxToDp(420)} placeholder="请输入手机号" />
           </Form.Item>
         </View>
@@ -50,7 +56,7 @@ function Login() {
       <View style={styles.passwordTipWrapper}>
         <Text style={styles.passwordTip} onPress={handleForgetPassword}>忘记了密码？</Text>
       </View>
-      <Button type="primary" style={styles.button}>登录</Button>
+      <Button type="primary" style={styles.button} onPress={handleLoginClick}>登录</Button>
       <View style={styles.accountTipWrapper}>
         <Text style={styles.accountTip}>未拥有账户？</Text>
       </View>
@@ -65,6 +71,7 @@ const styles = create({
     paddingTop: 200,
     paddingHorizontal: 60,
     alignItems: 'center',
+    backgroundColor: '#fff',
   },
   title: {
     marginTop: 16,

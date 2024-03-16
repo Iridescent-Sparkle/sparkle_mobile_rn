@@ -10,8 +10,11 @@ import {
 import { create } from '@/core/styleSheet'
 
 const CELL_COUNT = 4
-
-function App() {
+interface Prop {
+  onChange: (value: any) => void
+}
+function App(prop: Prop) {
+  const { onChange } = prop
   const [value, setValue] = useState('')
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT })
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -26,7 +29,10 @@ function App() {
         {...props}
         // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
         value={value}
-        onChangeText={setValue}
+        onChangeText={(value) => {
+          onChange(value)
+          setValue(value)
+        }}
         cellCount={CELL_COUNT}
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
