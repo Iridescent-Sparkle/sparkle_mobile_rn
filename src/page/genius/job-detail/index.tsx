@@ -1,8 +1,9 @@
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { Button, Card, NavBar } from '@fruits-chain/react-native-xiaoshu'
-import React, { useRef, useState } from 'react'
+import { Button, Card, NavBar, Notify, Popup, Skeleton, Toast } from '@fruits-chain/react-native-xiaoshu'
+import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
 import RecruitAboutCard from '@/components/recruit/recruit-detail/recruit-about-card'
 import RecruitDescriptionCard from '@/components/recruit/recruit-detail/recruit-description-card'
 import RecruitDetailCard from '@/components/recruit/recruit-detail/recruit-detail-card'
@@ -87,48 +88,117 @@ function listData(listRef: any) {
 
 function JobDetail() {
   const insets = useSafeAreaInsets()
+  const navigation = useNavigation()
   const listRef = useRef<FlatList>(null)
   const [popupVisible, setPopupVisible] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [confirmLoading, setConfirmLoading] = useState(false)
 
   const handlePopupShow = () => {
     setPopupVisible(true)
   }
 
-  // const handlePopupClose = () => {
-  //   setPopupVisible(false)
-  // }
+  const handlePopupClose = () => {
+    setPopupVisible(false)
+  }
+
+  useEffect(() => {
+    setTimeout(() => { setLoading(false) }, 1000)
+  }, [])
+
+  const onPressBackArrow = () => {
+    navigation.goBack()
+  }
+
+  const handleConfirmClick = () => {
+    setConfirmLoading(true)
+
+    setTimeout(() => {
+      handlePopupClose()
+      setConfirmLoading(false)
+      Notify({
+        type: 'success',
+        message: '投递成功',
+      })
+    }, 1000)
+    // navigation.goBack()
+  }
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <NavBar rightExtra={<FontAwesome name="bookmark" size={pxToDp(48)} color={themeColor.primary} />} rightStyle={styles.rightExtra} divider={false} />
-      <View style={styles.list}>
-        <FlatList
-          ListHeaderComponent={<RecruitDetailCard />}
-          stickyHeaderIndices={[1]}
-          ref={listRef}
-          data={listData(listRef)}
-          renderItem={item => item.item.component}
-          keyExtractor={item => item.id}
-        />
-      </View>
-      <Card>
-        <View style={styles.buttonWrapper}>
-          <Button style={styles.button} onPress={handlePopupShow}>投递</Button>
-        </View>
-      </Card>
-      {/* <Popup
+      <NavBar onPressBackArrow={onPressBackArrow} rightExtra={<FontAwesome name="bookmark" size={pxToDp(48)} color={themeColor.primary} />} rightStyle={styles.rightExtra} divider={false} />
+
+      {
+        loading
+          ? (
+            <View style={styles.skeleton}>
+              <Skeleton
+                avatar
+                loading={loading}
+                active
+                paragraph={{
+                  rows: 6,
+                  widths: [100, 100, 70, 100, 100, 20],
+                }}
+              />
+              <Skeleton
+                loading={loading}
+                active
+                paragraph={{
+                  rows: 3,
+                  widths: [100, 100, 70, 100, 100, 20],
+                }}
+              />
+              <Skeleton
+                loading={loading}
+                active
+                paragraph={{
+                  rows: 6,
+                  widths: [100, 100, 70, 100, 100, 20],
+                }}
+              />
+              <Skeleton
+                loading={loading}
+                active
+                paragraph={{
+                  rows: 6,
+                  widths: [100, 100, 70, 100, 100, 20],
+                }}
+              />
+            </View>
+            )
+          : (
+            <>
+              <View style={styles.list}>
+                <FlatList
+                  ListHeaderComponent={<RecruitDetailCard />}
+                  stickyHeaderIndices={[1]}
+                  ref={listRef}
+                  data={listData(listRef)}
+                  renderItem={item => item.item.component}
+                  keyExtractor={item => item.id}
+                />
+              </View>
+              <Card>
+                <View style={styles.buttonWrapper}>
+                  <Button style={styles.button} onPress={handlePopupShow}>投递</Button>
+                </View>
+              </Card>
+            </>
+            )
+      }
+      <Popup
         safeAreaInsetBottom
         visible={popupVisible}
         position="bottom"
-        onPressOverlay={handlePopupClose}
         round
       >
-        <Popup.Header title="投递简历" showClose={false} style={styles.popupHeader} titleTextStyle={styles.popupHeaderText} divider={true} />
+        <Popup.Header title="是否要投递该职位" showClose={false} style={styles.popupHeader} titleTextStyle={styles.popupHeaderText} divider={true} />
         <View style={styles.popupWrapper}>
-          <Button style={styles.popupButton} onPress={handlePopupShow} type="hazy">投递</Button>
-          <Button style={styles.popupButton} onPress={handlePopupShow}>投递</Button>
+          <Button style={styles.popupButton} onPress={handlePopupClose} type="hazy" disabled={confirmLoading}>取消</Button>
+          <Button style={styles.popupButton} onPress={handleConfirmClick} loading={confirmLoading} loadingText="投递">投递</Button>
         </View>
-      </Popup> */}
+      </Popup>
     </View>
   )
 }
@@ -138,6 +208,10 @@ const styles = create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
+  },
+  skeleton: {
+    padding: 20,
+    gap: 108,
   },
   rightExtra: {
 

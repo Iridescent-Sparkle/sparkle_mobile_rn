@@ -6,15 +6,29 @@ import { Space } from '@fruits-chain/react-native-xiaoshu'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { useAppStore } from '@/store'
 
 function UserCard() {
+  const appStore = useAppStore()
+
+  const tip = (function () {
+    const date = new Date()
+    const hours = date.getHours()
+
+    if (hours >= 6 && hours < 12)
+      return '早上好'
+    else if (hours >= 12 && hours < 18)
+      return '下午好'
+    else
+      return '晚上好'
+  })()
   return (
     <View style={styles.container}>
       <Space direction="horizontal">
         <FastImage style={styles.avatar} source={{ uri: `${IMAGE_PREFIX}/stars.png` }}></FastImage>
         <View>
-          <Text style={styles.tip}>早上好</Text>
-          <Text style={styles.name}>Andrew</Text>
+          <Text style={styles.tip}>{tip}</Text>
+          <Text style={styles.name}>{appStore.userInfo.nickName}</Text>
         </View>
       </Space>
       <View style={styles.button}>

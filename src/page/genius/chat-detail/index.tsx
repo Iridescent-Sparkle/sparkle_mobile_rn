@@ -21,147 +21,148 @@ export default function GeniusChatDetail(props: Props) {
   const im = useChatContext()
 
   return (
-    <View style={[{ paddingTop: insets.top }]}>
-      <ConversationDetail
-        containerStyle={{
-          flexGrow: 1,
-        }}
-        convId={convId}
-        convType={convType}
-        input={{
-          props: {
-            top,
-            bottom,
-            onClickedCardMenu: () => {
-              // 跳转到共享联系人页面
-              navigation.push('ShareContact', {
+
+    <ConversationDetail
+      containerStyle={{
+        flexGrow: 1,
+        paddingTop: insets.top,
+      }}
+      convId={convId}
+      convType={convType}
+      input={{
+        props: {
+          top,
+          bottom,
+          onClickedCardMenu: () => {
+            // 跳转到共享联系人页面
+            navigation.push('ShareContact', {
+              params: {
+                convId,
+                convType,
+                convName,
+                operateType: 'share_card',
+              },
+            })
+          },
+        },
+      }}
+      list={{
+        props: {
+          onClickedItem: (
+            id: string,
+            model: SystemMessageModel | TimeMessageModel | MessageModel,
+          ) => {
+            // 点击消息列表项的回调通知
+            if (model.modelType !== 'message')
+              return
+
+            const msgModel = model as MessageModel
+            if (msgModel.msg.body.type === ChatMessageType.IMAGE) {
+              navigation.push('ImageMessagePreview', {
                 params: {
-                  convId,
-                  convType,
-                  convName,
-                  operateType: 'share_card',
+                  msgId: msgModel.msg.msgId,
+                  localMsgId: msgModel.msg.localMsgId,
                 },
               })
-            },
-          },
-        }}
-        list={{
-          props: {
-            onClickedItem: (
-              id: string,
-              model: SystemMessageModel | TimeMessageModel | MessageModel,
-            ) => {
-              // 点击消息列表项的回调通知
-              if (model.modelType !== 'message')
-                return
-
-              const msgModel = model as MessageModel
-              if (msgModel.msg.body.type === ChatMessageType.IMAGE) {
-                navigation.push('ImageMessagePreview', {
-                  params: {
-                    msgId: msgModel.msg.msgId,
-                    localMsgId: msgModel.msg.localMsgId,
-                  },
-                })
-              }
-              else if (msgModel.msg.body.type === ChatMessageType.VIDEO) {
-                navigation.push('VideoMessagePreview', {
-                  params: {
-                    msgId: msgModel.msg.msgId,
-                    localMsgId: msgModel.msg.localMsgId,
-                  },
-                })
-              }
-              else if (msgModel.msg.body.type === ChatMessageType.FILE) {
-                navigation.push('FileMessagePreview', {
-                  params: {
-                    msgId: msgModel.msg.msgId,
-                    localMsgId: msgModel.msg.localMsgId,
-                  },
-                })
-              }
-              else if (msgModel.msg.body.type === ChatMessageType.CUSTOM) {
-                const body = msgModel.msg.body as ChatCustomMessageBody
-                const event = body.event
-                const params = body.params
-                if (event === gCustomMessageCardEventType) {
-                  const cardParams = params as {
-                    userId: string
-                    nickname: string
-                    avatar: string
-                  }
-                  navigation.push('ContactInfo', {
-                    params: {
-                      userId: cardParams.userId,
-                    },
-                  })
+            }
+            else if (msgModel.msg.body.type === ChatMessageType.VIDEO) {
+              navigation.push('VideoMessagePreview', {
+                params: {
+                  msgId: msgModel.msg.msgId,
+                  localMsgId: msgModel.msg.localMsgId,
+                },
+              })
+            }
+            else if (msgModel.msg.body.type === ChatMessageType.FILE) {
+              navigation.push('FileMessagePreview', {
+                params: {
+                  msgId: msgModel.msg.msgId,
+                  localMsgId: msgModel.msg.localMsgId,
+                },
+              })
+            }
+            else if (msgModel.msg.body.type === ChatMessageType.CUSTOM) {
+              const body = msgModel.msg.body as ChatCustomMessageBody
+              const event = body.event
+              const params = body.params
+              if (event === gCustomMessageCardEventType) {
+                const cardParams = params as {
+                  userId: string
+                  nickname: string
+                  avatar: string
                 }
+                navigation.push('ContactInfo', {
+                  params: {
+                    userId: cardParams.userId,
+                  },
+                })
               }
-            },
-            onClickedItemAvatar: (id, model) => {
-              // 点击头像的回调通知
-              if (model.modelType !== 'message')
-                return
+            }
+          },
+          onClickedItemAvatar: (id, model) => {
+            // 点击头像的回调通知
+            if (model.modelType !== 'message')
+              return
 
-              const msgModel = model as MessageModel
-              const userId = msgModel.msg.from
+            const msgModel = model as MessageModel
+            const userId = msgModel.msg.from
 
-              const userType = msgModel.msg.chatType as number
-              if (userType === ChatMessageChatType.PeerChat) {
+            const userType = msgModel.msg.chatType as number
+            if (userType === ChatMessageChatType.PeerChat) {
+              navigation.navigate('ContactInfo', {
+                params: { userId },
+              })
+            }
+            else if (userType === ChatMessageChatType.GroupChat) {
+              const groupId = msgModel.msg.conversationId
+              const selfId = im.userId
+              if (selfId === im.userId) {
                 navigation.navigate('ContactInfo', {
-                  params: { userId },
+                  params: {
+                    userId,
+                  },
                 })
               }
-              else if (userType === ChatMessageChatType.GroupChat) {
-                const groupId = msgModel.msg.conversationId
-                const selfId = im.userId
-                if (selfId === im.userId) {
-                  navigation.navigate('ContactInfo', {
-                    params: {
-                      userId,
-                    },
-                  })
-                }
-                else {
-                  navigation.navigate('GroupParticipantInfo', {
-                    params: {
-                      groupId,
-                      userId,
-                    },
-                  })
-                }
+              else {
+                navigation.navigate('GroupParticipantInfo', {
+                  params: {
+                    groupId,
+                    userId,
+                  },
+                })
               }
-            },
+            }
           },
-        }}
-        onBack={() => {
-          navigation.goBack()
-        }}
-        onClickedAvatar={(params: {
-          convId: string
-          convType: ChatConversationType
-          ownerId?: string | undefined
-        }) => {
-          // 点击会话头像的回调通知
-          if (params.convType === ChatConversationType.PeerChat) {
-            navigation.navigate({
-              name: 'ContactInfo',
-              params: { params: { userId: params.convId } },
-              merge: true,
-            })
-          }
-          else if (params.convType === ChatConversationType.GroupChat) {
-            navigation.navigate({
-              name: 'GroupInfo',
-              params: {
-                params: { groupId: params.convId, ownerId: params.ownerId },
-              },
-              merge: true,
-            })
-          }
-        }}
-      />
-    </View>
+        },
+      }}
+      onBack={() => {
+        navigation.goBack()
+      }}
+      onClickedAvatar={(params: {
+        convId: string
+        convType: ChatConversationType
+        ownerId?: string | undefined
+      }) => {
+        // 点击会话头像的回调通知
+        if (params.convType === ChatConversationType.PeerChat) {
+          navigation.navigate({
+            name: 'ContactInfo',
+            params: { params: { userId: params.convId } },
+            merge: true,
+          })
+        }
+        else if (params.convType === ChatConversationType.GroupChat) {
+          navigation.navigate({
+            name: 'GroupInfo',
+            params: {
+              params: { groupId: params.convId, ownerId: params.ownerId },
+            },
+            merge: true,
+          })
+        }
+      }}
+    />
+
   )
 }
 
