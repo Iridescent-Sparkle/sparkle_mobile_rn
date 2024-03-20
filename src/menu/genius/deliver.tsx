@@ -1,34 +1,52 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import RecruitListHeader from '../../components/recruit/recruit-list/recruit-job-header'
 import RecruitJobCard from '../../components/recruit/recruit-list/recruit-job-card'
 import RecruitSearchBar from '../../components/recruit/recruit-list/recruit-search-bar'
 import { create } from '@/core/styleSheet'
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-]
+import Skeleton from '@/page/genius/skeleton'
+import { request } from '@/core/api'
 
 export default function GeniusDeliver() {
   const insets = useSafeAreaInsets()
+  const [jobList, setJobList] = useState([])
+
+  const [loading, setLoading] = useState(true)
+
+  const getInitData = async () => {
+    try {
+      setLoading(true)
+      const { data: jobListData } = await request.get({}, {
+        url: `/deliveries/user/${appStore.userInfo.id}}`,
+      })
+      setJobList(jobListData)
+    }
+    catch (error) {
+
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getInitData()
+  }, [])
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <RecruitListHeader title="我的投递" />
-      <RecruitSearchBar />
-      <FlatList style={styles.list} data={DATA} renderItem={() => <RecruitJobCard />} keyExtractor={item => item.id} />
+      {
+      loading
+        ? <Skeleton />
+        : (
+          <>
+            <RecruitListHeader title="我的投递" />
+            <RecruitSearchBar />
+            <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitJobCard />} keyExtractor={job => job.id} />
+          </>
+          )
+    }
     </View>
   )
 }

@@ -51,6 +51,22 @@ export class Request {
       ...requestConfig,
     }, customConfig)
   }
+
+  public delete<T extends Record<string, any>, K extends Record<string, any>>(data: K, requestConfig: Omit<AxiosRequestConfig, 'method' | 'params'>, customConfig?: CustomConfig) {
+    return this.request<T>({
+      method: 'DELETE',
+      params: data,
+      ...requestConfig,
+    }, customConfig)
+  }
+
+  public put<T extends Record<string, any>, K extends Record<string, any>>(data: K, requestConfig: Omit<AxiosRequestConfig, 'method' | 'params'>, customConfig?: CustomConfig) {
+    return this.request<T>({
+      method: 'PUT',
+      params: data,
+      ...requestConfig,
+    }, customConfig)
+  }
 }
 
 export const request = new Request({

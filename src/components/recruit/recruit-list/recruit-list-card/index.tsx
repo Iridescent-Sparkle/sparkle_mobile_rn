@@ -8,16 +8,19 @@ import { pxToDp } from '../../../../core/styleSheet/index'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import Visible from '@/core/components/Visible'
 
 interface Props {
-  handleCollectClick: () => void
-
+  handleCollectClick?: () => void
+  data: any
+  showCollectBtn?: boolean
 }
 
 function RecruitListCard(props: Props) {
-  const { handleCollectClick } = props
+  const { data, handleCollectClick, showCollectBtn = true } = props
 
   const [bookmark, setBookmark] = useState(false)
+
   const navigation = useNavigation()
   const onCollectClick = () => {
     setBookmark(!bookmark)
@@ -43,11 +46,13 @@ function RecruitListCard(props: Props) {
               <Text style={styles.company}>Google LLC</Text>
             </Space>
           </Space>
-          {
-        bookmark
-          ? <FontAwesome suppressHighlighting name="bookmark-o" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectClick} />
-          : <FontAwesome suppressHighlighting name="bookmark" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectClick} />
-      }
+          <Visible visible={showCollectBtn}>
+            {
+              bookmark
+                ? <FontAwesome suppressHighlighting name="bookmark-o" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectClick} />
+                : <FontAwesome suppressHighlighting name="bookmark" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectClick} />
+            }
+          </Visible>
         </Space>
         <Space style={styles.body}>
           <Text style={styles.address}>California, United States</Text>
