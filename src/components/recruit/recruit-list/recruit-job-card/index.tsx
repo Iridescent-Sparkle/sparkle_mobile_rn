@@ -1,8 +1,10 @@
-import { Card, Space, Tag } from '@fruits-chain/react-native-xiaoshu'
+import { Badge, Card, Space, Tag } from '@fruits-chain/react-native-xiaoshu'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import Feather from 'react-native-vector-icons/Feather'
 import { pxToDp } from '../../../../core/styleSheet/index'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
@@ -29,7 +31,13 @@ function RecruitJobCard(props: Props) {
             <Tag type="ghost" color="#979797">Full Time</Tag>
           </Space>
         </Space>
-        <MaterialIcons name="arrow-forward-ios" size={pxToDp(32)} color="black" />
+        <Space direction="vertical" gap={pxToDp(70)}>
+          <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} />
+          <Badge dot offset={[5, -2]}>
+            <Feather name="list" size={pxToDp(32)} color={themeColor.primary} />
+          </Badge>
+        </Space>
+        {/* <MaterialIcons name="arrow-forward-ios" size={pxToDp(32)} color="black" /> */}
       </Space>
     </Card>
   )

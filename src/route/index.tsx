@@ -25,17 +25,17 @@ function RouteProvider() {
         {appStore.token
           ? (
             <Stack.Group>
+              <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
               <Stack.Screen
                 name="Genius"
                 component={GeniusTabLayout}
                 options={{ headerShown: false }}
               />
-              <Stack.Screen name="Boss" component={BossTabLayout} />
+
               <Stack.Screen name="Setting" component={Setting} options={{ title: '设置' }} />
               <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
               <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
               <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false, title: '' }} />
-
             </Stack.Group>
             )
           : (

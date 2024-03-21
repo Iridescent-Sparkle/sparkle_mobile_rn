@@ -15,7 +15,6 @@ export default function GeniusUpdateContact() {
       <View>
         <Form form={form}>
           <Form.Item name="nickname">
-
             <Input title="地址" />
           </Form.Item>
           <Form.Item name="nickname">
