@@ -13,6 +13,7 @@ import GeniusUpdateProfile from '@/page/genius/update-profile'
 import Setting from '@/page/setting'
 import { useAppStore } from '@/store'
 import GeniusChatDetail from '@/page/genius/chat-detail'
+import ResumeDetail from '@/page/boss/resume-detail'
 
 const Stack = createNativeStackNavigator()
 
@@ -36,6 +37,7 @@ function RouteProvider() {
               <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
               <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
               <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false, title: '' }} />
+              <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ title: '在线简历' }} />
             </Stack.Group>
             )
           : (

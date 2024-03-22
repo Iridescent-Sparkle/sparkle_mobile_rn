@@ -26,7 +26,7 @@ function ResumeListCard(props: Props) {
     handleCollectClick && handleCollectClick()
   }
   const handleCardClick = () => {
-    navigation.dispatch(StackActions.push('JobDetail'))
+    navigation.dispatch(StackActions.push('ResumeDetail'))
   }
 
   return (
