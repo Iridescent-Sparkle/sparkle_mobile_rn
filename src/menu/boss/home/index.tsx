@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import PageHeader from '../manage/components/PageHeader'
 import ResumeListCard from './components/ResumeCard'
-import RecruitJobCard from '@/components/recruit/recruit-list/recruit-job-card'
+import SearchBar from '@/components/recruit/recruit-list/recruit-search-bar'
 import { create } from '@/core/styleSheet'
 
 export default function BossManage() {
@@ -19,9 +19,23 @@ export default function BossManage() {
       contact: '18888888888',
     },
   ]
+
+  const tip = (function () {
+    const date = new Date()
+    const hours = date.getHours()
+
+    if (hours >= 6 && hours < 12)
+      return '早上好'
+    else if (hours >= 12 && hours < 18)
+      return '下午好'
+    else
+      return '晚上好'
+  })()
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <PageHeader title="管理招聘" />
+      <PageHeader title={tip} />
+      <SearchBar />
       <View style={styles.list}>
         <FlatList data={jobList} renderItem={job => <ResumeListCard data={job} />} keyExtractor={item => item.id} />
       </View>
@@ -48,5 +62,6 @@ const styles = create({
   list: {
     width: '100%',
     height: 960,
+    marginTop: 24,
   },
 })
