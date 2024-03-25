@@ -5,6 +5,7 @@ import { Text, View } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import Feather from 'react-native-vector-icons/Feather'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { pxToDp } from '../../../../core/styleSheet/index'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
@@ -15,6 +16,11 @@ interface Props {
 }
 
 function RecruitJobCard(props: Props) {
+  const navigation = useNavigation()
+
+  const handleEditJob = () => {
+    navigation.dispatch(StackActions.push('PublishJob'))
+  }
   return (
     <Card style={styles.container}>
       <Space direction="horizontal" style={styles.header}>
@@ -32,7 +38,7 @@ function RecruitJobCard(props: Props) {
           </Space>
         </Space>
         <Space direction="vertical" gap={pxToDp(70)}>
-          <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} />
+          <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} onPress={handleEditJob} />
           <Badge dot offset={[5, -2]}>
             <Feather name="list" size={pxToDp(32)} color={themeColor.primary} />
           </Badge>
