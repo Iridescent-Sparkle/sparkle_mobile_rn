@@ -1,16 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
+import TableList from '../components/member-module/TableList'
+import UserCard from '../components/member-module/UserCard'
+import { create } from '@/core/styleSheet'
 
 export default function BossMember() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>BossMember</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <UserCard />
+        <TableList />
+        <TableList />
+      </View>
+    </ScrollView>
   )
 }
 
-const styles = StyleSheet.create({
+const styles = create({
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

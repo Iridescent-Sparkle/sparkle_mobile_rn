@@ -23,7 +23,7 @@ function RouteProvider() {
   return (
     <NavigationContainer ref={RootNavigation.navigationRef}>
       <Stack.Navigator screenOptions={{ headerBackTitleVisible: false, headerShadowVisible: false }}>
-        {appStore.token
+        {!appStore.token
           ? (
             <Stack.Group>
               <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
