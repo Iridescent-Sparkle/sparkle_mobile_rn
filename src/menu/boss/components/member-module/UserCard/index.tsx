@@ -29,6 +29,7 @@ export default function UserCard() {
 
 const styles = create({
   container: {
+    marginTop: 72,
     width: '90%',
     paddingVertical: 8,
     paddingHorizontal: 12,
@@ -37,7 +38,7 @@ const styles = create({
     borderColor: '#F0F1F1',
     borderRadius: 32,
     backgroundColor: '#FAFAFA',
-    height: 260,
+    height: 256,
   },
   card: {
     borderRadius: 20,
@@ -64,7 +65,7 @@ const styles = create({
     color: '#C2C2C2',
   },
   ability: {
-    width: '70%',
+    width: '80%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',

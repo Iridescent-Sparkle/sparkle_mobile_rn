@@ -41,7 +41,7 @@ const styles = create({
     borderColor: '#F0F1F1',
     borderRadius: 32,
     // backgroundColor: '#FAFAFA',
-    height: 420,
+    height: 620,
   },
   headerTitle: {
     color: '#D4D4D4',
