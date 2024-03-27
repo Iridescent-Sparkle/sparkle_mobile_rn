@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Form from '@/core/components/Form'
 import ImageUploader from '@/core/components/ImageUploader'
-import Input from '@/core/components/Input'
+import Input from '@/core/components/Slider'
 import { create } from '@/core/styleSheet'
 
 export default function GeniusUpdateContact() {
