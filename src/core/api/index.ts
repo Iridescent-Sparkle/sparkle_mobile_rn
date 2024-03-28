@@ -1,4 +1,5 @@
 import { Toast } from '@fruits-chain/react-native-xiaoshu'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults } from 'axios'
 import axios from 'axios'
 
@@ -25,9 +26,16 @@ export class Request {
     })
   }
 
-  private request<T extends Record<string, any>>(requestConfig: AxiosRequestConfig, customConfig: CustomConfig = { showMsg: false }) {
+  private async request<T extends Record<string, any>>(requestConfig: AxiosRequestConfig, customConfig: CustomConfig = { showMsg: false }) {
+    const token = await AsyncStorage.getItem('token')
+
     return new Promise<T>((resolve, reject) => {
-      this.axios<T>(requestConfig).then((res) => {
+      this.axios<T>({
+        ...requestConfig,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => {
         resolve(res.data)
       }).catch((error) => {
         customConfig.showMsg && Toast.fail(error.message)

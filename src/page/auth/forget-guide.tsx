@@ -9,7 +9,7 @@ import { isPhone } from '@/core/tools/validator'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import useCountDown from '@/core/components/VerifyCodeButton/useCountDown'
-import { getSmsCode, validateSmsCode } from '@/core/api/request/auth'
+import { request } from '@/core/api'
 
 function ForgetGuide() {
   const navigation = useNavigation()
@@ -26,7 +26,12 @@ function ForgetGuide() {
         return
       }
       try {
-        const data = await getSmsCode({ phone })
+        const data = await request.get({
+          phone,
+        }, {
+          url: '/user/register-smsCode',
+        })
+
         setCountDown(data.countDown)
         setShowVerificationCode(true)
       }
@@ -45,7 +50,10 @@ function ForgetGuide() {
   }
 
   const handleConfrimClick = async () => {
-    await validateSmsCode({ phone, code })
+    await request.post({ phone, code }, {
+      url: '/user/validateSmsCode',
+    })
+
     navigation.dispatch(StackActions.replace('ResetPassword', { phone }))
   }
   return (

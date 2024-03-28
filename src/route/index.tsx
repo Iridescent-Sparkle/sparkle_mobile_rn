@@ -1,5 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { useEffect } from 'react'
+import { useChatContext } from 'react-native-chat-uikit'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
 import * as RootNavigation from './rootNavigation'
@@ -15,11 +17,25 @@ import { useAppStore } from '@/store'
 import GeniusChatDetail from '@/page/genius/chat-detail'
 import ResumeDetail from '@/page/boss/resume-detail'
 import PublishJob from '@/page/boss/publish-job'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 const Stack = createNativeStackNavigator()
 
 function RouteProvider() {
   const appStore = useAppStore()
+  const im = useChatContext()
+
+  useEffect(() => {
+    appStore.userInfo.contactIdToB && im.login({
+      userId: appStore.userInfo.contactIdToB,
+      userToken: appStore.userInfo.contactPassword,
+      userAvatarURL: `${IMAGE_PREFIX}/stars.png`,
+      usePassword: true,
+      result: (res) => {
+        console.log('im login', res)
+      },
+    })
+  }, [appStore.userInfo, im])
 
   return (
     <NavigationContainer ref={RootNavigation.navigationRef}>
@@ -27,12 +43,8 @@ function RouteProvider() {
         {appStore.token
           ? (
             <Stack.Group>
+              <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
               <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
-              <Stack.Screen
-                name="Genius"
-                component={GeniusTabLayout}
-                options={{ headerShown: false }}
-              />
               <Stack.Screen name="Setting" component={Setting} options={{ title: '设置' }} />
               <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
               <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />

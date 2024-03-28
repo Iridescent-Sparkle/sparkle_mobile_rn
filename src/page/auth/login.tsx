@@ -15,8 +15,8 @@ function Login() {
   const appStore = useAppStore()
 
   const handleRegisterClick = () => {
-    const pushAction = StackActions.replace('Register')
-    navigation.dispatch(pushAction)
+    const replaceAction = StackActions.replace('Register')
+    navigation.dispatch(replaceAction)
   }
 
   const handleForgetPassword = () => {

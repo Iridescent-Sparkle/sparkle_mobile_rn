@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
 import Feather from 'react-native-vector-icons/Feather'
+import { useAppStore } from '../../store/index'
 import GeniusChat from './chat'
 import GeniusCollect from './collect'
 import GeniusDeliver from './deliver'
@@ -14,25 +15,12 @@ import { IMAGE_PREFIX } from '@/core/constants'
 const Tab = createBottomTabNavigator()
 
 export default function GeniusTabLayout() {
-  const im = useChatContext()
-
-  useEffect(() => {
-    im.login({
-      userId: 'sparkle',
-      userToken: 'YWMtXRqBGuR8Ee63tinTprxIz_a7lXgjoku2vIhwm7a-jDpIIJXA5GwR7r7Wo8mGlgUuAwMAAAGOTUSmHzeeSADATPl3F1Ks7dUURuHXYAmV7zShmw0hJfZG6MrTLfxbOQ',
-      userAvatarURL: `${IMAGE_PREFIX}/stars.png`,
-      usePassword: false,
-      result: (res) => {
-        console.log(res)
-      },
-    })
-  }, [])
-
   return (
     <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: themeColor.primary }}>
       <Tab.Screen
         name="index"
         component={GeniusHome}
+
         options={{
           title: '首页',
           tabBarIcon: ({ color }) => <Feather name="home" size={pxToDp(48)} color={color} />,

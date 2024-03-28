@@ -13,8 +13,9 @@ function App() {
   const appStore = useAppStore()
 
   useEffect(() => {
-    appStore.initData()
+    appStore.getUserInfo()
   }, [])
+
   const palette = usePresetPalette()
   const light = useLightTheme(palette)
 
@@ -57,6 +58,7 @@ function App() {
     },
     [],
   )
+
   return (
     <Provider theme={customTheme}>
       <ThemeProvider value={DefaultTheme}>

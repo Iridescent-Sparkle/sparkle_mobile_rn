@@ -1,8 +1,7 @@
 import { Cell } from '@fruits-chain/react-native-xiaoshu'
 import { View } from 'react-native'
-import Feather from 'react-native-vector-icons/Feather'
-import { StackActions, useNavigation } from '@react-navigation/native'
 import { useChatContext } from 'react-native-chat-uikit'
+import Feather from 'react-native-vector-icons/Feather'
 import { useAppStore } from '../../store/index'
 import { create, pxToDp } from '@/core/styleSheet'
 
@@ -10,8 +9,8 @@ export default function Setting() {
   const appStore = useAppStore()
   const im = useChatContext()
 
-  const handleLogout = () => {
-    appStore.setData({ token: '' })
+  const handleLogout = async () => {
+    await appStore.logout()
     im.logout({
       result(params) {
         console.log(params)
