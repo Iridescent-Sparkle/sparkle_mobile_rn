@@ -14,6 +14,7 @@ import Setting from '@/page/setting'
 import { useAppStore } from '@/store'
 import GeniusChatDetail from '@/page/genius/chat-detail'
 import ResumeDetail from '@/page/boss/resume-detail'
+import SearchPage from '@/menu/boss/components/Search'
 
 const Stack = createNativeStackNavigator()
 
@@ -26,13 +27,14 @@ function RouteProvider() {
         {!appStore.token
           ? (
             <Stack.Group>
+
+              <Stack.Screen name="SearchPage" component={SearchPage} options={{ headerShown: false }} />
               <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
               <Stack.Screen
                 name="Genius"
                 component={GeniusTabLayout}
                 options={{ headerShown: false }}
               />
-
               <Stack.Screen name="Setting" component={Setting} options={{ title: '设置' }} />
               <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
               <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
