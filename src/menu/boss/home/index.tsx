@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import PageHeader from '../manage/components/PageHeader'
 import ResumeListCard from './components/ResumeCard'
-import SearchBar from '@/components/recruit/recruit-list/recruit-search-bar'
+import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 import { create } from '@/core/styleSheet'
 
 export default function BossManage() {

@@ -3,7 +3,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { create } from '@/core/styleSheet'
-import RecruitDetailCard from '@/components/recruit/recruit-detail/recruit-detail-card'
+import RecruitDetailCard from '@/page/boss/recruit-detail/recruit-detail-card'
 
 function DeliverDetail() {
   const insets = useSafeAreaInsets()

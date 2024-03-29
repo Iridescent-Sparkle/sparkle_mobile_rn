@@ -4,20 +4,19 @@ import { useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
-import * as RootNavigation from './rootNavigation'
+import { IMAGE_PREFIX } from '@/core/constants'
 import ForgetGuide from '@/page/auth/forget-guide'
 import Guide from '@/page/auth/guide'
 import Login from '@/page/auth/login'
 import Register from '@/page/auth/register'
 import ResetPassword from '@/page/auth/reset-password'
+import PublishJob from '@/page/boss/publish-job'
+import ResumeDetail from '@/page/boss/resume-detail'
+import GeniusChatDetail from '@/page/genius/chat-detail'
 import JobDetail from '@/page/genius/job-detail'
 import GeniusUpdateProfile from '@/page/genius/update-profile'
 import Setting from '@/page/setting'
 import { useUserStore } from '@/store/user'
-import GeniusChatDetail from '@/page/genius/chat-detail'
-import ResumeDetail from '@/page/boss/resume-detail'
-import PublishJob from '@/page/boss/publish-job'
-import { IMAGE_PREFIX } from '@/core/constants'
 
 const Stack = createNativeStackNavigator()
 
@@ -32,13 +31,14 @@ function RouteProvider() {
       userAvatarURL: `${IMAGE_PREFIX}/stars.png`,
       usePassword: true,
       result: (res) => {
+        // eslint-disable-next-line no-console
         console.log('im login', res)
       },
     })
   }, [userStore.userInfo, im])
 
   return (
-    <NavigationContainer ref={RootNavigation.navigationRef}>
+    <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerBackTitleVisible: false, headerShadowVisible: false }}>
         {userStore.token
           ? (

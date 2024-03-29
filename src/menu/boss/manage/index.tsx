@@ -1,7 +1,7 @@
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import PageHeader from './components/PageHeader'
-import RecruitJobCard from '@/components/recruit/recruit-list/recruit-job-card'
+import RecruitJobCard from '@/menu/genius/home/components/recruit-job-card'
 import { create } from '@/core/styleSheet'
 
 export default function BossManage() {

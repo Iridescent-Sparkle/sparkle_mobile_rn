@@ -1,5 +1,5 @@
 import { Button, Popup, Toast } from '@fruits-chain/react-native-xiaoshu'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { themeColor } from '@/core/styleSheet/themeColor'
@@ -19,7 +19,6 @@ function CollectButton(props: Props) {
   const [confirmLoading, setConfirmLoading] = useState(false)
 
   const onCollectConfirm = async () => {
-    console.log(jobDetail.id)
     try {
       setCollected(true)
       await request.post({

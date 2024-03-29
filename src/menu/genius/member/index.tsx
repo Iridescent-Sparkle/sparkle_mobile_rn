@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import RecruitListHeader from '../../../components/recruit/recruit-list/recruit-job-header'
+import RecruitListHeader from '../home/components/recruit-job-header'
 import MemberContactInfoCard from './components/contact-info-card'
 import MemberProjectsInfoCard from './components/projects-info-card'
 import MemberResumeCvCard from './components/resume-cv-card'
