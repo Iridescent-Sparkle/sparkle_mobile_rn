@@ -1,10 +1,11 @@
-import { Toast } from '@fruits-chain/react-native-xiaoshu'
-import { useEffect, useState } from 'react'
+import { Loading, Toast } from '@fruits-chain/react-native-xiaoshu'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import RecentJobList from '../../components/recruit/recruit-list/recent-job-list'
-import RecruitSearchBar from '../../components/recruit/recruit-list/recruit-search-bar'
-import UserCard from '../../components/recruit/recruit-list/recruit-user-card'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
+import RecentJobList from '../../../components/recruit/recruit-list/recent-job-list'
+import RecruitSearchBar from '../../../components/recruit/recruit-list/recruit-search-bar'
+import UserCard from '../../../components/recruit/recruit-list/recruit-user-card'
 import Skeleton from '@/page/genius/skeleton'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
@@ -51,19 +52,23 @@ export default function GeniusHome() {
     }
   }
 
+  // useFocusEffect(React.useCallback(() => {
+  //   getInitData()
+  // }, []))
+
   useEffect(() => {
     getInitData()
   }, [])
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <UserCard />
+      <RecruitSearchBar />
       {
         loading
-          ? <Skeleton />
+          ? <View style={styles.spinner}><Loading size={18} type="spinner" /></View>
           : (
             <>
-              <UserCard />
-              <RecruitSearchBar />
               <RecentJobList jobList={jobList} onTabChange={onTabChange} />
             </>
             )
@@ -77,5 +82,10 @@ const styles = create({
     flex: 1,
     paddingHorizontal: 44,
     backgroundColor: '#FFF',
+  },
+  spinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

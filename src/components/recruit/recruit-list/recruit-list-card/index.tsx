@@ -5,6 +5,7 @@ import { Pressable, Text } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import { pxToDp } from '../../../../core/styleSheet/index'
+import CollectButton from '../../collect-button'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
@@ -13,20 +14,12 @@ import Visible from '@/core/components/Visible'
 interface Props {
   data: JobDetail
   handleCollectClick?: () => void
-  showCollectBtn?: boolean
 }
 
 function RecruitListCard(props: Props) {
-  const { data, handleCollectClick, showCollectBtn = true } = props
-
-  const [bookmark, setBookmark] = useState(false)
+  const { data, handleCollectClick } = props
 
   const navigation = useNavigation()
-
-  const onCollectClick = () => {
-    setBookmark(!bookmark)
-    handleCollectClick && handleCollectClick()
-  }
 
   const handleCardClick = () => {
     navigation.dispatch(StackActions.push('JobDetail', {
@@ -50,12 +43,8 @@ function RecruitListCard(props: Props) {
               <Text style={styles.company}>{data.companyName || ''}</Text>
             </Space>
           </Space>
-          <Visible visible={showCollectBtn}>
-            {
-              bookmark
-                ? <FontAwesome suppressHighlighting name="bookmark-o" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectClick} />
-                : <FontAwesome suppressHighlighting name="bookmark" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectClick} />
-            }
+          <Visible visible={handleCollectClick}>
+            <CollectButton handleCollectClick={handleCollectClick} jobDetail={data}></CollectButton>
           </Visible>
         </Space>
         <Space style={styles.body}>

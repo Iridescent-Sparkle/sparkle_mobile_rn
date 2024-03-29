@@ -1,8 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React, { useEffect } from 'react'
-import { useChatContext } from 'react-native-chat-uikit'
+import React from 'react'
 import Feather from 'react-native-vector-icons/Feather'
-import { useUserStore } from '../../store/user/index'
 import GeniusChat from './chat'
 import GeniusCollect from './collect'
 import GeniusDeliver from './deliver'
@@ -10,7 +8,6 @@ import GeniusHome from './home'
 import GeniusMember from './member'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { pxToDp } from '@/core/styleSheet'
-import { IMAGE_PREFIX } from '@/core/constants'
 
 const Tab = createBottomTabNavigator()
 

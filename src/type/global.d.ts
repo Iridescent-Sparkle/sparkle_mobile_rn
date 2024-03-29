@@ -22,6 +22,8 @@ interface JobDetail {
   isDelete: boolean
   createTime: string
   updateTime: string
+  isCollected: boolean
+  jobCollectId?: number
   jobBonus: JobBonus[]
 }
 

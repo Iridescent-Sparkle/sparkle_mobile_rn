@@ -15,6 +15,7 @@ import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { request } from '@/core/api'
 import { useJobStore } from '@/store/job'
+import CollectButton from '@/components/recruit/collect-button'
 
 const TAB_DATA = [{
   id: '1',
@@ -96,16 +97,17 @@ function JobDetail() {
     ]
   }
 
-  const getInitData = async (jobId: string) => {
+  const getInitData = async () => {
     const { data } = await request.get({}, {
-      url: `/boss/job/${jobId}`,
+      url: `/boss/job/${route.params.jobId}`,
     })
     setJobDetail(data)
+
     setTimeout(() => { setLoading(false) }, 300)
   }
 
   useEffect(() => {
-    getInitData(route.params.jobId)
+    getInitData()
   }, [route.params.jobId])
 
   const handlePopupShow = () => {
@@ -136,14 +138,18 @@ function JobDetail() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={<FontAwesome name="bookmark" size={pxToDp(48)} color={themeColor.primary} />} rightStyle={styles.rightExtra} divider={false} />
+
       {
         loading
           ? (
-            <Skeleton />
+            <>
+              <NavBar onPressBackArrow={onPressBackArrow} rightStyle={styles.rightExtra} divider={false} />
+              <Skeleton />
+            </>
             )
           : (
             <>
+              <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={<CollectButton jobDetail={jobDetail} handleCollectClick={getInitData} />} rightStyle={styles.rightExtra} divider={false} />
               <View style={styles.list}>
                 <FlatList
                   ListHeaderComponent={<RecruitDetailCard data={jobDetail} />}

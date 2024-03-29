@@ -36,7 +36,13 @@ export class Request {
           Authorization: `Bearer ${token}`,
         },
       }).then((res) => {
-        resolve(res.data)
+        if (!String(res.data.code).startsWith('20')) {
+          customConfig.showMsg && Toast.fail(res.data.message)
+          reject(res.data)
+        }
+        else {
+          resolve(res.data)
+        }
       }).catch((error) => {
         customConfig.showMsg && Toast.fail(error.message)
         reject(error)
