@@ -1,35 +1,34 @@
 import { Tabs } from '@fruits-chain/react-native-xiaoshu'
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { FlatList, View } from 'react-native'
 import RecruitListCard from '../recruit-list-card'
+import { useJobStore } from '@/store/job'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 
 interface Props {
-  categoryList: {
-    id: number
-    categoryName: string
-    createTime: string
-    updateTime: string
-  }[]
-  jobList: any[]
-  onTabChange: (tab: number) => void
+  onTabChange: (tab: string) => void
+  jobList: JobDetail[]
 }
-function RecentJobList(props: Props) {
-  const { categoryList, jobList, onTabChange } = props
 
-  const handleTabChange = (tab: number) => {
+function RecentJobList(props: Props) {
+  const { jobList, onTabChange } = props
+
+  const jobStore = useJobStore()
+  const [activeTab, setActiveTab] = useState('1')
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab)
     onTabChange && onTabChange(tab)
   }
 
   return (
     <View>
-      <Tabs tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={handleTabChange}>
+      <Tabs activeKey={activeTab} tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={handleTabChange}>
         {
-          categoryList.map(category => (
-            <Tabs.TabPane key={String(category.id)} tab={category.categoryName}>
+          jobStore.jobCategoryOptions.map(category => (
+            <Tabs.TabPane key={String(category?.value)} tab={category?.label}>
               <View style={styles.list}>
-                <FlatList data={jobList} renderItem={job => <RecruitListCard data={job} />} keyExtractor={item => item.id} />
+                <FlatList data={jobList} renderItem={jobDetail => <RecruitListCard data={jobDetail.item} />} keyExtractor={jobDetail => String(jobDetail.id)} />
               </View>
             </Tabs.TabPane>
           ))

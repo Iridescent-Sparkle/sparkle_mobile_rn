@@ -10,13 +10,13 @@ import { request } from '@/core/api'
 
 function ResetPassword() {
   const [form] = Form.useForm()
-  const route = useRoute()
+  const route = useRoute<{ key: any, name: any, params: { phone: string } }>()
   const navigation = useNavigation()
   const handleConfrimClick = async () => {
     const formValues = await form.validateFields()
 
     await request.post({
-      username: route.params!.phone,
+      username: route.params.phone,
       password: formValues.password,
     }, {
       url: '/user/resetPassword',

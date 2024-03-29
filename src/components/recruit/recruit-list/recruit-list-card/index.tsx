@@ -11,8 +11,8 @@ import { IMAGE_PREFIX } from '@/core/constants'
 import Visible from '@/core/components/Visible'
 
 interface Props {
+  data: JobDetail
   handleCollectClick?: () => void
-  data: any
   showCollectBtn?: boolean
 }
 
@@ -22,12 +22,16 @@ function RecruitListCard(props: Props) {
   const [bookmark, setBookmark] = useState(false)
 
   const navigation = useNavigation()
+
   const onCollectClick = () => {
     setBookmark(!bookmark)
     handleCollectClick && handleCollectClick()
   }
+
   const handleCardClick = () => {
-    navigation.dispatch(StackActions.push('JobDetail'))
+    navigation.dispatch(StackActions.push('JobDetail', {
+      jobId: data.id,
+    }))
   }
 
   return (
@@ -38,12 +42,12 @@ function RecruitListCard(props: Props) {
             <FastImage
               style={styles.logo}
               source={{
-                uri: `${IMAGE_PREFIX}/stars.png`,
+                uri: data.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
               }}
             />
             <Space gap={pxToDp(20)}>
-              <Text style={styles.title}>UI/UX Designer</Text>
-              <Text style={styles.company}>Google LLC</Text>
+              <Text style={styles.title}>{data.jobName}</Text>
+              <Text style={styles.company}>{data.companyName || ''}</Text>
             </Space>
           </Space>
           <Visible visible={showCollectBtn}>
@@ -55,11 +59,20 @@ function RecruitListCard(props: Props) {
           </Visible>
         </Space>
         <Space style={styles.body}>
-          <Text style={styles.address}>California, United States</Text>
-          <Text style={styles.salary}>$10,000 - $25,000 /month</Text>
+          <Text style={styles.address}>{data.address}</Text>
+          <Text style={styles.salary}>
+            {data.minSalary}
+            -
+            {data.maxSalary}
+            k
+          </Text>
           <Space direction="horizontal">
-            <Tag type="ghost" color="#979797">Full Time</Tag>
-            <Tag type="ghost" color="#979797">Onsite</Tag>
+            {data.isFullTime
+              ? <Tag type="ghost" color="#979797">全职</Tag>
+              : <Tag type="ghost" color="#979797">兼职</Tag>}
+            {data.isOnsite
+              ? <Tag type="ghost" color="#979797">远程</Tag>
+              : <Tag type="ghost" color="#979797">线下办公</Tag>}
           </Space>
         </Space>
       </Card>

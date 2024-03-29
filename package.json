@@ -27,6 +27,7 @@
     "async-validator": "^4.2.5",
     "axios": "^1.6.7",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "pinyin-pro": "^3.18.3",
     "pure-uuid": "^1.6.3",
     "rc-field-form": "^1.43.0",
