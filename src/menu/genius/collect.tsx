@@ -7,14 +7,14 @@ import RecruitListCard from '../../components/recruit/recruit-list/recruit-list-
 import RecruitSearchBar from '../../components/recruit/recruit-list/recruit-search-bar'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
-import { useAppStore } from '@/store'
+import { useUserStore } from '@/store/user'
 import Skeleton from '@/page/genius/skeleton'
 import { useRefState } from '@/core/hooks/useRefState'
 
 export default function GeniusCollect() {
   const insets = useSafeAreaInsets()
 
-  const appStore = useAppStore()
+  const userStore = useUserStore()
 
   const [popupVisible, setPopupVisible] = useState(false)
 
@@ -28,7 +28,7 @@ export default function GeniusCollect() {
     try {
       setLoading(true)
       const { data: jobListData } = await request.get({}, {
-        url: `/favorite/user/${appStore.userInfo.id}}`,
+        url: `/favorite/user/${userStore.userInfo.id}}`,
       })
       setJobList(jobListData)
     }
@@ -57,13 +57,13 @@ export default function GeniusCollect() {
     try {
       await request.delete({
         jobId: selectJob,
-        userId: appStore.userInfo.id,
+        userId: userStore.userInfo.id,
       }, {
         url: `/favorite/remove`,
       })
 
       const { data: jobListData } = await request.get({}, {
-        url: `/favorite/user/${appStore.userInfo.id}}`,
+        url: `/favorite/user/${userStore.userInfo.id}}`,
       })
 
       setJobList(jobListData)

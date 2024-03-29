@@ -2,31 +2,47 @@ import { Card, Space, Tag } from '@fruits-chain/react-native-xiaoshu'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
 import { Text } from 'react-native'
+import dayjs from 'dayjs'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 
-function RecruitDetailCard() {
+interface Props {
+  data: JobDetail
+}
+function RecruitDetailCard(props: Props) {
+  const { data } = props
   return (
     <Card style={styles.container}>
       <Space style={styles.header}>
         <FastImage
           style={styles.logo}
           source={{
-            uri: `${IMAGE_PREFIX}/stars.png`,
+            uri: data.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
           }}
         />
-        <Text style={styles.title}>UI/UX Designer</Text>
-        <Text style={styles.company}>Google LLC</Text>
+        <Text style={styles.title}>{data.jobName}</Text>
+        <Text style={styles.company}>{data.companyName}</Text>
       </Space>
       <Space style={styles.body}>
-        <Text style={styles.address}>California, United States</Text>
-        <Text style={styles.salary}>$10,000 - $25,000 /month</Text>
+        <Text style={styles.address}>{data.address}</Text>
+        <Text style={styles.salary}>
+          {data.minSalary}
+          -
+          {data.maxSalary}
+          k
+        </Text>
         <Space direction="horizontal">
-          <Tag type="ghost" color="#979797">Full Time</Tag>
-          <Tag type="ghost" color="#979797">Onsite</Tag>
+          {data.isFullTime
+            ? <Tag type="ghost" color="#979797">全职</Tag>
+            : <Tag type="ghost" color="#979797">兼职</Tag>}
+          {data.isOnsite
+            ? <Tag type="ghost" color="#979797">远程</Tag>
+            : <Tag type="ghost" color="#979797">线下办公</Tag>}
         </Space>
-        <Text style={styles.deadline}>Posted 10 days ago,ends in 31 Dec. </Text>
+        <Text style={styles.deadline}>
+          {dayjs(data.updateTime).format('YYYY-MM-DD HH:mm:ss')}
+        </Text>
       </Space>
     </Card>
   )

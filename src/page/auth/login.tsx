@@ -7,16 +7,16 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
-import { useAppStore } from '@/store'
+import { useUserStore } from '@/store/user'
 
 function Login() {
   const [form] = Form.useForm()
   const navigation = useNavigation()
-  const appStore = useAppStore()
+  const userStore = useUserStore()
 
   const handleRegisterClick = () => {
-    const pushAction = StackActions.replace('Register')
-    navigation.dispatch(pushAction)
+    const replaceAction = StackActions.replace('Register')
+    navigation.dispatch(replaceAction)
   }
 
   const handleForgetPassword = () => {
@@ -26,7 +26,7 @@ function Login() {
 
   const handleLoginClick = async () => {
     const formValues = await form.validateFields()
-    appStore.login(formValues)
+    userStore.login(formValues)
   }
 
   return (

@@ -1,19 +1,19 @@
 import { Button, Form, NumberInput, PasswordInput, TextInput } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
-import { StackActions, useNavigation } from '@react-navigation/native'
 import VerifyCode from '../../core/components/VerifyCodeButton'
-import { create, pxToDp } from '@/core/styleSheet'
+import { useUserStore } from '@/store/user'
 import { themeColor } from '@/core/styleSheet/themeColor'
-import { getSmsCode } from '@/core/api/request/auth'
-import { useAppStore } from '@/store'
+import { create, pxToDp } from '@/core/styleSheet'
+import { request } from '@/core/api'
 
 function Register() {
   const [form] = Form.useForm()
   const navigation = useNavigation()
   const [phone, setPhone] = useState('')
-  const appStore = useAppStore()
+  const userStore = useUserStore()
 
   const handleLoginClick = () => {
     const pushAction = StackActions.replace('Login')
@@ -32,20 +32,27 @@ function Register() {
 
   const getVerifyCode = async () => {
     const phone = form.getFieldValue('phone')
-    const data = await getSmsCode({ phone })
+
+    const data = await request.get({
+      phone,
+    }, {
+      url: '/user/register-smsCode',
+    })
+
     return data.countDown
   }
 
   const handleRegisterClick = async () => {
     const formValues = await form.validateFields()
-    // await appStore.register({
-    //   phone: String(formValues.phone),
-    //   username: String(formValues.phone),
-    //   captcha: String(formValues.captcha),
-    //   password: String(formValues.password),
-    //   confirmPassword: String(formValues.confirmPassword),
-    // })
-    await appStore.login({
+
+    await userStore.register({
+      username: String(formValues.phone),
+      captcha: String(formValues.captcha),
+      password: String(formValues.password),
+      confirmPassword: String(formValues.confirmPassword),
+    })
+
+    await userStore.login({
       username: String(formValues.phone),
       password: String(formValues.password),
     })

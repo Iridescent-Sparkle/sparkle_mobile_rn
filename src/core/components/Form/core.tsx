@@ -1,5 +1,6 @@
 import React, { cloneElement, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import Schema from 'async-validator'
+import { Cell, Toast } from '@fruits-chain/react-native-xiaoshu'
 
 const setRulesSy = Symbol('setRules')
 const valuesListenSy = Symbol('valuesListen')
@@ -65,7 +66,7 @@ function createForm(target?: any, ...names: string[]) {
       .catch(({ errors }) => {
         // 默认提示
         if (showMsg)
-          $.msg(errors[0].message)
+          Toast.fail(errors[0].message)
 
         return Promise.reject(errors)
       })
@@ -79,7 +80,7 @@ function createForm(target?: any, ...names: string[]) {
         return getFieldsValue()
       })
       .catch(({ errors }) => {
-        // $.msg(errors[0].message)
+        Toast.fail(errors[0].message)
         return Promise.reject(errors)
       })
   }
@@ -126,6 +127,7 @@ interface FormItemProps {
   /** 表单验证规则 */
   rules?: Array<any>
   ruleIndex?: number
+  title?: string
 }
 
 /** 响应name变化 */
@@ -146,14 +148,14 @@ function useWatch(form: FormStore, name: string) {
     // 挂载的时候在取一下值是否更新
     updateValue()
     // 监听表单值变化后重新赋值
-    return form[valuesListenSy](updateValue)
+    return form[valuesListenSy]?.(updateValue)
   }, [form, name])
 
   return value
 }
 
 function FormItem(props: FormItemProps) {
-  const { name, children, rules, ruleIndex = 0 } = props as any
+  const { name, children, rules, ruleIndex = 0, title = '' } = props as any
   /** 获取表单实例 */
   const form = useContext(FormContext)
   /** 表单初始值 */
@@ -162,7 +164,7 @@ function FormItem(props: FormItemProps) {
   useEffect(() => {
     // 更新规则
     if (rules) {
-      form[setRulesSy](
+      form[setRulesSy]?.(
         (formRules: { [x: string]: any }, rulesOrder: { [x: string]: any }) => {
           rulesOrder[name] = ruleIndex
           formRules[name] = rules
@@ -172,7 +174,7 @@ function FormItem(props: FormItemProps) {
     return () => {
       // 销毁后删除对应规则
       if (rules) {
-        form[setRulesSy]((formRules: object, rulesOrder: object) => {
+        form[setRulesSy]?.((formRules: object, rulesOrder: object) => {
           Reflect.deleteProperty(formRules, name)
           Reflect.deleteProperty(rulesOrder, name)
         })
@@ -202,10 +204,14 @@ function FormItem(props: FormItemProps) {
   if (name === undefined)
     return children
 
-  return cloneElement(children, {
-    value,
-    onChange,
-  })
+  return (
+    <Cell
+      title={`${title}:`}
+      vertical
+      divider={false}
+      value={cloneElement(children, { value, onChange })}
+    />
+  )
 }
 
 /** 函数组件中使用，获取创建form实例 */
@@ -235,7 +241,7 @@ const Form: React.FC<FormProps> & FormType = (props: FormProps) => {
   // 表单值监听
   useEffect(() => {
     const unValuesListen = onChange
-      ? form[valuesListenSy](onChange)
+      ? form[valuesListenSy]?.(onChange)
       : undefined
     return () => {
       unValuesListen && unValuesListen()

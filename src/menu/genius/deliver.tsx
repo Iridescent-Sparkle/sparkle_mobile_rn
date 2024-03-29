@@ -18,7 +18,7 @@ export default function GeniusDeliver() {
     try {
       setLoading(true)
       const { data: jobListData } = await request.get({}, {
-        url: `/deliveries/user/${appStore.userInfo.id}}`,
+        url: `/deliveries/user/${userStore.userInfo.id}}`,
       })
       setJobList(jobListData)
     }

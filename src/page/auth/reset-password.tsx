@@ -1,22 +1,25 @@
 import { Button, Form, PasswordInput } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
 import React from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Feather from 'react-native-vector-icons/Feather'
-import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
-import { resetPassword } from '@/core/api/request/auth'
+import { request } from '@/core/api'
 
 function ResetPassword() {
   const [form] = Form.useForm()
-  const route = useRoute()
+  const route = useRoute<{ key: any, name: any, params: { phone: string } }>()
   const navigation = useNavigation()
   const handleConfrimClick = async () => {
     const formValues = await form.validateFields()
-    await resetPassword({
-      username: route.params!.phone,
+
+    await request.post({
+      username: route.params.phone,
       password: formValues.password,
+    }, {
+      url: '/user/resetPassword',
     })
     navigation.dispatch(StackActions.replace('Login'))
   }

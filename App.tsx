@@ -4,17 +4,21 @@ import { useCallback, useEffect } from 'react'
 import type { DataModel, DataModelType, UIKitError } from 'react-native-chat-uikit'
 import { Container, useLightTheme, usePresetPalette } from 'react-native-chat-uikit'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { useAppStore } from '@/store'
+import { useUserStore } from '@/store/user'
 import RouteProvider from '@/route'
 import customTheme from '@/core/styleSheet/component'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { useJobStore } from '@/store/job'
 
 function App() {
-  const appStore = useAppStore()
+  const userStore = useUserStore()
+  const jobStore = useJobStore()
 
   useEffect(() => {
-    appStore.initData()
+    userStore.getUserInfo()
+    jobStore.getJobOptions()
   }, [])
+
   const palette = usePresetPalette()
   const light = useLightTheme(palette)
 
@@ -57,6 +61,7 @@ function App() {
     },
     [],
   )
+
   return (
     <Provider theme={customTheme}>
       <ThemeProvider value={DefaultTheme}>

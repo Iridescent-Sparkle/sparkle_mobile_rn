@@ -1,5 +1,5 @@
 import { Button, Card, NavBar, Notify, Popup } from '@fruits-chain/react-native-xiaoshu'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -13,8 +13,10 @@ import RecruitTagCard from '@/components/recruit/recruit-detail/recruit-tags-car
 import FilterTabs from '@/components/recruit/recruit-search/recruit-filter-tabs'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { request } from '@/core/api'
+import { useJobStore } from '@/store/job'
 
-const tabData = [{
+const TAB_DATA = [{
   id: '1',
   title: '工作描述',
 }, {
@@ -25,75 +27,86 @@ const tabData = [{
   title: '福利',
 }, {
   id: '4',
-  title: '所需技能',
-}, {
-  id: '5',
   title: '工作总结',
 }, {
-  id: '6',
+  id: '5',
   title: '关于',
 }]
-
-function listData(listRef: any) {
-  return [
-    {
-      id: '0',
-      title: '工作描述',
-      component: <FilterTabs listRef={listRef} data={tabData} />,
-    },
-    {
-      id: '1',
-      title: '工作描述',
-      component: <RecruitDescriptionCard title="工作描述" data={['能够运行设计冲刺交付最好的用户', '基于研究的经验。', '有领导团队的能力，能委派工作，有主动性。', '能够指导初级设计师制定战略', '如何收集特定的功能。', '能够对数据进行汇总和处理', '正在发生的决定。']} />,
-    },
-    {
-      id: '2',
-      title: '最低资格',
-      component: <RecruitDescriptionCard title="最低资格" data={['2年以上UI/UX设计经验', '使用Figma、Sketch和Miro平台。', '具有数值设计的分析和转换能力', '冲刺到UI/UX。', '有相关B2C用户中心产品开发经验。']} />,
-    },
-    {
-      id: '3',
-      title: '福利',
-      component: <RecruitTagCard title="福利" data={['医疗/健康保险', '医疗、处方或视力计划', '绩效奖金', '带薪病假', '带薪休假', '交通津贴']} />,
-    },
-    {
-      id: '4',
-      title: '所需技能',
-      component: <RecruitTagCard title="所需技能" data={['创造性思维', 'UI / UX设计', 'Figma', '平面设计', '网页设计', '布局']} />,
-    },
-    {
-      id: '5',
-      title: '工作总结',
-      component: <RecruitSummaryCard
-        title="工作经验"
-        data={[
-          { title: '经验', desc: '1 - 3年' },
-          { title: '教育', desc: '学士学位' },
-          { title: '工作水平', desc: '助理/主管' },
-          { title: '工作类型 ', desc: '资讯科技及软件' },
-          { title: '空缺', desc: '2' },
-          { title: '网站', desc: 'www.google.com' },
-        ]}
-                 />,
-    },
-    {
-      id: '6',
-      title: '关于',
-      component: <RecruitAboutCard
-        title="关于"
-        content="<span>谷歌有限责任公司是一家美国跨国公司专注于搜索引擎的科技公司科技，在线广告，云计算计算机软件，量子计算，e- 商业、人工智能和消费者电子产品。<br/> 谷歌成立于1998年9月4日</span>"
-                 />,
-    },
-  ]
-}
-
 function JobDetail() {
   const insets = useSafeAreaInsets()
+
   const navigation = useNavigation()
+
+  const route = useRoute<{ key: any, name: any, params: { jobId: string } }>()
+
+  const jobStore = useJobStore()
+
   const listRef = useRef<FlatList>(null)
+
   const [popupVisible, setPopupVisible] = useState(false)
+
   const [loading, setLoading] = useState(true)
+
   const [confirmLoading, setConfirmLoading] = useState(false)
+
+  const [jobDetail, setJobDetail] = useState({} as JobDetail)
+
+  function listData(listRef: any, jobDetail: JobDetail) {
+    return [
+      {
+        id: '1',
+        title: '工作描述',
+        component: <FilterTabs listRef={listRef} data={TAB_DATA} />,
+      },
+      {
+        id: '2',
+        title: '工作描述',
+        component: <RecruitDescriptionCard title="工作描述" data={jobDetail.jobDescription.split(',')} />,
+      },
+      {
+        id: '3',
+        title: '最低资格',
+        component: <RecruitDescriptionCard title="最低资格" data={jobDetail.jobRequirements.split(',')} />,
+      },
+      {
+        id: '4',
+        title: '福利',
+        component: <RecruitTagCard title="福利" data={jobDetail.jobBonus} />,
+      },
+      {
+        id: '5',
+        title: '工作总结',
+        component: <RecruitSummaryCard
+          title="工作总结"
+          data={[
+            { title: '经验', desc: jobStore.jobExperienceOptions.find(option => option.value === jobDetail.jobExperienceId)?.label || '' },
+            { title: '教育', desc: jobStore.jobEducationOptions.find(option => option.value === jobDetail.jobEducationId)?.label || '' },
+            { title: '工作水平', desc: jobStore.jobLevelOptions.find(option => option.value === jobDetail.jobLevelId)?.label || '' },
+            { title: '工作类型 ', desc: jobStore.jobCategoryOptions.find(option => option.value === jobDetail.jobCategoryId)?.label || '' },
+            { title: '空缺', desc: String(jobDetail.headCount) },
+            { title: '网站', desc: jobDetail.website },
+          ].filter(item => !!item.desc)}
+                   />,
+      },
+      {
+        id: '6',
+        title: '关于',
+        component: <RecruitAboutCard title="关于" content={jobDetail.companyDescription} />,
+      },
+    ]
+  }
+
+  const getInitData = async (jobId: string) => {
+    const { data } = await request.get({}, {
+      url: `/boss/job/${jobId}`,
+    })
+    setJobDetail(data)
+    setTimeout(() => { setLoading(false) }, 300)
+  }
+
+  useEffect(() => {
+    getInitData(route.params.jobId)
+  }, [route.params.jobId])
 
   const handlePopupShow = () => {
     setPopupVisible(true)
@@ -102,10 +115,6 @@ function JobDetail() {
   const handlePopupClose = () => {
     setPopupVisible(false)
   }
-
-  useEffect(() => {
-    setTimeout(() => { setLoading(false) }, 1000)
-  }, [])
 
   const onPressBackArrow = () => {
     navigation.goBack()
@@ -127,8 +136,7 @@ function JobDetail() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <NavBar onPressBackArrow={onPressBackArrow} rightExtra={<FontAwesome name="bookmark" size={pxToDp(48)} color={themeColor.primary} />} rightStyle={styles.rightExtra} divider={false} />
-
+      <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={<FontAwesome name="bookmark" size={pxToDp(48)} color={themeColor.primary} />} rightStyle={styles.rightExtra} divider={false} />
       {
         loading
           ? (
@@ -138,10 +146,10 @@ function JobDetail() {
             <>
               <View style={styles.list}>
                 <FlatList
-                  ListHeaderComponent={<RecruitDetailCard />}
+                  ListHeaderComponent={<RecruitDetailCard data={jobDetail} />}
                   stickyHeaderIndices={[1]}
                   ref={listRef}
-                  data={listData(listRef)}
+                  data={listData(listRef, jobDetail)}
                   renderItem={item => item.item.component}
                   keyExtractor={item => item.id}
                 />

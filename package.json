@@ -27,6 +27,7 @@
     "async-validator": "^4.2.5",
     "axios": "^1.6.7",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "pinyin-pro": "^3.18.3",
     "pure-uuid": "^1.6.3",
     "rc-field-form": "^1.43.0",
@@ -87,5 +88,6 @@
     "prettier": "2.8.8",
     "react-test-renderer": "18.2.0",
     "typescript": "^5.4.2"
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }

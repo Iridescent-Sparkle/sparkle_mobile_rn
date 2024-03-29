@@ -2,7 +2,7 @@ import { Button, Tag } from '@fruits-chain/react-native-xiaoshu'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Form from '@/core/components/Form'
-import Input from '@/core/components/Input'
+import Input from '@/core/components/Slider'
 import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
