@@ -2,15 +2,15 @@ import { Cell } from '@fruits-chain/react-native-xiaoshu'
 import { View } from 'react-native'
 import { useChatContext } from 'react-native-chat-uikit'
 import Feather from 'react-native-vector-icons/Feather'
-import { useAppStore } from '../../store/index'
+import { useUserStore } from '../../store/user/index'
 import { create, pxToDp } from '@/core/styleSheet'
 
 export default function Setting() {
-  const appStore = useAppStore()
+  const userStore = useUserStore()
   const im = useChatContext()
 
   const handleLogout = async () => {
-    await appStore.logout()
+    await userStore.logout()
     im.logout({
       result(params) {
         console.log(params)

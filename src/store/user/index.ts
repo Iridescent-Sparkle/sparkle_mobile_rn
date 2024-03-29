@@ -31,7 +31,7 @@ interface Action {
   logout: () => Promise<void>
 }
 
-export const useAppStore = create<State & Action>(set => ({
+export const useUserStore = create<State & Action>(set => ({
   token: '',
   userInfo: {
     id: 0,
@@ -65,7 +65,7 @@ export const useAppStore = create<State & Action>(set => ({
         url: '/user/login',
       })
 
-      await AsyncStorage.setItem('token', loginRes.data.accessToken)
+      await AsyncStorage.setItem('token', loginRes.data.accessToken || '')
 
       return set((state) => {
         state.getUserInfo()
@@ -82,6 +82,7 @@ export const useAppStore = create<State & Action>(set => ({
   },
   logout: async () => {
     await AsyncStorage.setItem('token', '')
+    Toast.success('登录成功')
     set(state => ({
       ...state,
       token: '',

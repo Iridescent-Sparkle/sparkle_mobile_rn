@@ -5,7 +5,7 @@ import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import RecentJobList from '../../components/recruit/recruit-list/recent-job-list'
 import UserCard from '../../components/recruit/recruit-list/recruit-user-card'
 import RecruitSearchBar from '../../components/recruit/recruit-list/recruit-search-bar'
-import { useAppStore } from '../../store/index'
+import { useUserStore } from '../../store/user/index'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import Skeleton from '@/page/genius/skeleton'
@@ -13,7 +13,7 @@ import Skeleton from '@/page/genius/skeleton'
 export default function GeniusHome() {
   const insets = useSafeAreaInsets()
 
-  const appStore = useAppStore()
+  const userStore = useUserStore()
 
   const [jobList, setJobList] = useState([])
 

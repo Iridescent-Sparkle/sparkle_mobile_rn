@@ -13,7 +13,7 @@ import ResetPassword from '@/page/auth/reset-password'
 import JobDetail from '@/page/genius/job-detail'
 import GeniusUpdateProfile from '@/page/genius/update-profile'
 import Setting from '@/page/setting'
-import { useAppStore } from '@/store'
+import { useUserStore } from '@/store/user'
 import GeniusChatDetail from '@/page/genius/chat-detail'
 import ResumeDetail from '@/page/boss/resume-detail'
 import PublishJob from '@/page/boss/publish-job'
@@ -22,29 +22,29 @@ import { IMAGE_PREFIX } from '@/core/constants'
 const Stack = createNativeStackNavigator()
 
 function RouteProvider() {
-  const appStore = useAppStore()
+  const userStore = useUserStore()
   const im = useChatContext()
 
   useEffect(() => {
-    appStore.userInfo.contactIdToB && im.login({
-      userId: appStore.userInfo.contactIdToB,
-      userToken: appStore.userInfo.contactPassword,
+    userStore.userInfo.contactIdToB && im.login({
+      userId: userStore.userInfo.contactIdToB,
+      userToken: userStore.userInfo.contactPassword,
       userAvatarURL: `${IMAGE_PREFIX}/stars.png`,
       usePassword: true,
       result: (res) => {
         console.log('im login', res)
       },
     })
-  }, [appStore.userInfo, im])
+  }, [userStore.userInfo, im])
 
   return (
     <NavigationContainer ref={RootNavigation.navigationRef}>
       <Stack.Navigator screenOptions={{ headerBackTitleVisible: false, headerShadowVisible: false }}>
-        {appStore.token
+        {userStore.token
           ? (
             <Stack.Group>
-              <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
               <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
+              <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
               <Stack.Screen name="Setting" component={Setting} options={{ title: '设置' }} />
               <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
               <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
