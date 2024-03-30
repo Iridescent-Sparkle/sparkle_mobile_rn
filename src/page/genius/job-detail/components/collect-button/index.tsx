@@ -71,7 +71,7 @@ function CollectButton(props: Props) {
           : <FontAwesome suppressHighlighting name="bookmark-o" size={pxToDp(48)} color={themeColor.primary} onPress={onCollectConfirm} />
       }
       <Popup
-        safeAreaInsetBottom
+
         visible={popupVisible}
         position="bottom"
         round
@@ -97,6 +97,7 @@ const styles = create({
     flexDirection: 'row',
     paddingHorizontal: 40,
     justifyContent: 'space-between',
+    paddingBottom: 40,
   },
   popupButton: {
     width: 320,

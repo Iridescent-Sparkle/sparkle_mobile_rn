@@ -17,6 +17,7 @@ import JobDetail from '@/page/genius/job-detail'
 import GeniusUpdateProfile from '@/page/genius/update-profile'
 import Setting from '@/page/setting'
 import { useUserStore } from '@/store/user'
+import DeliverDetail from '@/page/genius/deliver-detail'
 
 const Stack = createNativeStackNavigator()
 
@@ -51,6 +52,8 @@ function RouteProvider() {
               <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false, title: '' }} />
               <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ title: '在线简历' }} />
               <Stack.Screen name="PublishJob" component={PublishJob} options={{ title: '发布职位' }} />
+              <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
+
             </Stack.Group>
             )
           : (

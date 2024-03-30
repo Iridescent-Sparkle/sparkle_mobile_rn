@@ -1,28 +1,77 @@
-import { Button, Card, NavBar, Tag } from '@fruits-chain/react-native-xiaoshu'
-import React from 'react'
+import { Button, Card, NavBar, Skeleton, Tag } from '@fruits-chain/react-native-xiaoshu'
+import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { create } from '@/core/styleSheet'
+import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
+import { create, pxToDp } from '@/core/styleSheet'
 import RecruitDetailCard from '@/page/boss/recruit-detail/recruit-detail-card'
+import { request } from '@/core/api'
+import { JOB_DELIVER_STATUS } from '@/core/constants'
 
 function DeliverDetail() {
   const insets = useSafeAreaInsets()
 
+  const navigation = useNavigation()
+
+  const route = useRoute<{ key: any, name: any, params: { jobId: string } }>()
+
+  const [loading, setLoading] = useState(true)
+
+  const [jobDetail, setJobDetail] = useState({} as JobDetail)
+
+  const getInitData = async () => {
+    const { data } = await request.get({}, {
+      url: `/boss/job/${route.params.jobId}`,
+    })
+    setJobDetail(data)
+
+    setTimeout(() => { setLoading(false) }, 300)
+  }
+
+  useEffect(() => {
+    getInitData()
+  }, [route.params.jobId])
+
+  const handleBackClick = () => {
+    navigation.goBack()
+  }
+
+  const handleButtonClick = () => {
+    if (jobDetail.jobDeliverStatus === 3) {
+      navigation.dispatch(StackActions.push('GeniusChatDetail', {
+        convType: 0,
+        convId: jobDetail.user.contactIdToB,
+      }))
+    }
+    else if (jobDetail.jobDeliverStatus === 4) {
+      navigation.dispatch(StackActions.replace('Genius'))
+    }
+  }
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <NavBar title="投递状态" divider={false} />
-      <View style={styles.list}>
-        <RecruitDetailCard />
-        <View style={styles.status}>
-          <Text style={styles.statusTitle}>你的投递状态</Text>
-          <Tag innerStyle={styles.statusDesc} type="hazy" size="l">未查看</Tag>
-        </View>
-      </View>
-      <Card>
-        <View style={styles.buttonWrapper}>
-          <Button style={styles.button}>投递</Button>
-        </View>
-      </Card>
+      <NavBar title="投递状态" divider={false} onPressBackArrow={handleBackClick} />
+      {
+        loading
+          ? <Skeleton />
+          : (
+            <>
+              <View style={styles.list}>
+                <RecruitDetailCard data={jobDetail} />
+                <Text style={styles.subTitle}>您的投递状态</Text>
+                <View style={[styles.status, { backgroundColor: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus]?.bgColor }]}>
+                  <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus]?.color }}>{JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus]?.desc}</Text>
+                </View>
+              </View>
+              <Card>
+                <View style={styles.buttonWrapper}>
+                  <Button style={styles.button} onPress={handleButtonClick}>
+                    {JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus]?.label}
+                  </Button>
+                </View>
+              </Card>
+            </>
+            )
+      }
     </View>
   )
 }
@@ -38,6 +87,14 @@ const styles = create({
     paddingTop: 32,
     paddingHorizontal: 24,
   },
+  subTitle: {
+    marginTop: 32,
+    textAlign: 'center',
+    fontSize: 32,
+    color: '#333',
+    fontWeight: '700',
+    lineHeight: 88,
+  },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -51,9 +108,12 @@ const styles = create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 32,
     borderTopWidth: 4,
     borderColor: '#F7F7F7',
+    height: 88,
+    paddingHorizontal: 16,
+    borderRadius: 24,
   },
   statusTitle: {
     fontSize: 36,

@@ -61,16 +61,14 @@ export default function GeniusHome() {
   }, [])
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <UserCard />
       <RecruitSearchBar />
       {
         loading
           ? <View style={styles.spinner}><Loading size={18} type="spinner" /></View>
           : (
-            <>
-              <RecentJobList jobList={jobList} onTabChange={onTabChange} />
-            </>
+            <RecentJobList jobList={jobList} onTabChange={onTabChange} />
             )
       }
     </View>

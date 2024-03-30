@@ -1,12 +1,11 @@
+import { Empty } from '@fruits-chain/react-native-xiaoshu'
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useFocusEffect } from '@react-navigation/native'
-import { Empty } from '@fruits-chain/react-native-xiaoshu'
 import RecruitListHeader from '../home/components/recruit-job-header'
 import RecruitListCard from '../home/components/recruit-list-card'
 import RecruitSearchBar from '../home/components/recruit-search-bar'
-import Skeleton from '@/page/genius/skeleton'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
 
@@ -15,11 +14,8 @@ export default function GeniusCollect() {
 
   const [jobList, setJobList] = useState([] as JobDetail[])
 
-  const [loading, setLoading] = useState(true)
-
   const getInitData = async () => {
     try {
-      setLoading(true)
       const { data: jobListData } = await request.get({}, {
         url: `genius/favorite/user`,
       })
@@ -27,9 +23,6 @@ export default function GeniusCollect() {
     }
     catch (error) {
 
-    }
-    finally {
-      setLoading(false)
     }
   }
   useFocusEffect(useCallback(() => {
@@ -41,11 +34,9 @@ export default function GeniusCollect() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <>
-        <RecruitListHeader title="收藏的工作" />
-        <RecruitSearchBar />
-        {jobList.length ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitListCard data={job.item} handleCollectClick={getInitData} />} keyExtractor={job => String(job.jobCollectId)} /> : <View style={styles.empty}><Empty /></View>}
-      </>
+      <RecruitListHeader title="收藏的工作" />
+      <RecruitSearchBar />
+      {jobList.length ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitListCard data={job.item} handleCollectClick={getInitData} />} keyExtractor={job => String(job.jobCollectId)} /> : <View style={styles.empty}><Empty /></View>}
     </View>
   )
 }

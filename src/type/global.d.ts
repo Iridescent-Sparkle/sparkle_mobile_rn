@@ -25,6 +25,9 @@ interface JobDetail {
   isCollected: boolean
   jobCollectId?: number
   jobBonus: JobBonus[]
+  jobDeliverStatus: 0 | 1 | 2 | 3 | 4
+  jobDeliverId?: number
+  user: User
 }
 
 interface JobBonus {
@@ -32,6 +35,21 @@ interface JobBonus {
   bonusName: string
   bonusDescription: string
   isDelete: boolean
+  createTime: string
+  updateTime: string
+}
+interface User {
+  id: number
+  username: string
+  password: string
+  nickName: string
+  avatar?: any
+  email: string
+  contactIdToB: string
+  contactIdToC?: any
+  contactPassword: string
+  isFrozen: boolean
+  isAdmin: boolean
   createTime: string
   updateTime: string
 }

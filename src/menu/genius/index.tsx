@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import Feather from 'react-native-vector-icons/Feather'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import GeniusChat from './chat'
 import GeniusCollect from './collect'
 import GeniusDeliver from './deliver'
@@ -17,7 +18,6 @@ export default function GeniusTabLayout() {
       <Tab.Screen
         name="index"
         component={GeniusHome}
-
         options={{
           title: '首页',
           tabBarIcon: ({ color }) => <Feather name="home" size={pxToDp(48)} color={color} />,

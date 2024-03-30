@@ -84,5 +84,5 @@ export class Request {
 }
 
 export const request = new Request({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://192.168.1.3:3000',
 })

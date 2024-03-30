@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Empty } from '@fruits-chain/react-native-xiaoshu'
+import { useFocusEffect } from '@react-navigation/native'
 import RecruitListHeader from '../home/components/recruit-job-header'
 import RecruitJobCard from '../home/components/recruit-job-card'
 import RecruitSearchBar from '../home/components/recruit-search-bar'
@@ -10,43 +12,33 @@ import { request } from '@/core/api'
 
 export default function GeniusDeliver() {
   const insets = useSafeAreaInsets()
-  const [jobList, setJobList] = useState([])
-
-  const [loading, setLoading] = useState(true)
+  const [jobList, setJobList] = useState([] as JobDetail[])
 
   const getInitData = async () => {
     try {
-      setLoading(true)
       const { data: jobListData } = await request.get({}, {
-        url: `/deliveries/user/${userStore.userInfo.id}}`,
+        url: `/genius/deliveries/user`,
       })
       setJobList(jobListData)
     }
     catch (error) {
 
     }
-    finally {
-      setLoading(false)
-    }
   }
 
   useEffect(() => {
     getInitData()
   }, [])
-
+  useFocusEffect(useCallback(() => {
+    getInitData()
+  }, []))
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      {
-      loading
-        ? <Skeleton />
-        : (
-          <>
-            <RecruitListHeader title="我的投递" />
-            <RecruitSearchBar />
-            <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitJobCard />} keyExtractor={job => job.id} />
-          </>
-          )
-    }
+      <RecruitListHeader title="我的投递" />
+      <RecruitSearchBar />
+      {jobList.length
+        ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitJobCard type="deliver" data={job.item} />} keyExtractor={job => String(job.jobDeliverId)} />
+        : <View style={styles.empty}><Empty /></View>}
     </View>
   )
 }
@@ -76,5 +68,10 @@ const styles = create({
   popupButton: {
     width: 320,
     borderRadius: 40,
+  },
+  empty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

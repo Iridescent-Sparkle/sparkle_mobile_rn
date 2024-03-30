@@ -1,21 +1,21 @@
-import { Button, Card, NavBar, Notify, Popup } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Card, NavBar, Notify, Popup, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Skeleton from '../skeleton'
+import { request } from '@/core/api'
+import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 import RecruitAboutCard from '@/page/boss/recruit-detail/recruit-about-card'
 import RecruitDescriptionCard from '@/page/boss/recruit-detail/recruit-description-card'
 import RecruitDetailCard from '@/page/boss/recruit-detail/recruit-detail-card'
 import RecruitSummaryCard from '@/page/boss/recruit-detail/recruit-summary-card'
 import RecruitTagCard from '@/page/boss/recruit-detail/recruit-tags-card'
 import FilterTabs from '@/page/boss/recruit-search/recruit-filter-tabs'
-import { create, pxToDp } from '@/core/styleSheet'
-import { themeColor } from '@/core/styleSheet/themeColor'
-import { request } from '@/core/api'
-import { useJobStore } from '@/store/job'
 import CollectButton from '@/page/genius/job-detail/components/collect-button'
+import { useJobStore } from '@/store/job'
+import { JOB_DELIVER_STATUS } from '@/core/constants'
 
 const TAB_DATA = [{
   id: '1',
@@ -33,6 +33,7 @@ const TAB_DATA = [{
   id: '5',
   title: '关于',
 }]
+
 function JobDetail() {
   const insets = useSafeAreaInsets()
 
@@ -111,6 +112,8 @@ function JobDetail() {
   }, [route.params.jobId])
 
   const handlePopupShow = () => {
+    if (jobDetail.jobDeliverStatus !== 0)
+      return
     setPopupVisible(true)
   }
 
@@ -122,18 +125,26 @@ function JobDetail() {
     navigation.goBack()
   }
 
-  const handleConfirmClick = () => {
-    setConfirmLoading(true)
-
-    setTimeout(() => {
+  const handleConfirmClick = async () => {
+    try {
+      setConfirmLoading(true)
+      await request.post({
+        jobId: route.params.jobId,
+        status: 1,
+      }, {
+        url: '/genius/deliveries/create',
+      })
+      await getInitData()
       handlePopupClose()
       setConfirmLoading(false)
       Notify({
         type: 'success',
         message: '投递成功',
       })
-    }, 1000)
-    // navigation.goBack()
+    }
+    catch (error) {
+      Toast.fail('投递失败')
+    }
   }
 
   return (
@@ -162,7 +173,19 @@ function JobDetail() {
               </View>
               <Card>
                 <View style={styles.buttonWrapper}>
-                  <Button style={styles.button} onPress={handlePopupShow}>投递</Button>
+                  {
+                    jobDetail.jobDeliverStatus === 0
+                      ? (
+                        <Button style={styles.button} onPress={handlePopupShow}>
+                          投递
+                        </Button>
+                        )
+                      : (
+                        <View style={[styles.disableButton, { backgroundColor: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].bgColor }]}>
+                          <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].color }}>{JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].label}</Text>
+                        </View>
+                        )
+                  }
                 </View>
               </Card>
             </>
@@ -211,6 +234,16 @@ const styles = create({
     width: 660,
     borderRadius: 40,
   },
+  disableButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderStyle: 'solid',
+    paddingHorizontal: 16,
+    borderRadius: 24,
+    height: 88,
+  },
   popupHeader: {
     height: 180,
   },
@@ -221,6 +254,7 @@ const styles = create({
     flexDirection: 'row',
     paddingHorizontal: 40,
     justifyContent: 'space-between',
+    paddingBottom: 40,
   },
   popupButton: {
     width: 320,

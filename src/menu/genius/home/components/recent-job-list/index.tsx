@@ -22,9 +22,8 @@ function RecentJobList(props: Props) {
   }
 
   return (
-    <View>
-      <Tabs activeKey={activeTab} tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={handleTabChange}>
-        {
+    <Tabs activeKey={activeTab} tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={handleTabChange}>
+      {
           jobStore.jobCategoryOptions.map(category => (
             <Tabs.TabPane key={String(category?.value)} tab={category?.label}>
               <View style={styles.list}>
@@ -33,8 +32,7 @@ function RecentJobList(props: Props) {
             </Tabs.TabPane>
           ))
         }
-      </Tabs>
-    </View>
+    </Tabs>
   )
 }
 
@@ -44,8 +42,6 @@ const styles = create({
     padding: 0,
   },
   list: {
-    width: '100%',
-    height: 960,
     paddingTop: 32,
   },
 })

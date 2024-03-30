@@ -2,13 +2,14 @@ import { Cell } from '@fruits-chain/react-native-xiaoshu'
 import { View } from 'react-native'
 import { useChatContext } from 'react-native-chat-uikit'
 import Feather from 'react-native-vector-icons/Feather'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { useUserStore } from '../../store/user/index'
 import { create, pxToDp } from '@/core/styleSheet'
 
 export default function Setting() {
   const userStore = useUserStore()
   const im = useChatContext()
-
+  const navigation = useNavigation()
   const handleLogout = async () => {
     await userStore.logout()
     im.logout({
@@ -16,6 +17,9 @@ export default function Setting() {
         console.log(params)
       },
     })
+  }
+  const handleDeleteAccount = () => {
+    navigation.dispatch(StackActions.push('PublishJob'))
   }
   return (
     <View style={styles.container}>
@@ -38,15 +42,16 @@ export default function Setting() {
           </View>
         )}
       />
-      {/* <Cell
+      <Cell
         title="注销"
         isLink
+        onPress={handleDeleteAccount}
         titleExtra={(
           <View style={styles.icon}>
             <Feather name="trash" size={pxToDp(32)} color="black" />
           </View>
         )}
-      /> */}
+      />
     </View>
   )
 }
