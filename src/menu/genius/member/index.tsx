@@ -56,7 +56,7 @@ export default function GeniusMember() {
 
     }
     finally {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 300))
       isLoaded.current = true
       setLoading(false)
     }

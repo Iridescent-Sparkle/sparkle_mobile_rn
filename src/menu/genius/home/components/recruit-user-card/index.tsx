@@ -29,7 +29,7 @@ function UserCard() {
         <FastImage style={styles.avatar} source={{ uri: `${IMAGE_PREFIX}/stars.png` }}></FastImage>
         <View>
           <Text style={styles.tip}>{tip}</Text>
-          <Text style={styles.name}>{userStore.userInfo.nickName}</Text>
+          <Text style={styles.name}>{userStore.userInfo.nickname}</Text>
         </View>
       </Space>
       <View style={styles.button}>

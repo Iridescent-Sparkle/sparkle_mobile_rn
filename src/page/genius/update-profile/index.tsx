@@ -1,21 +1,20 @@
 import { Button } from '@fruits-chain/react-native-xiaoshu'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { request } from '@/core/api'
 import Form from '@/core/components/Form'
+import ImageUploader from '@/core/components/ImageUploader'
 import Input from '@/core/components/Input'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
-import SingleSelect from '@/core/components/SingleSelect'
 
 export default function GeniusUpdateProfile() {
   const form = Form.useForm()
   const insets = useSafeAreaInsets()
   const navigation = useNavigation()
   const userStore = useUserStore()
-  const route = useRoute<{ key: any, name: any, params: { isEdit: string } }>()
   const [loading, setLoading] = useState(false)
   const handleComfirmClick = async () => {
     try {
@@ -24,10 +23,12 @@ export default function GeniusUpdateProfile() {
 
       await request.post({
         id: userStore.userInfo.id,
+        avatar: '',
         ...values,
       }, {
-        url: '/genius/profile/update',
+        url: '/user/update',
       })
+      await userStore.getUserInfo()
       navigation.goBack()
     }
     catch (error) {
@@ -40,13 +41,10 @@ export default function GeniusUpdateProfile() {
 
   const getInitData = async () => {
     try {
-      const { data: profileData } = await request.get({}, {
-        url: '/genius/profile/user',
-      })
+      await userStore.getUserInfo()
       form.setFieldsValue({
-        address: profileData.address,
-        phone: profileData.phone,
-        email: profileData.email,
+        nickname: userStore.userInfo.nickname,
+        occupation: userStore.userInfo.occupation,
       })
     }
     catch (error) {
@@ -55,18 +53,19 @@ export default function GeniusUpdateProfile() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
-  }, [route.params.isEdit])
+    getInitData()
+  }, [])
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
+        <ImageUploader />
         <Form form={form}>
           <Form.Item name="nickname" title="昵称">
             <Input />
           </Form.Item>
-          <Form.Item name="nickname" title="职业">
-            <SingleSelect options={[]} />
+          <Form.Item name="occupation" title="职业">
+            <Input />
           </Form.Item>
         </Form>
       </View>

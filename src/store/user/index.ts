@@ -3,28 +3,13 @@ import { create } from 'zustand'
 import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import { request } from '@/core/api'
 
-interface UserInfo {
-  id: number
-  username: string
-  password: string
-  nickName: string
-  avatar: string
-  email: string
-  contactIdToB: string
-  contactIdToC: string
-  contactPassword: string
-  isFrozen: boolean
-  isAdmin: boolean
-  createTime: string
-  updateTime: string
-}
 interface State {
   token: string
-  userInfo: UserInfo
+  userInfo: User
 }
 
 interface Action {
-  getUserInfo: () => void
+  getUserInfo: () => Promise<void>
   setData: (params: Partial<State>) => void
   register: (params: { username: string, captcha: string, confirmPassword: string, password: string }) => void
   login: (params: { username: string, password: string }) => void
@@ -37,7 +22,7 @@ export const useUserStore = create<State & Action>(set => ({
     id: 0,
     username: '',
     password: '',
-    nickName: '',
+    nickname: '',
     avatar: '',
     email: '',
     contactIdToB: '',

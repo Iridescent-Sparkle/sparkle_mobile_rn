@@ -43,9 +43,10 @@ interface User {
   id: number
   username: string
   password: string
-  nickName: string
+  nickname: string
   avatar?: any
   email: string
+  occupation?: string
   contactIdToB: string
   contactIdToC?: any
   contactPassword: string
@@ -56,7 +57,7 @@ interface User {
 }
 
 interface UserProfile {
-  nickName: string
+  nickname: string
   avatar?: any
   id: number
   occupation: string

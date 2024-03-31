@@ -1,35 +1,35 @@
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
-import React, { useContext } from 'react'
+import { Space } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { Space } from '@fruits-chain/react-native-xiaoshu'
 import Feather from 'react-native-vector-icons/Feather'
-import { NavigationContext } from '@react-navigation/native'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import { useUserStore } from '../../../../../store/user/index'
+import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
-import { themeColor } from '@/core/styleSheet/themeColor'
 
 function MemberUserCard() {
-  const navigation = useContext(NavigationContext)
-
-  const handleUserClick = () => {
-    navigation!.navigate('GeniusUpdateProfile')
-  }
+  const userStore = useUserStore()
+  const navigation = useNavigation()
 
   const handleSettingClick = () => {
-    navigation!.navigate('Setting')
+    navigation.dispatch(StackActions.push('Setting'))
   }
-
+  const handleEditClick = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateProfile'))
+  }
   return (
     <View style={styles.container}>
-      <Pressable style={styles.nameWrapper} onPress={handleUserClick}>
-        <FastImage style={styles.avatar} source={{ uri: `${IMAGE_PREFIX}/stars.png` }}></FastImage>
+      <View style={styles.nameWrapper}>
+        <FastImage style={styles.avatar} source={{ uri: userStore.userInfo.avatar || `${IMAGE_PREFIX}/stars.png` }}></FastImage>
         <Space>
-          <Text style={styles.name}>Andrew</Text>
-          <Text style={styles.work}>UI/UX Designer</Text>
+          <Text style={styles.name}>{userStore.userInfo.nickname}</Text>
+          <Text style={styles.work}>{userStore.userInfo.occupation}</Text>
         </Space>
-        <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} />
-      </Pressable>
+        <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} onPress={handleEditClick} />
+      </View>
       <Pressable style={styles.button} onPress={handleSettingClick}>
         <Feather name="settings" size={pxToDp(46)} color={themeColor.black85} />
       </Pressable>
