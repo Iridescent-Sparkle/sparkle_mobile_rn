@@ -1,10 +1,13 @@
 import type { UploaderValue } from '@fruits-chain/react-native-xiaoshu'
-import { Cell, Dialog, Toast, Uploader } from '@fruits-chain/react-native-xiaoshu'
+import { Toast, Uploader } from '@fruits-chain/react-native-xiaoshu'
 import React, { useState } from 'react'
 import { View } from 'react-native'
+import { pick, types } from 'react-native-document-picker'
+import RNFS from 'react-native-fs'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import { request } from '@/core/api'
 
 interface Props {
 
@@ -19,76 +22,32 @@ function ImageUploader(props: Props) {
 
   ])
 
+  const handleEditAvatar = async () => {
+    try {
+      const [result] = await pick({
+        mode: 'import',
+        type: types.images,
+      })
+      const base64Data = await RNFS.readFile(result.uri, 'base64')
+
+      const stsToken = await request.get({}, {
+        url: '/user/sts',
+      })
+      console.log(base64Data)
+    }
+    catch (err) {
+      Toast.fail('图片上传失败')
+    }
+  }
   return (
     <View style={styles.container}>
       <Uploader
         list={list1}
         maxCount={1}
         style={styles.card}
-        onPressUpload={() => {
-          Toast('TODO 实现选择文件')
-
-          const key = new Date().getTime().toString()
-
-          setList1(s => [
-            ...s,
-            {
-              key,
-              filepath: 'https://img.yzcdn.cn/vant/leaf.jpg',
-              status: 'loading',
-            },
-          ])
-
-          setTimeout(() => {
-            setList1(s =>
-              s.map((item) => {
-                if (item.key === key)
-                  item.status = 'done'
-
-                return item
-              }),
-            )
-          }, 3000)
-        }}
-        onPressDelete={(item, _, list) => {
-          Dialog.confirm({
-            title: '提示',
-            message: '确定要删除？',
-          })
-            .then((action) => {
-              if (action === 'confirm')
-                setList1(list.filter(img => img.key !== item.key))
-            })
-            .catch(() => {})
-        }}
-        onPressImage={() => {
-          Toast('TODO 实现预览文件')
-        }}
-        onPressError={(item) => {
-          Toast('TODO 实现上传文件')
-
-          setList1(s =>
-            s.map((l) => {
-              if (l.key === item.key)
-                l.status = 'loading'
-
-              return l
-            }),
-          )
-
-          setTimeout(() => {
-            setList1(s =>
-              s.map((l) => {
-                if (l.key === item.key)
-                  l.status = 'error'
-
-                return l
-              }),
-            )
-          }, 2000)
-        }}
+        onPressImage={handleEditAvatar}
       />
-      <MaterialIcons name="edit-square" size={pxToDp(32)} color={themeColor.primary} style={styles.icon} />
+      <MaterialIcons name="edit-square" size={pxToDp(32)} color={themeColor.primary} style={styles.icon} onPress={handleEditAvatar} />
     </View>
   )
 }

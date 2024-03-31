@@ -2,6 +2,7 @@
   "name": "sparkle_mobile_rn",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447",
   "engines": {
     "node": ">=18"
   },
@@ -24,6 +25,7 @@
     "@react-navigation/bottom-tabs": "^6.5.18",
     "@react-navigation/native": "^6.1.15",
     "@react-navigation/native-stack": "^6.9.24",
+    "aliyun-oss-react-native": "^1.0.0-alpha.7",
     "async-validator": "^4.2.5",
     "axios": "^1.6.7",
     "date-fns": "^2.30.0",
@@ -44,6 +46,7 @@
     "react-native-document-picker": "^9.1.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-file-access": "^3.0.4",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.15.0",
     "react-native-get-random-values": "~1.8.0",
     "react-native-image-picker": "^7.0.3",
@@ -88,6 +91,5 @@
     "prettier": "2.8.8",
     "react-test-renderer": "18.2.0",
     "typescript": "^5.4.2"
-  },
-  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+  }
 }
