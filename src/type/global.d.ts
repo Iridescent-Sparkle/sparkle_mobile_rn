@@ -38,6 +38,7 @@ interface JobBonus {
   createTime: string
   updateTime: string
 }
+
 interface User {
   id: number
   username: string
@@ -50,6 +51,77 @@ interface User {
   contactPassword: string
   isFrozen: boolean
   isAdmin: boolean
+  createTime: string
+  updateTime: string
+}
+
+interface UserProfile {
+  nickName: string
+  avatar?: any
+  id: number
+  occupation: string
+  address: string
+  phone: string
+  email: string
+  minSalary: string
+  maxSalary: string
+  summary: string
+  resume: string
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+}
+
+interface UserExperience {
+  id: number
+  userId: number
+  profession: string
+  companyName: string
+  startTime: string
+  endTime: string
+  isWork: boolean
+  description: string
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+}
+interface UserEducation {
+  id: number
+  userId: number
+  school: string
+  profession: string
+  startTime: string
+  endTime: string
+  gpa: number
+  description: string
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+}
+
+interface UserProject {
+  id: number
+  userId: number
+  projectName: string
+  role: string
+  startTime: string
+  endTime: string
+  website: string
+  description: string
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+}
+
+interface UserVolunteer {
+  id: number
+  userId: number
+  activityName: string
+  role: string
+  startTime: string
+  endTime: string
+  description: string
+  isDelete: boolean
   createTime: string
   updateTime: string
 }

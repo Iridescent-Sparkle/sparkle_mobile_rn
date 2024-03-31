@@ -28,13 +28,10 @@ export default function GeniusCollect() {
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
-  useEffect(() => {
-    getInitData()
-  }, [])
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <RecruitListHeader title="收藏的工作" />
+      <RecruitListHeader title="我的收藏" />
       <RecruitSearchBar />
       {jobList.length ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitListCard data={job.item} handleCollectClick={getInitData} />} keyExtractor={job => String(job.jobCollectId)} /> : <View style={styles.empty}><Empty /></View>}
     </View>

@@ -1,16 +1,63 @@
 import { Button, Card, Space } from '@fruits-chain/react-native-xiaoshu'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import Form from '@/core/components/Form'
+import { request } from '@/core/api'
 import DocumentPicker from '@/core/components/DocumentPicker'
+import Form from '@/core/components/Form'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { useUserStore } from '@/store/user'
 
 export default function GeniusUpdateResume() {
   const form = Form.useForm()
   const insets = useSafeAreaInsets()
+  const navigation = useNavigation()
+  const userStore = useUserStore()
+  const route = useRoute<{ key: any, name: any, params: { isEdit: string } }>()
+  const [loading, setLoading] = useState(false)
+  const handleComfirmClick = async () => {
+    try {
+      setLoading(true)
+      const values = await form.validateFields()
 
+      await request.post({
+        id: userStore.userInfo.id,
+        ...values,
+      }, {
+        url: '/genius/profile/update',
+      })
+      navigation.goBack()
+    }
+    catch (error) {
+
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  const getInitData = async () => {
+    try {
+      const { data: profileData } = await request.get({}, {
+        url: '/genius/profile/user',
+      })
+      form.setFieldsValue({
+        address: profileData.address,
+        phone: profileData.phone,
+        email: profileData.email,
+      })
+    }
+    catch (error) {
+
+    }
+  }
+
+  useEffect(() => {
+    route.params.isEdit && getInitData()
+  }, [route.params.isEdit])
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
@@ -32,7 +79,7 @@ export default function GeniusUpdateResume() {
           </Card>
         </Form>
       </View>
-      <Button style={styles.button}>提交</Button>
+      <Button loading={loading} onPress={handleComfirmClick} style={styles.button}>提交</Button>
     </View>
   )
 }

@@ -1,21 +1,19 @@
 import { Switch as XiaoshuSwitch } from '@fruits-chain/react-native-xiaoshu'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { create } from '@/core/styleSheet'
 
 interface Props {
-  title: string
   onChange?: (value: any) => void
+  value?: any
 }
-
 function Switch(props: Props) {
-  const { title, onChange } = props
+  const { value, onChange } = props
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{`${title}:`}</Text>
       <XiaoshuSwitch
-        defaultValue
+        value={!!value}
         onChange={onChange}
       />
     </View>

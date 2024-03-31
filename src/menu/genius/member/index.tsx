@@ -1,60 +1,105 @@
-import React from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { useCallback, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import RecruitListHeader from '../home/components/recruit-job-header'
 import MemberContactInfoCard from './components/contact-info-card'
+import MemberEducationInfoCard from './components/education-info-card'
+import MemberExpectedSalaryCard from './components/expected-salary-card'
 import MemberProjectsInfoCard from './components/projects-info-card'
 import MemberResumeCvCard from './components/resume-cv-card'
-import MemberSkillsInfoCard from './components/skills-info-card'
 import MemberSummaryCard from './components/summary-info-card'
 import MemberUserCard from './components/user-info-card'
 import MemberVolunteerInfoCard from './components/volunteer-info-card'
 import MemberWorkExperienceCard from './components/work-experience-card'
-import MemberExpectedSalaryCard from './components/expected-salary-card'
-import MemberEducationInfoCard from './components/education-info-card'
 import { create } from '@/core/styleSheet'
-
-const listData = [
-  {
-    id: '1',
-    component: <MemberContactInfoCard />,
-  },
-  {
-    id: '2',
-    component: <MemberSummaryCard />,
-  },
-  {
-    id: '3',
-    component: <MemberExpectedSalaryCard />,
-  },
-  {
-    id: '4',
-    component: <MemberWorkExperienceCard />,
-  },
-  {
-    id: '5',
-    component: <MemberEducationInfoCard />,
-  },
-  {
-    id: '6',
-    component: <MemberProjectsInfoCard />,
-  },
-  {
-    id: '7',
-    component: <MemberVolunteerInfoCard />,
-  },
-  {
-    id: '8',
-    component: <MemberSkillsInfoCard />,
-  },
-  {
-    id: '9',
-    component: <MemberResumeCvCard />,
-  },
-]
+import { request } from '@/core/api'
 
 export default function GeniusMember() {
   const insets = useSafeAreaInsets()
+  const isLoaded = useRef(false)
+  const [loading, setLoading] = useState(true)
+  const [profileData, setProfileData] = useState<UserProfile>({} as UserProfile)
+  const [educationData, setEducationData] = useState<UserEducation[]>([] as UserEducation[])
+  const [projectData, setProjectData] = useState<UserProject[]>([] as UserProject[])
+  const [experienceData, setExperienceData] = useState<UserExperience[]>([] as UserExperience[])
+  const [volunteerData, setVolunteerData] = useState<UserVolunteer[]>([] as UserVolunteer[])
+
+  const getInitData = async () => {
+    try {
+      if (!isLoaded.current)
+        setLoading(true)
+      const [profileData, educationData, projectData, experienceData, volunteerData] = await Promise.all([
+        request.get({}, {
+          url: '/genius/profile/user',
+        }),
+        request.get({}, {
+          url: '/genius/education/user',
+        }),
+        request.get({}, {
+          url: '/genius/project/user',
+        }),
+        request.get({}, {
+          url: '/genius/experience/user',
+        }),
+        request.get({}, {
+          url: '/genius/volunteer/user',
+        }),
+      ])
+
+      setProfileData(profileData.data)
+      setEducationData(educationData.data)
+      setProjectData(projectData.data)
+      setExperienceData(experienceData.data)
+      setVolunteerData(volunteerData.data)
+    }
+    catch (error) {
+
+    }
+    finally {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      isLoaded.current = true
+      setLoading(false)
+    }
+  }
+
+  useFocusEffect(useCallback(() => {
+    getInitData()
+  }, []))
+
+  const listData = [
+    {
+      id: '1',
+      component: <MemberContactInfoCard data={profileData} loading={loading} />,
+    },
+    {
+      id: '2',
+      component: <MemberSummaryCard data={profileData} loading={loading} />,
+    },
+    {
+      id: '3',
+      component: <MemberExpectedSalaryCard data={profileData} loading={loading} />,
+    },
+    {
+      id: '4',
+      component: <MemberWorkExperienceCard data={experienceData} loading={loading} />,
+    },
+    {
+      id: '5',
+      component: <MemberEducationInfoCard data={educationData} loading={loading} />,
+    },
+    {
+      id: '6',
+      component: <MemberProjectsInfoCard data={projectData} loading={loading} />,
+    },
+    {
+      id: '7',
+      component: <MemberVolunteerInfoCard data={volunteerData} loading={loading} />,
+    },
+    {
+      id: '8',
+      component: <MemberResumeCvCard data={profileData} loading={loading} />,
+    },
+  ]
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>

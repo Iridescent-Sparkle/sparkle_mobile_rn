@@ -26,9 +26,6 @@ export default function GeniusDeliver() {
     }
   }
 
-  useEffect(() => {
-    getInitData()
-  }, [])
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))

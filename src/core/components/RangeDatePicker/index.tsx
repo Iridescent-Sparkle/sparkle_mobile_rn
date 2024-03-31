@@ -1,65 +1,55 @@
 import { Cell, DatePicker, Toast } from '@fruits-chain/react-native-xiaoshu'
-import React, { useState } from 'react'
+import React from 'react'
 import { create } from '@/core/styleSheet'
 
 interface Props {
-  title: string
+  onChange?: (value: any) => void
+  value?: any
 }
 
 function RangeDatePicker(props: Props) {
-  const { title } = props
-
-  const [startTime, setStartTime] = useState<any>()
-  const [endTime, setEndTime] = useState<any>()
+  const { value = [], onChange } = props
 
   return (
     <Cell
-      title={`${title}:`}
-      vertical
+      title={value[0] ? `${value[0]?.toLocaleDateString?.()}-${value[1]?.toLocaleDateString?.()}` : '请选择时间段'}
+      isLink
+      arrowDirection="down"
+      style={styles.title}
+      innerStyle={styles.inner}
+      titleTextNumberOfLines={1}
       divider={false}
-      value={(
-        <Cell
-          title={startTime ? `${startTime?.toLocaleDateString?.()}-${endTime?.toLocaleDateString?.()}` : '请选择时间段'}
-          isLink
-          arrowDirection="down"
-          style={styles.title}
-          innerStyle={styles.inner}
-          titleTextNumberOfLines={1}
-          divider={false}
-          onPress={() => {
-            DatePicker.range({
-              title: '什么时间',
-              beforeClose: (action, value) => {
-                if (action === 'confirm') {
-                  if (!value[0]) {
-                    Toast({
-                      message: '请选择起始时间',
-                      forbidPress: true,
-                    })
-                    return false
-                  }
-                  if (!value[1]) {
-                    Toast({
-                      message: '请选择结束时间',
-                      forbidPress: true,
-                    })
-                    return false
-                  }
-                  return true
-                }
-                return true
-              },
-            }).then(({ action, values }) => {
-              if (action === 'confirm') {
-                setStartTime(values[0])
-                setEndTime(values[1])
+      onPress={() => {
+        DatePicker.range({
+          title: '',
+          beforeClose: (action, value) => {
+            if (action === 'confirm') {
+              if (!value[0]) {
+                Toast({
+                  message: '请选择起始时间',
+                  forbidPress: true,
+                  duration: 200,
+                })
+                return false
               }
-            })
-          }}
-        />
-      )}
-    >
-    </Cell>
+              if (!value[1]) {
+                Toast({
+                  message: '请选择结束时间',
+                  forbidPress: true,
+                  duration: 200,
+                })
+                return false
+              }
+              return true
+            }
+            return true
+          },
+        }).then(({ action, values }) => {
+          if (action === 'confirm')
+            onChange?.(values)
+        })
+      }}
+    />
   )
 }
 

@@ -18,6 +18,14 @@ import GeniusUpdateProfile from '@/page/genius/update-profile'
 import Setting from '@/page/setting'
 import { useUserStore } from '@/store/user'
 import DeliverDetail from '@/page/genius/deliver-detail'
+import GeniusUpdateContact from '@/page/genius/update-contact'
+import GeniusUpdateSalary from '@/page/genius/update-salary'
+import GeniusUpdateSummary from '@/page/genius/update-summary'
+import GeniusUpdateProject from '@/page/genius/update-project'
+import GeniusUpdateVolunteer from '@/page/genius/update-volunteer'
+import GeniusUpdateEducation from '@/page/genius/update-education'
+import GeniusUpdateResume from '@/page/genius/update-resume'
+import GeniusUpdateExperience from '@/page/genius/update-experience'
 
 const Stack = createNativeStackNavigator()
 
@@ -53,7 +61,14 @@ function RouteProvider() {
               <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ title: '在线简历' }} />
               <Stack.Screen name="PublishJob" component={PublishJob} options={{ title: '发布职位' }} />
               <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
-
+              <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ title: '联系信息' }} />
+              <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} options={{ title: '个人总结' }} />
+              <Stack.Screen name="GeniusUpdateSalary" component={GeniusUpdateSalary} options={{ title: '期望薪资' }} />
+              <Stack.Screen name="GeniusUpdateExperience" component={GeniusUpdateExperience} options={{ title: '工作经历' }} />
+              <Stack.Screen name="GeniusUpdateEducation" component={GeniusUpdateEducation} options={{ title: '教育经历' }} />
+              <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} options={{ title: '项目经历' }} />
+              <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ title: '志愿活动经历' }} />
+              <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ title: '附件简历' }} />
             </Stack.Group>
             )
           : (

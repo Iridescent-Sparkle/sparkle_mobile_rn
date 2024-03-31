@@ -6,13 +6,30 @@ import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
 import { Text } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 
-function MemberResumeCvCard() {
+function MemberResumeCvCard(props: { data: any, loading: any }) {
+  const { data, loading } = props
+
+  const navigation = useNavigation()
+
+  const onAdd = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateResume', {
+      isEdit: false,
+    }))
+  }
+
+  const onEdit = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateResume', {
+      isEdit: true,
+    }))
+  }
+
   return (
-    <BaseCollapseCard title="附件简历" titleLeftExtra={<FontAwesome6 name="file-contract" size={pxToDp(32)} color={themeColor.primary} />}>
+    <BaseCollapseCard title="附件简历" titleLeftExtra={<FontAwesome6 name="file-contract" size={pxToDp(32)} color={themeColor.primary} />} onAdd={onAdd} onEdit={onEdit} showContent={data} loading={loading}>
       <Card style={styles.card}>
         <Space direction="horizontal" style={styles.header}>
           <Space direction="horizontal" gap={pxToDp(32)}>

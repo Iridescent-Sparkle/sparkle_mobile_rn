@@ -5,19 +5,37 @@
 import { Text } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Card } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 
-function MemberSummaryCard() {
+interface Props {
+  data: UserProfile
+  loading: boolean
+}
+function MemberSummaryCard(props: Props) {
+  const { data, loading } = props
+
+  const navigation = useNavigation()
+
+  const onAdd = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateSummary', {
+      isEdit: false,
+    }))
+  }
+
+  const onEdit = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateSummary', {
+      isEdit: true,
+    }))
+  }
+
   return (
-    <BaseCollapseCard title="个人总结" titleLeftExtra={<MaterialCommunityIcons name="file-document" size={pxToDp(32)} color={themeColor.primary} />}>
+    <BaseCollapseCard title="个人总结" titleLeftExtra={<MaterialCommunityIcons name="file-document" size={pxToDp(32)} color={themeColor.primary} />} onAdd={onAdd} onEdit={onEdit} loading={loading} showContent={!!data.summary}>
       <Card>
         <Text style={styles.content}>
-          Hello, I'm Andrew.I am a designer with more
-          than 5 years experience. My main fields are Ul/
-          UX Design, Illustration and Graphic Design. You
-          can check the portfolio on my profil
+          {data.summary}
         </Text>
       </Card>
     </BaseCollapseCard>

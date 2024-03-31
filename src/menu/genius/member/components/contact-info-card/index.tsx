@@ -8,32 +8,58 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Card } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import Visible from '@/core/components/Visible'
 
-function MemberContactInfoCard() {
+interface Props {
+  data: UserProfile
+  loading: boolean
+}
+function MemberContactInfoCard(props: Props) {
+  const { data, loading } = props
+  const navigation = useNavigation()
+
+  const onAdd = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateContact', {
+      isEdit: false,
+    }))
+  }
+
+  const onEdit = () => {
+    navigation.dispatch(StackActions.push('GeniusUpdateContact', {
+      isEdit: true,
+    }))
+  }
   return (
-    <BaseCollapseCard title="联系信息" titleLeftExtra={<FontAwesome name="user" size={pxToDp(36)} color={themeColor.primary} />}>
+    <BaseCollapseCard title="联系信息" titleLeftExtra={<FontAwesome name="user" size={pxToDp(36)} color={themeColor.primary} />} loading={loading} showContent={data.address || data.phone || data.email} onAdd={onAdd} onEdit={onEdit}>
       <Card>
-        <View style={styles.info}>
-          <Ionicons name="location-outline" size={pxToDp(36)} color="black" />
-          <Text style={styles.text}>
-            New York. United States
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <Feather name="phone" size={pxToDp(36)} color="black" />
-          <Text style={styles.text}>
-            +1 111 467 378 399
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <MaterialCommunityIcons name="email-outline" size={pxToDp(36)} color="black" />
-          <Text style={styles.text}>
-            andrew_ainsley@yourdomain.com
-          </Text>
-        </View>
+        <Visible visible={!!data.address}>
+          <View style={styles.info}>
+            <Ionicons name="location-outline" size={pxToDp(36)} color="black" />
+            <Text style={styles.text}>
+              {data.address || ''}
+            </Text>
+          </View>
+        </Visible>
+        <Visible visible={!!data.phone}>
+          <View style={styles.info}>
+            <Feather name="phone" size={pxToDp(36)} color="black" />
+            <Text style={styles.text}>
+              {data.phone || ''}
+            </Text>
+          </View>
+        </Visible>
+        <Visible visible={!!data.email}>
+          <View style={styles.info}>
+            <MaterialCommunityIcons name="email-outline" size={pxToDp(36)} color="black" />
+            <Text style={styles.text}>
+              {data.email || ''}
+            </Text>
+          </View>
+        </Visible>
       </Card>
     </BaseCollapseCard>
   )
