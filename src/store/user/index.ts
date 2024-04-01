@@ -1,6 +1,6 @@
+import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
-import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import { request } from '@/core/api'
 
 interface State {

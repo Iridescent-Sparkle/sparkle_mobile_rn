@@ -1,14 +1,16 @@
 import { Space } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { Pressable, Text, View } from 'react-native'
+import { Modal, Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import ImageViewer from 'react-native-image-zoom-viewer'
 import { useUserStore } from '../../../../../store/user/index'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import ImagePreview from '@/core/components/ImagePreview'
 
 function MemberUserCard() {
   const userStore = useUserStore()
@@ -23,12 +25,14 @@ function MemberUserCard() {
   return (
     <View style={styles.container}>
       <View style={styles.nameWrapper}>
-        <FastImage style={styles.avatar} source={{ uri: userStore.userInfo.avatar || `${IMAGE_PREFIX}/stars.png` }}></FastImage>
+        <ImagePreview style={styles.avatar} url={userStore.userInfo.avatar || `${IMAGE_PREFIX}/stars.png`} />
         <Space>
           <Text style={styles.name}>{userStore.userInfo.nickname}</Text>
           <Text style={styles.work}>{userStore.userInfo.occupation}</Text>
         </Space>
-        <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} onPress={handleEditClick} />
+        <Pressable onPress={handleEditClick} hitSlop={20}>
+          <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} />
+        </Pressable>
       </View>
       <Pressable style={styles.button} onPress={handleSettingClick}>
         <Feather name="settings" size={pxToDp(46)} color={themeColor.black85} />

@@ -9,6 +9,7 @@ import ImageUploader from '@/core/components/ImageUploader'
 import Input from '@/core/components/Input'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 export default function GeniusUpdateProfile() {
   const form = Form.useForm()
@@ -23,7 +24,6 @@ export default function GeniusUpdateProfile() {
 
       await request.post({
         id: userStore.userInfo.id,
-        avatar: '',
         ...values,
       }, {
         url: '/user/update',
@@ -42,7 +42,9 @@ export default function GeniusUpdateProfile() {
   const getInitData = async () => {
     try {
       await userStore.getUserInfo()
+
       form.setFieldsValue({
+        avatar: userStore.userInfo.avatar,
         nickname: userStore.userInfo.nickname,
         occupation: userStore.userInfo.occupation,
       })
@@ -59,8 +61,10 @@ export default function GeniusUpdateProfile() {
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
-        <ImageUploader />
         <Form form={form}>
+          <Form.Item name="avatar">
+            <ImageUploader />
+          </Form.Item>
           <Form.Item name="nickname" title="昵称">
             <Input />
           </Form.Item>

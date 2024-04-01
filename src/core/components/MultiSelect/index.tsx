@@ -5,7 +5,6 @@ import type { TreeValue } from '@fruits-chain/react-native-xiaoshu/lib/typescrip
 import { create } from '@/core/styleSheet'
 
 interface Props {
-
   options: SelectorOption[]
   onChange?: (value: any) => void
   value?: any

@@ -8,9 +8,9 @@ const valuesListenSy = Symbol('valuesListen')
 /** 创建form实例，可以给class组件使用 */
 function createForm(target?: any, ...names: string[]) {
   /** 表单的数据 */
-  const values = {}
+  const values = {} as Record<string, any>
   /** 表单验证规则 */
-  const rules = {}
+  const rules = {} as Record<string, any>
   const rulesOrder = {}
   /** 表单监听的数组 */
   const listens: any[] = []
@@ -44,7 +44,7 @@ function createForm(target?: any, ...names: string[]) {
   function validateFields({ showMsg = true } = {}) {
     // 对rules进行排序
     const entries = Object.entries(rulesOrder).sort(
-      ([, aValue]: [string, number], [, bValue]: [string, number]) => {
+      ([, aValue]: any, [, bValue]: any) => {
         if (aValue === 0)
           return 1
 
@@ -54,7 +54,7 @@ function createForm(target?: any, ...names: string[]) {
         return aValue - bValue
       },
     )
-    const sortedRules = {}
+    const sortedRules = {} as Record<string, any>
     for (const [key] of entries)
       sortedRules[key] = rules[key]
 
@@ -112,7 +112,7 @@ function createForm(target?: any, ...names: string[]) {
 type FormStore = ReturnType<typeof createForm>
 
 /** FormContext */
-const FormContext = createContext<FormStore>(null)
+const FormContext = createContext<FormStore>({} as FormStore)
 
 /** formItem子组件的props */
 type FormItemChildrenProps<T = any> = Partial<{
@@ -205,12 +205,18 @@ function FormItem(props: FormItemProps) {
     return children
 
   return (
-    <Cell
-      title={`${title}:`}
-      vertical
-      divider={false}
-      value={cloneElement(children, { value, onChange })}
-    />
+    <>
+      {title
+        ? (
+          <Cell
+            title={`${title}:`}
+            vertical
+            divider={false}
+            value={cloneElement(children, { value, onChange })}
+          />
+          )
+        : <>{cloneElement(children, { value, onChange })}</>}
+    </>
   )
 }
 

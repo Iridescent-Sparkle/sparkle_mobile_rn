@@ -1,3 +1,5 @@
+declare module 'aliyun-oss-react-native'
+
 interface JobDetail {
   id: number
   userId: number

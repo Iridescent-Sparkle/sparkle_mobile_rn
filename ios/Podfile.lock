@@ -1090,7 +1090,9 @@ PODS:
     - React-Core
   - react-native-blob-util (0.19.8):
     - React-Core
-  - react-native-cameraroll (5.10.0):
+  - react-native-cameraroll (7.5.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - react-native-chat-sdk (1.3.1-beta.4):
     - HyphenateChat (= 4.2.0)
@@ -1298,6 +1300,8 @@ PODS:
   - ReactNativeFileAccess (3.0.5):
     - React-Core
     - ZIPFoundation (= 0.9.11)
+  - rn-fetch-blob (0.12.0):
+    - React-Core
   - RNAudioRecorderPlayer (3.6.6):
     - React-Core
   - RNCAsyncStorage (1.22.3):
@@ -1447,6 +1451,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeFileAccess (from `../node_modules/react-native-file-access`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
@@ -1639,6 +1644,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeFileAccess:
     :path: "../node_modules/react-native-file-access"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCAsyncStorage:
@@ -1735,7 +1742,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 7c35cd53a22d0be04d3f26f7881c7fb7dd230216
   react-native-agora: b03aa1655136c47e4a15afd05d8538472dac6ad3
   react-native-blob-util: 26f1fb0c91f2b437380d4f3875769a7c3e06080e
-  react-native-cameraroll: 4701ae7c3dbcd3f5e9e150ca17f250a276154b35
+  react-native-cameraroll: af8eec1e585d053ff485d98ec837f9a8a11b5745
   react-native-chat-sdk: 85c86207a494618ddf180c71ddb6df8b6a980ebf
   react-native-chat-uikit: 0f8ee416f7416193518e5382cbb3f002566f2678
   react-native-create-thumbnail: 148af3ae280057c68d5b8fb9804755d02f36fe88
@@ -1769,6 +1776,7 @@ SPEC CHECKSUMS:
   React-utils: 987a4526a2fc0acdfaf87888adfe0bf9d0452066
   ReactCommon: 2947b0bffd82ea0e58ca7928881152d4c6dae9af
   ReactNativeFileAccess: ad2a22183f172817526bbff7c303e2418792f18c
+  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudioRecorderPlayer: f790fc1afb118552ae6285d60adde52ee6b5d9ef
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
