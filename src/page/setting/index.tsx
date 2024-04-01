@@ -21,8 +21,20 @@ export default function Setting() {
   const handleDeleteAccount = () => {
     navigation.dispatch(StackActions.push('PublishJob'))
   }
+  const handleRoleChange = () => {}
+
   return (
     <View style={styles.container}>
+      <Cell
+        title="切换角色"
+        isLink
+        onPress={handleRoleChange}
+        titleExtra={(
+          <View style={styles.icon}>
+            <Feather name="log-out" size={pxToDp(32)} color="black" />
+          </View>
+        )}
+      />
       <Cell
         title="退出登录"
         isLink
