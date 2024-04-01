@@ -1,13 +1,15 @@
+import { Portal, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { CameraRoll } from '@react-native-camera-roll/camera-roll'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import type { StyleProp } from 'react-native'
-import { Modal, PermissionsAndroid, Platform, Pressable, Text, View } from 'react-native'
+import { BackHandler, PermissionsAndroid, Platform, Pressable, Text, View } from 'react-native'
+import ReactNativeBlobUtil from 'react-native-blob-util'
 import type { ImageStyle } from 'react-native-fast-image'
 import FastImage from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import RNFetchBlob from 'rn-fetch-blob'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
+import { useRefState } from '@/core/hooks/useRefState'
 
 async function hasAndroidPermission() {
   const getCheckPermissionPromise = () => {
@@ -69,26 +71,43 @@ function Menu({ cancel, saveToLocal }: any) {
 function ImagePreview(props: Props) {
   const { url, style } = props
 
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible, getVisible] = useRefState(false)
 
   const handleModalClose = () => {
     setVisible(false)
   }
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (getVisible()) {
+          setVisible(false)
+          return true
+        }
+        else {
+          return false
+        }
+      },
+    )
+
+    return () => backHandler.remove()
+  }, [])
 
   async function savePicture(url: string) {
     if (Platform.OS === 'android' && !(await hasAndroidPermission()))
       return
     try {
-      const { data } = await RNFetchBlob.config({
+      const { data } = await ReactNativeBlobUtil.config({
         fileCache: true,
         appendExt: 'png',
       })
         .fetch('GET', url)
 
       await CameraRoll.saveAsset(data, { type: 'photo' })
+      Toast.success('保存成功')
     }
     catch (error) {
-
+      Toast.fail('保存失败')
     }
   };
 
@@ -97,12 +116,24 @@ function ImagePreview(props: Props) {
       <Pressable onPress={() => setVisible(true)}>
         <FastImage style={style} source={{ uri: url }}></FastImage>
       </Pressable>
-      <Modal visible={visible} transparent={true} onRequestClose={handleModalClose}>
-        <ImageViewer imageUrls={[{ url }]} onClick={handleModalClose} menus={Menu} enablePreload onSave={savePicture} />
-      </Modal>
+      {
+        visible && (
+          <Portal>
+            <ImageViewer
+              imageUrls={[{ url }]}
+              onClick={handleModalClose}
+              menus={Menu}
+              enablePreload
+              onSave={savePicture}
+              onCancel={handleModalClose}
+            />
+          </Portal>
+        )
+      }
     </>
   )
 }
+
 const styles = create({
   menu: {
     position: 'absolute',
@@ -130,4 +161,5 @@ const styles = create({
     borderColor: themeColor.black12,
   },
 })
+
 export default ImagePreview

@@ -56,6 +56,7 @@ function ImageUploader(props: Props) {
       }
       else {
         const imageUri = response.uri || response.assets?.[0]?.uri
+
         await putMediaToOss(imageUri)
         handlePopupClose()
       }

@@ -84,5 +84,6 @@ export class Request {
 }
 
 export const request = new Request({
-  baseURL: 'http://10.254.0.148:3000',
+  // baseURL: 'http://10.254.0.148:3000',
+  baseURL: 'http://192.168.1.3:3000',
 })
