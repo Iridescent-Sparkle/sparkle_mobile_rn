@@ -69,7 +69,7 @@ interface UserProfile {
   minSalary: string
   maxSalary: string
   summary: string
-  resume: string
+  resume: { accessUrl: string, fileName: string, fileSize: number }
   isDelete: boolean
   createTime: string
   updateTime: string

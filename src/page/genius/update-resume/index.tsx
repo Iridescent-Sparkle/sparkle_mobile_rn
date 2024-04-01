@@ -1,14 +1,12 @@
-import { Button, Card, Space } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import { request } from '@/core/api'
-import DocumentPicker from '@/core/components/DocumentPicker'
 import Form from '@/core/components/Form'
-import { create, pxToDp } from '@/core/styleSheet'
-import { themeColor } from '@/core/styleSheet/themeColor'
+import DocumentPicker from '@/core/components/PdfPicker'
+import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
 
 export default function GeniusUpdateResume() {
@@ -45,9 +43,7 @@ export default function GeniusUpdateResume() {
         url: '/genius/profile/user',
       })
       form.setFieldsValue({
-        address: profileData.address,
-        phone: profileData.phone,
-        email: profileData.email,
+        resume: profileData.resume,
       })
     }
     catch (error) {
@@ -58,25 +54,14 @@ export default function GeniusUpdateResume() {
   useEffect(() => {
     route.params.isEdit && getInitData()
   }, [route.params.isEdit])
+
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
         <Form form={form}>
-          <Form.Item name="nickname">
-            <DocumentPicker title="" />
+          <Form.Item name="resume" title="">
+            <DocumentPicker />
           </Form.Item>
-          <Card style={styles.card}>
-            <Space direction="horizontal" style={styles.header}>
-              <Space direction="horizontal" gap={pxToDp(32)}>
-                <AntDesign name="pdffile1" size={pxToDp(84)} color="#F75555" />
-                <Space gap={pxToDp(20)}>
-                  <Text style={styles.title}>UI/UX Designer</Text>
-                  <Text style={styles.size}>825 kb</Text>
-                </Space>
-              </Space>
-              <AntDesign name="close" size={pxToDp(32)} color="#F76564" />
-            </Space>
-          </Card>
         </Form>
       </View>
       <Button loading={loading} onPress={handleComfirmClick} style={styles.button}>提交</Button>
@@ -93,30 +78,5 @@ const styles = create({
   },
   button: {
     borderRadius: 24,
-  },
-  card: {
-    backgroundColor: '#FFF2F2',
-    borderRadius: 32,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: themeColor.black85,
-  },
-  size: {
-    fontSize: 24,
-    color: themeColor.black65,
-  },
-  logo: {
-    width: 116,
-    height: 116,
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: themeColor.black12,
   },
 })

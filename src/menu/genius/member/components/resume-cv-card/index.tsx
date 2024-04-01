@@ -3,7 +3,7 @@
  * @Description: C端附件简历卡片
  */
 import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
-import { Text } from 'react-native'
+import { Pressable, Text } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { StackActions, useNavigation } from '@react-navigation/native'
@@ -11,7 +11,11 @@ import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 
-function MemberResumeCvCard(props: { data: any, loading: any }) {
+interface Props {
+  data: UserProfile
+  loading: boolean
+}
+function MemberResumeCvCard(props: Props) {
   const { data, loading } = props
 
   const navigation = useNavigation()
@@ -27,21 +31,33 @@ function MemberResumeCvCard(props: { data: any, loading: any }) {
       isEdit: true,
     }))
   }
-
+  const handleResumeClick = () => {
+    navigation.dispatch(StackActions.push('ResumePreview', data.resume))
+  }
   return (
-    <BaseCollapseCard title="附件简历" titleLeftExtra={<FontAwesome6 name="file-contract" size={pxToDp(32)} color={themeColor.primary} />} onAdd={onAdd} onEdit={onEdit} showContent={data} loading={loading}>
-      <Card style={styles.card}>
-        <Space direction="horizontal" style={styles.header}>
-          <Space direction="horizontal" gap={pxToDp(32)}>
-            <AntDesign name="pdffile1" size={pxToDp(84)} color="#F75555" />
-            <Space gap={pxToDp(20)}>
-              <Text style={styles.title}>UI/UX Designer</Text>
-              <Text style={styles.size}>825 kb</Text>
+    <BaseCollapseCard title="附件简历" titleLeftExtra={<FontAwesome6 name="file-contract" size={pxToDp(32)} color={themeColor.primary} />} onAdd={onAdd} onEdit={onEdit} showContent={!!data.resume?.accessUrl} loading={loading}>
+      <>
+        {
+      !!data.resume?.accessUrl && (
+        <Pressable onPress={handleResumeClick}>
+          <Card style={styles.card}>
+            <Space direction="horizontal" style={styles.header}>
+              <Space direction="horizontal" gap={pxToDp(32)}>
+                <AntDesign name="pdffile1" size={pxToDp(84)} color="#F75555" />
+                <Space gap={pxToDp(20)}>
+                  <Text style={styles.title}>{data.resume?.fileName}</Text>
+                  <Text style={styles.size}>
+                    {data.resume?.fileSize}
+                    KB
+                  </Text>
+                </Space>
+              </Space>
             </Space>
-          </Space>
-          <AntDesign name="close" size={pxToDp(32)} color="#F76564" />
-        </Space>
-      </Card>
+          </Card>
+        </Pressable>
+      )
+     }
+      </>
     </BaseCollapseCard>
   )
 }

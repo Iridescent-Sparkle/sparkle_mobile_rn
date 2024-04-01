@@ -1,15 +1,13 @@
-import type { UploaderValue } from '@fruits-chain/react-native-xiaoshu'
 import { Button, Popup, Toast, Uploader } from '@fruits-chain/react-native-xiaoshu'
-import AliyunOSS from 'aliyun-oss-react-native'
 import React, { useState } from 'react'
 import { PermissionsAndroid, View } from 'react-native'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useUserStore } from '../../../store/user/index'
 import OverlayLoading from '../OverlayLoading'
+import { initOssClient } from '@/core/tools/oss'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
-import { request } from '@/core/api/index'
 import { IMAGE_PREFIX } from '@/core/constants'
 
 interface Props {
@@ -17,34 +15,10 @@ interface Props {
   value?: string
 }
 function ImageUploader(props: Props) {
-  const userStore = useUserStore()
-
   const { onChange, value } = props
-
+  const userStore = useUserStore()
   const [loading, setLoading] = useState(false)
   const [popupVisible, setPopupVisible] = useState(false)
-
-  const initOssClient = async () => {
-    try {
-      const { data: stsToken } = await request.get({}, {
-        url: '/user/sts',
-      })
-
-      const endPoint = 'oss-cn-chengdu.aliyuncs.com'
-
-      const configuration = {
-        maxRetryCount: 3,
-        timeoutIntervalForRequest: 30,
-        timeoutIntervalForResource: 24 * 60 * 60,
-      }
-
-      AliyunOSS.initWithSecurityToken(stsToken.securityToken, stsToken.accessKeyId, stsToken.accessKeySecret, endPoint, configuration)
-      return AliyunOSS
-    }
-    catch (error) {
-      Toast.fail('网络错误')
-    }
-  }
 
   const putMediaToOss = async (filePath: string) => {
     try {
@@ -52,9 +26,7 @@ function ImageUploader(props: Props) {
       const AliyunOSSClient = await initOssClient()
       const fileName = `sparkle-mobile/avatar/${userStore.userInfo.username}/${new Date().getTime()}.png`
       const accessUrl = `https://sparkle-cdn.oss-cn-chengdu.aliyuncs.com/${fileName}`
-
       await AliyunOSSClient.asyncUpload('sparkle-cdn', fileName, filePath)
-
       onChange!(accessUrl)
       Toast.success('头像上传成功')
     }
@@ -157,7 +129,7 @@ function ImageUploader(props: Props) {
         position="bottom"
         round
       >
-        <Popup.Header onClose={handlePopupClose} title="是否要投递该职位" showClose={true} style={styles.popupHeader} titleTextStyle={styles.popupHeaderText} divider={true} />
+        <Popup.Header onClose={handlePopupClose} title="选择你的照片" showClose={true} style={styles.popupHeader} titleTextStyle={styles.popupHeaderText} divider={true} />
         <View style={styles.popupWrapper}>
           <Button style={styles.popupButton} onPress={handleCameraLaunch} type="hazy">拍照</Button>
           <Button style={styles.popupButton} onPress={handleImageLaunch} loadingText="投递">从相册选择</Button>

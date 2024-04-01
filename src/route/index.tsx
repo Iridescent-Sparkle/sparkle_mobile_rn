@@ -26,6 +26,7 @@ import GeniusUpdateVolunteer from '@/page/genius/update-volunteer'
 import GeniusUpdateEducation from '@/page/genius/update-education'
 import GeniusUpdateResume from '@/page/genius/update-resume'
 import GeniusUpdateExperience from '@/page/genius/update-experience'
+import ResumePreview from '@/page/genius/resume-preview'
 
 const Stack = createNativeStackNavigator()
 
@@ -69,6 +70,7 @@ function RouteProvider() {
               <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} options={{ title: '项目经历' }} />
               <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ title: '志愿活动经历' }} />
               <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ title: '附件简历' }} />
+              <Stack.Screen name="ResumePreview" component={ResumePreview} options={{ title: '预览简历' }} />
             </Stack.Group>
             )
           : (
