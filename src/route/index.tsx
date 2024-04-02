@@ -30,6 +30,8 @@ import GeniusUpdateVolunteer from '@/page/genius/update-volunteer'
 import Setting from '@/page/setting'
 import { useJobStore } from '@/store/job'
 import { useUserStore } from '@/store/user'
+import DeliverList from '@/page/boss/deliver-list'
+import RechargeIntegral from '@/page/boss/recharge-integral'
 
 const Stack = createNativeStackNavigator()
 
@@ -79,6 +81,8 @@ function RouteProvider() {
                         <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ title: '在线简历' }} />
                         <Stack.Screen name="PublishJob" component={PublishJob} options={{ title: '发布职位' }} />
                         <Stack.Screen name="SearchPage" component={SearchPage} options={{ headerShown: false }} />
+                        <Stack.Screen name="DeliverList" component={DeliverList} options={{ title: '投递者列表' }} />
+                        <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} options={{ title: '积分充值' }} />
                       </Stack.Group>
                       )
                     : (

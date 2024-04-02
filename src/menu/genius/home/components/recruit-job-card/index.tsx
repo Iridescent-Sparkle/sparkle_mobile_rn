@@ -25,7 +25,7 @@ function RecruitJobCard(props: Props) {
   }
 
   const handleViewJob = () => {
-    navigation.dispatch(StackActions.push('DeliverDetail', {
+    navigation.dispatch(StackActions.push('DeliverList', {
       jobId: data.id,
     }))
   }

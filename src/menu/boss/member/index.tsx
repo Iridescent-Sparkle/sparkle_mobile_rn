@@ -30,13 +30,13 @@ const MENU_JOB = [
   {
     title: '置顶职位',
     icon: <Entypo name="rocket" size={pxToDp(36)} color={themeColor.primary} />,
-    route: '',
+    route: 'RechargeIntegral',
   },
-  {
-    title: '招聘数据',
-    icon: <Entypo name="bar-graph" size={pxToDp(36)} color={themeColor.primary} />,
-    route: '',
-  },
+  // {
+  //   title: '招聘数据',
+  //   icon: <Entypo name="bar-graph" size={pxToDp(36)} color={themeColor.primary} />,
+  //   route: '',
+  // },
 ]
 const MENU_OTHER = [
   {
