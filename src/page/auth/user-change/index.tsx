@@ -25,16 +25,16 @@ function UserChange() {
   const userStore = useUserStore()
   const navigation = useNavigation()
   const im = useChatContext()
-  const handleContinueClick = () => {
-    userStore.setData({
-      role: userStore.role === 'genius' ? 'boss' : 'genius',
-    })
-    im.logout({
+  const handleContinueClick = async () => {
+    await im.logout({
       result(params) {
         console.log('im 退出', params)
       },
     })
-    navigation.dispatch(StackActions.replace('Boss'))
+
+    await userStore.changeUser(userStore.role === 'genius' ? 'boss' : 'genius')
+
+    navigation.dispatch(StackActions.replace(userStore.role === 'genius' ? 'Boss' : 'Genius'))
   }
 
   return (

@@ -9,6 +9,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Card } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import BaseCollapseCard from '../base-collapse-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
@@ -33,8 +34,9 @@ function MemberContactInfoCard(props: Props) {
       isEdit: true,
     }))
   }
+
   return (
-    <BaseCollapseCard title="联系信息" titleLeftExtra={<FontAwesome name="user" size={pxToDp(36)} color={themeColor.primary} />} loading={loading} showContent={data.address || data.phone || data.email} onAdd={onAdd} onEdit={onEdit}>
+    <BaseCollapseCard title="联系信息" titleLeftExtra={<AntDesign name="contacts" size={pxToDp(36)} color={themeColor.primary} />} loading={loading} showContent={data.address || data.phone || data.email} onAdd={onAdd} onEdit={onEdit}>
       <Card>
         <Visible visible={!!data.address}>
           <View style={styles.info}>

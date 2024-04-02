@@ -140,6 +140,7 @@ const styles = create({
     backgroundColor: '#fff',
   },
   title: {
+    color: themeColor.black85,
     marginTop: 48,
     fontSize: 40,
     fontWeight: '700',
@@ -173,6 +174,7 @@ const styles = create({
   },
   passwordTip: {
     fontSize: 24,
+    color: themeColor.black65,
   },
   accountTipWrapper: {
     width: '100%',

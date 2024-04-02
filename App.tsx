@@ -13,16 +13,6 @@ import { useJobStore } from '@/store/job'
 import { isAndroid } from '@/core/tools/validator'
 
 function App() {
-  const userStore = useUserStore()
-  const jobStore = useJobStore()
-
-  useEffect(() => {
-    StatusBar.setBackgroundColor('white')
-    StatusBar.setBarStyle('dark-content')
-    userStore.getUserInfo()
-    jobStore.getJobOptions()
-  }, [])
-
   const palette = usePresetPalette()
   const light = useLightTheme(palette)
 
@@ -65,6 +55,11 @@ function App() {
     },
     [],
   )
+
+  useEffect(() => {
+    StatusBar.setBackgroundColor('white')
+    StatusBar.setBarStyle('dark-content')
+  }, [])
 
   return (
     <Provider theme={customTheme}>

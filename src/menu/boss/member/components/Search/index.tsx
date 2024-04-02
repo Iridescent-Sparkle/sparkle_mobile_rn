@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from 'react-native'
 import { Search } from '@fruits-chain/react-native-xiaoshu'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import PageHeader from '../../manage/components/PageHeader'
+import PageHeader from '../../../manage/components/PageHeader'
 import { create } from '@/core/styleSheet'
 import SearchBar from '@/components/recruit/recruit-list/recruit-search-bar'
 import { themeColor } from '@/core/styleSheet/themeColor'

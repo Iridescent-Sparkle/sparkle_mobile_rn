@@ -10,7 +10,9 @@ interface State {
 }
 
 interface Action {
+  initData: () => Promise<void>
   getUserInfo: () => Promise<void>
+  changeUser: (role: 'boss' | 'genius') => Promise<void>
   setData: (params: Partial<State>) => void
   register: (params: { username: string, captcha: string, confirmPassword: string, password: string }) => void
   login: (params: { username: string, password: string }) => void
@@ -41,6 +43,22 @@ export const useUserStore = create<State & Action>(set => ({
       ...params,
     }))
   },
+  initData: async () => {
+    const token = await AsyncStorage.getItem('token') || ''
+    const role = <'boss' | 'genius'>(await AsyncStorage.getItem('role') || '')
+    set(state => ({
+      ...state,
+      token,
+      role,
+    }))
+  },
+  changeUser: async (role: 'boss' | 'genius') => {
+    await AsyncStorage.setItem('role', role)
+    set(state => ({
+      ...state,
+      role,
+    }))
+  },
   register: async (params) => {
     await request.post(params, {
       url: '/user/register',
@@ -55,7 +73,6 @@ export const useUserStore = create<State & Action>(set => ({
       await AsyncStorage.setItem('token', loginRes.data.accessToken || '')
 
       return set((state) => {
-        state.getUserInfo()
         return {
           ...state,
           token: loginRes.data.accessToken,
@@ -76,19 +93,15 @@ export const useUserStore = create<State & Action>(set => ({
     }))
   },
   getUserInfo: async () => {
-    const token = await AsyncStorage.getItem('token') || ''
+    const userInfo = await request.get({}, {
+      url: '/user/info',
+    })
 
-    if (token) {
-      const userInfo = await request.get({}, {
-        url: '/user/info',
-      })
-      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo.data))
+    await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo.data))
 
-      return set(state => ({
-        ...state,
-        token,
-        userInfo: userInfo.data,
-      }))
-    }
+    return set(state => ({
+      ...state,
+      userInfo: userInfo.data,
+    }))
   },
 }))

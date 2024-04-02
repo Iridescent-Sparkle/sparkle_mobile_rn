@@ -8,11 +8,13 @@ import { IMAGE_PREFIX } from '@/core/constants'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { useUserStore } from '@/store/user'
+import { useJobStore } from '@/store/job'
 
 function Login() {
   const [form] = Form.useForm()
   const navigation = useNavigation()
   const userStore = useUserStore()
+  const jobStore = useJobStore()
 
   const handleRegisterClick = () => {
     const replaceAction = StackActions.replace('Register')
@@ -26,7 +28,9 @@ function Login() {
 
   const handleLoginClick = async () => {
     const formValues = await form.validateFields()
-    userStore.login(formValues)
+    await userStore.login(formValues)
+    userStore.getUserInfo()
+    jobStore.getJobOptions()
   }
 
   return (
@@ -74,6 +78,7 @@ const styles = create({
     backgroundColor: '#fff',
   },
   title: {
+    color: themeColor.black85,
     marginTop: 16,
     fontSize: 40,
     fontWeight: '700',
@@ -103,6 +108,7 @@ const styles = create({
     marginBottom: 72,
   },
   passwordTip: {
+    color: themeColor.black65,
     fontSize: 24,
   },
   accountTipWrapper: {

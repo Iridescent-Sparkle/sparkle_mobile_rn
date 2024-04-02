@@ -1,7 +1,9 @@
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
   title?: string
@@ -9,14 +11,17 @@ interface Props {
 }
 export default function PageHeader(props: Props) {
   const { title, back } = props
-
+  const navigation = useNavigation()
+  const handleButtonClick = () => {
+    navigation.dispatch(StackActions.push('Setting'))
+  }
   return (
     <View style={styles.container}>
       {title && <Text style={styles.title}>{title}</Text>}
       {back && <AntDesign name="left" size={24} color="black" />}
-      <View style={styles.button}>
+      <Pressable style={styles.button} onPress={handleButtonClick}>
         <Feather name="more-horizontal" size={pxToDp(48)} color="black" />
-      </View>
+      </Pressable>
     </View>
   )
 }
@@ -35,6 +40,7 @@ const styles = create({
     borderColor: '#F7F7F7',
   },
   title: {
+    color: themeColor.black85,
     fontSize: 36,
     fontWeight: 'bold',
   },
