@@ -5,6 +5,7 @@ import { request } from '@/core/api'
 
 interface State {
   token: string
+  role: 'boss' | 'genius'
   userInfo: User
 }
 
@@ -18,6 +19,7 @@ interface Action {
 
 export const useUserStore = create<State & Action>(set => ({
   token: '',
+  role: 'genius',
   userInfo: {
     id: 0,
     username: '',

@@ -10,7 +10,7 @@ import Input from '@/core/components/Input'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
 
-export default function GeniusUpdateProfile() {
+export default function CompanyAuth() {
   const form = Form.useForm()
   const insets = useSafeAreaInsets()
   const navigation = useNavigation()
@@ -61,13 +61,13 @@ export default function GeniusUpdateProfile() {
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
         <Form form={form}>
-          <Form.Item name="avatar">
+          <Form.Item name="avatar" title="公司头像">
             <ImageUploader />
           </Form.Item>
-          <Form.Item name="nickname" title="昵称">
+          <Form.Item name="nickname" title="公司名称">
             <Input />
           </Form.Item>
-          <Form.Item name="occupation" title="职业">
+          <Form.Item name="occupation" title="营业执照">
             <Input />
           </Form.Item>
         </Form>

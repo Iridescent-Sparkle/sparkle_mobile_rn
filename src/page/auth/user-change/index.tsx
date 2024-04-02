@@ -2,28 +2,39 @@ import { Button } from '@fruits-chain/react-native-xiaoshu'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
 import { Text, View } from 'react-native'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import { useChatContext } from 'react-native-chat-uikit'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create } from '@/core/styleSheet'
+import { useUserStore } from '@/store/user'
 
 const GUIDE_DATA = {
-  resume: {
+  genius: {
     title: '你当前的身份是"牛人"',
     button: '切换为"Boss"身份',
     img: 'job_offers.png',
   },
-  recruit: {
+  boss: {
     title: '你当前的身份是"Boss"',
     button: '切换为"牛人"身份',
     img: 'job_hunt.png',
   },
-}
+} as const
 
 function UserChange() {
-  // const router = useRouter()
-  // const { type } = useLocalSearchParams<{ type: 'resume' | 'recruit' }>()
-
+  const userStore = useUserStore()
+  const navigation = useNavigation()
+  const im = useChatContext()
   const handleContinueClick = () => {
-    // router.push('/(auth)/(password)/verification-code')
+    userStore.setData({
+      role: userStore.role === 'genius' ? 'boss' : 'genius',
+    })
+    im.logout({
+      result(params) {
+        console.log('im 退出', params)
+      },
+    })
+    navigation.dispatch(StackActions.replace('Boss'))
   }
 
   return (
@@ -31,12 +42,12 @@ function UserChange() {
       <FastImage
         style={styles.banner}
         source={{
-          uri: `${IMAGE_PREFIX}/${GUIDE_DATA.resume.img}`,
+          uri: `${IMAGE_PREFIX}/${GUIDE_DATA[userStore.role].img}`,
         }}
       >
       </FastImage>
-      <Text style={styles.title}>{GUIDE_DATA.resume.title}</Text>
-      <Button style={styles.button} onPress={handleContinueClick}>{GUIDE_DATA.resume.button}</Button>
+      <Text style={styles.title}>{GUIDE_DATA[userStore.role].title}</Text>
+      <Button style={styles.button} onPress={handleContinueClick}>{GUIDE_DATA[userStore.role].button}</Button>
     </View>
   )
 }
@@ -44,11 +55,11 @@ function UserChange() {
 const styles = create({
   container: {
     position: 'relative',
-    top: -64,
     flex: 1,
     paddingHorizontal: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff',
   },
   banner: {
     width: 630,

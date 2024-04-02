@@ -14,14 +14,18 @@ export default function Setting() {
     await userStore.logout()
     im.logout({
       result(params) {
-        console.log(params)
+        console.log('im 退出', params)
       },
     })
   }
+
   const handleDeleteAccount = () => {
     navigation.dispatch(StackActions.push('PublishJob'))
   }
-  const handleRoleChange = () => {}
+
+  const handleRoleChange = () => {
+    navigation.dispatch(StackActions.push('UserChange'))
+  }
 
   return (
     <View style={styles.container}>
