@@ -28,6 +28,7 @@ import GeniusUpdateResume from '@/page/genius/update-resume'
 import GeniusUpdateExperience from '@/page/genius/update-experience'
 import ResumePreview from '@/page/genius/resume-preview'
 import UserChange from '@/page/auth/user-change'
+import SearchPage from '@/menu/boss/components/Search'
 
 const Stack = createNativeStackNavigator()
 
@@ -73,6 +74,7 @@ function RouteProvider() {
               <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ title: '附件简历' }} />
               <Stack.Screen name="ResumePreview" component={ResumePreview} options={{ title: '预览简历' }} />
               <Stack.Screen name="UserChange" component={UserChange} options={{ title: '切换角色' }} />
+              <Stack.Screen name="SearchPage" component={SearchPage} options={{ headerShown: false }} />
             </Stack.Group>
             )
           : (
