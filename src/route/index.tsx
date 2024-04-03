@@ -32,6 +32,7 @@ import { useJobStore } from '@/store/job'
 import { useUserStore } from '@/store/user'
 import DeliverList from '@/page/boss/deliver-list'
 import RechargeIntegral from '@/page/boss/recharge-integral'
+import CompanyAuth from '@/page/auth/company-auth'
 
 const Stack = createNativeStackNavigator()
 
@@ -88,7 +89,6 @@ function RouteProvider() {
                     : (
                       <Stack.Group>
                         <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
                         <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
                         <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
                         <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ title: '联系信息' }} />
@@ -107,6 +107,8 @@ function RouteProvider() {
                   <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false, title: '' }} />
                   <Stack.Screen name="Setting" component={Setting} options={{ title: '设置' }} />
                   <Stack.Screen name="UserChange" component={UserChange} options={{ title: '切换角色' }} />
+                  <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
+                  <Stack.Screen name="CompanyAuth" component={CompanyAuth} options={{ title: '企业信息' }} />
                 </Stack.Group>
               </>
               )

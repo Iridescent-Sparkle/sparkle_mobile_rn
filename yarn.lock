@@ -2683,6 +2683,11 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+alipay-rn@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.npmmirror.com/alipay-rn/-/alipay-rn-1.0.14.tgz#48bfcfba4b21f76ac97f2a41fc2174feaf69baf2"
+  integrity sha512-HVZDEVuAzvBnEJfoS7i2GJyAAa65BAw49SzTyWiIJkn5J+DtUB1LPlcsw9jLZdGTsvGhZhH8Cr5d1huz5KzlYQ==
+
 aliyun-oss-react-native@^1.0.0-alpha.7:
   version "1.0.0-alpha.7"
   resolved "https://registry.npmmirror.com/aliyun-oss-react-native/-/aliyun-oss-react-native-1.0.0-alpha.7.tgz#62f25ccd90ac0cff983c62f6f939d1862092ab4e"
@@ -4846,6 +4851,11 @@ get-tsconfig@^4.7.0, get-tsconfig@^4.7.2:
   integrity sha512-ZvkrzoUA0PQZM6fy6+/Hce561s+faD1rsNwhnO5FelNjyy7EMGJ3Rz1AQ8GYDWjhRs/7dBLOEJvhK8MiEJOAFg==
   dependencies:
     resolve-pkg-maps "^1.0.0"
+
+gifted-charts-core@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmmirror.com/gifted-charts-core/-/gifted-charts-core-0.1.3.tgz#666aa428fd6d9234c6878f9c18e743bdd3c0957a"
+  integrity sha512-5MyVkokjbAkV6rc+4B9ocZbJr4CkOExyPDqW9nybLZ63Dx+ylv+4J3voMxVTqRZtRSkU+q7lP+inOEk8p+MaCg==
 
 glob-parent@^5.1.2:
   version "5.1.2"
@@ -7359,6 +7369,13 @@ react-native-get-random-values@~1.8.0:
   integrity sha512-H/zghhun0T+UIJLmig3+ZuBCvF66rdbiWUfRSNS6kv5oDSpa1ZiVyvRWtuPesQpT8dXj+Bv7WJRQOUP+5TB1sA==
   dependencies:
     fast-base64-decode "^1.0.0"
+
+react-native-gifted-charts@^1.4.9:
+  version "1.4.9"
+  resolved "https://registry.npmmirror.com/react-native-gifted-charts/-/react-native-gifted-charts-1.4.9.tgz#fbe5c5c4d53123d962ec4a8de0671f84274a17f1"
+  integrity sha512-o7MwG5WO70BwMsi1VSBR0UU0SWTrBsLDjwTg6GNWHrI88jfz+5uer3OnN7tG4LBRLFEF/Vt4An1HgS6sVCcOMg==
+  dependencies:
+    gifted-charts-core "^0.1.3"
 
 react-native-image-pan-zoom@^2.1.12:
   version "2.1.12"

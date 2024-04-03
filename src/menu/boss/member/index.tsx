@@ -13,12 +13,12 @@ const MENU_ACCOUNT = [
   {
     title: '个人信息',
     icon: <Feather name="users" size={pxToDp(36)} color={themeColor.primary} />,
-    route: '',
+    route: 'GeniusUpdateProfile',
   },
   {
     title: '企业信息',
     icon: <FontAwesome name="suitcase" size={pxToDp(36)} color={themeColor.primary} />,
-    route: '',
+    route: 'CompanyAuth',
   },
 ]
 const MENU_JOB = [
@@ -28,7 +28,7 @@ const MENU_JOB = [
     route: 'PublishJob',
   },
   {
-    title: '置顶职位',
+    title: '积分充值',
     icon: <Entypo name="rocket" size={pxToDp(36)} color={themeColor.primary} />,
     route: 'RechargeIntegral',
   },

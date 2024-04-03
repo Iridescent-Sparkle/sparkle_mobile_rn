@@ -1,4 +1,4 @@
-import { Button } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Uploader } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
@@ -67,8 +67,8 @@ export default function CompanyAuth() {
           <Form.Item name="nickname" title="公司名称">
             <Input />
           </Form.Item>
-          <Form.Item name="occupation" title="营业执照">
-            <Input />
+          <Form.Item name="occupation" title="上传营业执照">
+
           </Form.Item>
         </Form>
       </View>
@@ -86,5 +86,15 @@ const styles = create({
   },
   button: {
     borderRadius: 24,
+  },
+  card: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 24,
+    marginVertical: 24,
+    borderRadius: 24,
+  },
+  img: {
+    height: 200,
   },
 })
