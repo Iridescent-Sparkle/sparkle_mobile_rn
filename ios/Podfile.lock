@@ -34,6 +34,8 @@ PODS:
     - React
   - AliyunOSSiOS (2.10.19)
   - boost (1.83.0)
+  - BVLinearGradient (2.8.3):
+    - React-Core
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.5)
@@ -1355,6 +1357,7 @@ PODS:
 DEPENDENCIES:
   - aliyun-oss-react-native (from `../node_modules/aliyun-oss-react-native`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -1506,6 +1509,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/aliyun-oss-react-native"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -1680,6 +1685,7 @@ SPEC CHECKSUMS:
   aliyun-oss-react-native: dfcf527949b80bb7feeecac43407e5168b2c0ae2
   AliyunOSSiOS: 021dc55faa94ec6f4d4779a4a50f697cda067d3b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
+  BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: 56e0e498dbb513b96c40bac6284729ba4e62672d

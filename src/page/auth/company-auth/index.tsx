@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import LicenseUploader from './components/license-uploader'
 import { request } from '@/core/api'
 import Form from '@/core/components/Form'
 import ImageUploader from '@/core/components/ImageUploader'
@@ -16,6 +17,7 @@ export default function CompanyAuth() {
   const navigation = useNavigation()
   const userStore = useUserStore()
   const [loading, setLoading] = useState(false)
+
   const handleComfirmClick = async () => {
     try {
       setLoading(true)
@@ -23,9 +25,10 @@ export default function CompanyAuth() {
 
       await request.post({
         id: userStore.userInfo.id,
+        status: 0,
         ...values,
       }, {
-        url: '/user/update',
+        url: '/user/company/create',
       })
       await userStore.getUserInfo()
       navigation.goBack()
@@ -43,9 +46,9 @@ export default function CompanyAuth() {
       await userStore.getUserInfo()
 
       form.setFieldsValue({
-        avatar: userStore.userInfo.avatar,
-        nickname: userStore.userInfo.nickname,
-        occupation: userStore.userInfo.occupation,
+        companyAvatar: userStore.userInfo.company.companyAvatar,
+        companyName: userStore.userInfo.company.companyName,
+        companyLicense: userStore.userInfo.company.companyLicense,
       })
     }
     catch (error) {
@@ -54,21 +57,21 @@ export default function CompanyAuth() {
   }
 
   useEffect(() => {
-    getInitData()
+    userStore.userInfo.company && getInitData()
   }, [])
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <View>
         <Form form={form}>
-          <Form.Item name="avatar" title="公司头像">
+          <Form.Item name="companyAvatar" title="公司头像">
             <ImageUploader />
           </Form.Item>
-          <Form.Item name="nickname" title="公司名称">
+          <Form.Item name="companyName" title="公司名称">
             <Input />
           </Form.Item>
-          <Form.Item name="occupation" title="上传营业执照">
-
+          <Form.Item name="companyLicense" title="上传营业执照">
+            <LicenseUploader />
           </Form.Item>
         </Form>
       </View>

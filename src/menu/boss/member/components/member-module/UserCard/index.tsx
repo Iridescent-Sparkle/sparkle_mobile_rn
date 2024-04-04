@@ -1,8 +1,13 @@
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
 export default function UserCard() {
+  const navigation = useNavigation()
+  const hanldeIntegralClick = () => {
+    navigation.dispatch(StackActions.push('IntegralList'))
+  }
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -10,14 +15,14 @@ export default function UserCard() {
         <Text style={styles.name}>张楚焓</Text>
         <Text style={styles.desc}>非洲黑奴</Text>
         <View style={styles.sourceWrapper}>
-          <View style={styles.sourceBox}>
+          <Pressable style={styles.sourceBox} onPress={hanldeIntegralClick}>
             <Text style={styles.sourceNumber}>31</Text>
             <Text style={styles.sourceText}>我的积分</Text>
-          </View>
-          <View style={styles.sourceBox}>
+          </Pressable>
+          <Pressable style={styles.sourceBox}>
             <Text style={styles.sourceNumber}>31</Text>
             <Text style={styles.sourceText}>我联系的</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     </View>

@@ -26,15 +26,20 @@ function UserChange() {
   const navigation = useNavigation()
   const im = useChatContext()
   const handleContinueClick = async () => {
-    await im.logout({
-      result(params) {
-        console.log('im 退出', params)
-      },
-    })
+    if (userStore.userInfo.company) {
+      await im.logout({
+        result(params) {
+          console.log('im 退出', params)
+        },
+      })
 
-    await userStore.changeUser(userStore.role === 'genius' ? 'boss' : 'genius')
+      await userStore.changeUser(userStore.role === 'genius' ? 'boss' : 'genius')
 
-    navigation.dispatch(StackActions.replace(userStore.role === 'genius' ? 'Boss' : 'Genius'))
+      navigation.dispatch(StackActions.replace(userStore.role === 'genius' ? 'Boss' : 'Genius'))
+    }
+    else {
+      navigation.dispatch(StackActions.replace('CompanyAuth'))
+    }
   }
 
   return (

@@ -18,7 +18,7 @@ const MENU_ACCOUNT = [
   {
     title: '企业信息',
     icon: <FontAwesome name="suitcase" size={pxToDp(36)} color={themeColor.primary} />,
-    route: 'CompanyAuth',
+    route: 'CompanyInfo',
   },
 ]
 const MENU_JOB = [

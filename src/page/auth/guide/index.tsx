@@ -1,10 +1,10 @@
+import { Button } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { Button } from '@fruits-chain/react-native-xiaoshu'
-import { StackActions, useNavigation } from '@react-navigation/native'
-import { IMAGE_PREFIX } from '@/core/constants'
 import { create } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 function Guide() {
   const navigation = useNavigation()

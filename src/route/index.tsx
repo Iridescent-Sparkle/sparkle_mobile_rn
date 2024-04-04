@@ -33,6 +33,8 @@ import { useUserStore } from '@/store/user'
 import DeliverList from '@/page/boss/deliver-list'
 import RechargeIntegral from '@/page/boss/recharge-integral'
 import CompanyAuth from '@/page/auth/company-auth'
+import IntegralList from '@/page/boss/integral-list'
+import CompanyInfo from '@/page/boss/company-info'
 
 const Stack = createNativeStackNavigator()
 
@@ -84,6 +86,8 @@ function RouteProvider() {
                         <Stack.Screen name="SearchPage" component={SearchPage} options={{ headerShown: false }} />
                         <Stack.Screen name="DeliverList" component={DeliverList} options={{ title: '投递者列表' }} />
                         <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} options={{ title: '积分充值' }} />
+                        <Stack.Screen name="IntegralList" component={IntegralList} options={{ title: '我的积分' }} />
+                        <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={{ title: '企业信息' }} />
                       </Stack.Group>
                       )
                     : (

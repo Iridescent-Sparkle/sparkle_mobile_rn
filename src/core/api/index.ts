@@ -22,6 +22,7 @@ export class Request {
     this.axios.interceptors.response.use((response) => {
       return response
     }, (error) => {
+      console.log(error)
       return Promise.reject(error)
     })
   }
@@ -84,6 +85,6 @@ export class Request {
 }
 
 export const request = new Request({
-  baseURL: 'http://10.254.0.148:3000',
-  // baseURL: 'http://192.168.1.3:3000',
+  // baseURL: 'http://10.254.0.148:3000',
+  baseURL: 'http://192.168.1.6:3000',
 })

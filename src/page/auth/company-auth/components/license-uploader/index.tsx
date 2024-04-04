@@ -1,15 +1,14 @@
-import { Button, Popup, Toast, Uploader } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Popup, Toast } from '@fruits-chain/react-native-xiaoshu'
 import React, { useState } from 'react'
-import { PermissionsAndroid, View } from 'react-native'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { PermissionsAndroid, Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { initOssClient } from '@/core/tools/oss'
-import { themeColor } from '@/core/styleSheet/themeColor'
-import { create, pxToDp } from '@/core/styleSheet'
-import { IMAGE_PREFIX } from '@/core/constants'
-import { useUserStore } from '@/store/user'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import OverlayLoading from '@/core/components/OverlayLoading'
+import { IMAGE_PREFIX } from '@/core/constants'
+import { create, pxToDp } from '@/core/styleSheet'
+import { initOssClient } from '@/core/tools/oss'
+import { useUserStore } from '@/store/user'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
   onChange?: (value: any) => void
@@ -29,10 +28,11 @@ function LicenseUploader(props: Props) {
       const accessUrl = `https://sparkle-cdn.oss-cn-chengdu.aliyuncs.com/${fileName}`
       await AliyunOSSClient.asyncUpload('sparkle-cdn', fileName, filePath)
       onChange!(accessUrl)
-      Toast.success('头像上传成功')
+      Toast.success('上传成功')
     }
     catch (error) {
-      Toast.fail('头像上传失败')
+      console.log(error)
+      Toast.fail('上传失败')
       return Promise.reject(error)
     }
     finally {
@@ -53,7 +53,7 @@ function LicenseUploader(props: Props) {
         Toast.fail('取消选择')
       }
       else if (response.error) {
-        Toast.fail('头像上传失败')
+        Toast.fail('上传失败')
       }
       else {
         const imageUri = response.uri || response.assets?.[0]?.uri
@@ -95,7 +95,7 @@ function LicenseUploader(props: Props) {
         Toast.fail('取消选择')
       }
       else if (response.error) {
-        Toast.fail('头像上传失败')
+        Toast.fail('上传失败')
       }
       else {
         const imageUri = response.uri || response.assets?.[0]?.uri
@@ -113,8 +113,28 @@ function LicenseUploader(props: Props) {
   }
   return (
     <View style={styles.container}>
-      <FastImage source={{ uri: value!.filepath || `${IMAGE_PREFIX}/license.png` }} style={styles.license} resizeMode="cover"></FastImage>
-      <Button>点击上传营业执照</Button>
+      <FastImage source={{ uri: value || `${IMAGE_PREFIX}/license.png` }} style={styles.license} resizeMode="contain"></FastImage>
+      <View style={styles.mask}>
+        {
+          value
+            ? (
+              <Pressable style={styles.uploadedButton} onPress={handleEditAvatar}>
+                <Text style={styles.buttonText}>重新上传</Text>
+              </Pressable>
+              )
+            : (
+              <Pressable
+                style={styles.button}
+                onPress={handleEditAvatar}
+
+              >
+                <Text style={styles.buttonText}>
+                  点击上传营业执照
+                </Text>
+              </Pressable>
+              )
+        }
+      </View>
       {loading && (<OverlayLoading />)}
       <Popup
         safeAreaInsetBottom
@@ -140,15 +160,38 @@ const styles = create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 24,
-    height: 140,
+    height: 340,
     marginVertical: 24,
     borderRadius: 24,
   },
-  button: {
+  mask: {
     position: 'absolute',
-    bottom: 32,
-    left: '53%',
+    width: '100%',
+    height: 388,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  button: {
+    marginTop: 48,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: themeColor.primary,
+    borderRadius: 16,
+  },
+  uploadedButton: {
+    marginTop: 48,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000073',
+    borderRadius: 16,
+  },
+  buttonText: {
+    color: themeColor.white,
   },
   popupHeader: {
     height: 180,

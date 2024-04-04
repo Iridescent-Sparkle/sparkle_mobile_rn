@@ -41,21 +41,34 @@ interface JobBonus {
   updateTime: string
 }
 
+interface Company {
+  user: any[]
+  id: number
+  companyName: string
+  companyAvatar: string
+  companyLicense: string
+  status: number
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+}
 interface User {
   id: number
   username: string
   password: string
   nickname: string
-  avatar?: any
+  avatar: string
+  occupation: string
   email: string
-  occupation?: string
   contactIdToB: string
-  contactIdToC?: any
+  contactIdToC: string
   contactPassword: string
+  companyId: number
+  profileId: number
   isFrozen: boolean
-  isAdmin: boolean
   createTime: string
   updateTime: string
+  company: Company
 }
 
 interface UserProfile {
