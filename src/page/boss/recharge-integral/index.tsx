@@ -1,30 +1,61 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
-import { Button } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Toast } from '@fruits-chain/react-native-xiaoshu'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { create, pxToDp } from '@/core/styleSheet'
+import Alipay from 'alipay-rn'
+import { create, pxToDp, s } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
+const alipayErrorReason = {
+  6001: '支付取消',
+  6002: '网络连接出错',
+  4000: '支付失败',
+  5000: '重复请求',
+}
 export default function RechargeIntegral() {
-  const [jobList, setJobList] = useState([] as JobDetail[])
+  const [integralMeal, setIntegralMeal] = useState([] as IntegralMeal[])
+  const [selectMeal, setSelectMeal] = useState({} as IntegralMeal)
 
   const getInitData = async () => {
     try {
-      const { data: jobListData } = await request.get({}, {
-        url: `/genius/deliveries/user`,
+      const { data: { data: integralMealData } } = await request.post({}, {
+        url: `/boss/integral/all`,
       })
-      setJobList(jobListData)
+      const sortedIntegralMealData: IntegralMeal[] = integralMealData.sort((cur: { integralNum: number }, next: { integralNum: number }) => cur.integralNum - next.integralNum)
+      const defaultSelectMeal: IntegralMeal = sortedIntegralMealData.find(item => item.isDefault) || sortedIntegralMealData[0]
+      setSelectMeal(defaultSelectMeal)
+      setIntegralMeal(sortedIntegralMealData)
     }
-    catch (error) {
-
+    catch (error: any) {
+      if (error.resultStatus)
+        Toast.fail(alipayErrorReason[error.resultStatus])
     }
   }
 
-  useFocusEffect(useCallback(() => {
+  useEffect(() => {
     getInitData()
-  }, []))
+  }, [])
+  const handleMealClick = (item: IntegralMeal) => {
+    setSelectMeal(item)
+  }
+  const handlePayClick = async () => {
+    try {
+      const { data } = await request.post({
+        totalAmount: selectMeal.price,
+        subject: '积分充值',
+      }, {
+        url: `/boss/order/create`,
+      })
+      Alipay.setSandbox(true)
+      const result = await Alipay.pay(data)
+      console.log(JSON.parse(result.result))
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <View style={styles.container}>
       <View>
@@ -38,22 +69,23 @@ export default function RechargeIntegral() {
         <View style={styles.panelWrapper}>
           <Text style={styles.panelTitle}>请选择充值数量</Text>
           <View style={styles.panel}>
-            <Pressable style={styles.panelItem}>
-              <Text style={styles.panelItemHeader}>15积分</Text>
-              <Text style={styles.panelItemBottom}>¥20</Text>
-            </Pressable>
-            <Pressable style={styles.panelItem}>
-              <Text style={styles.panelItemHeader}>15积分</Text>
-              <Text style={styles.panelItemBottom}>¥20</Text>
-            </Pressable>
-            <Pressable style={styles.panelItem}>
-              <Text style={styles.panelItemHeader}>15积分</Text>
-              <Text style={styles.panelItemBottom}>¥20</Text>
-            </Pressable>
-            <Pressable style={styles.panelItem}>
-              <Text style={styles.panelItemHeader}>15积分</Text>
-              <Text style={styles.panelItemBottom}>¥20</Text>
-            </Pressable>
+            {
+              integralMeal.map((item, index) => {
+                return (
+                  <Pressable key={index} style={[styles.panelItem, selectMeal.id === item.id ? styles.selectPanelItem : null]} onPress={() => handleMealClick(item)}>
+                    <Text style={[styles.panelItemHeader, selectMeal.id === item.id ? styles.selectPanelItemHeader : null]}>
+                      {item?.integralNum}
+                      积分
+                    </Text>
+                    <Text style={[styles.panelItemBottom, selectMeal.id === item.id ? styles.selectPanelItemBottom : null]}>
+                      ¥
+                      {item?.price}
+                    </Text>
+                  </Pressable>
+                )
+              })
+            }
+
           </View>
         </View>
         <View style={styles.payway}>
@@ -70,9 +102,12 @@ export default function RechargeIntegral() {
       <View style={styles.footer}>
         <View style={styles.footerTitle}>
           <Text style={styles.payTitle}>订单金额：</Text>
-          <Text style={styles.payNumber}>¥20</Text>
+          <Text style={styles.payNumber}>
+            ¥
+            {selectMeal.price}
+          </Text>
         </View>
-        <Button style={styles.payButton}>立即支付</Button>
+        <Button style={styles.payButton} onPress={handlePayClick}>立即支付</Button>
       </View>
     </View>
   )
@@ -132,6 +167,10 @@ const styles = create({
     borderWidth: 2,
     borderColor: '#F5F6FA',
   },
+  selectPanelItem: {
+    borderWidth: 4,
+    borderColor: themeColor.primary,
+  },
   panelItemHeader: {
     height: 100,
     color: themeColor.primary,
@@ -139,6 +178,9 @@ const styles = create({
     textAlignVertical: 'center',
     lineHeight: 100,
     fontSize: 32,
+  },
+  selectPanelItemHeader: {
+    fontWeight: '700',
   },
   panelItemBottom: {
     height: 44,
@@ -150,6 +192,10 @@ const styles = create({
     backgroundColor: '#E0F3FF',
     fontSize: 24,
     color: themeColor.black65,
+  },
+  selectPanelItemBottom: {
+    color: '#FFFFFF',
+    backgroundColor: themeColor.primary,
   },
   payway: {
     flexDirection: 'row',

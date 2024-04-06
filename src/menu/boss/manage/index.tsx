@@ -1,28 +1,45 @@
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useCallback, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import { Empty } from '@fruits-chain/react-native-xiaoshu'
 import PageHeader from './components/PageHeader'
 import RecruitJobCard from '@/menu/genius/home/components/recruit-job-card'
 import { create } from '@/core/styleSheet'
+import { request } from '@/core/api'
+import { useUserStore } from '@/store/user'
 
 export default function BossManage() {
   const insets = useSafeAreaInsets()
-  const jobList = [
-    {
-      id: '1',
-      title: 'Web前端开发工程师',
-      description: '负责公司网站前端开发',
-      date: '2021-08-01',
-      salary: '10000-15000',
-      address: '北京',
-      contact: '18888888888',
-    },
-  ]
+  const userStore = useUserStore()
+  const [jobList, setJobList] = useState([] as JobDetail[])
+  const getInitData = async () => {
+    try {
+      const { data: { data: jobListData } } = await request.post({
+        userId: userStore.userInfo.id,
+      }, {
+        url: `boss/job/all`,
+      })
+      setJobList(jobListData)
+    }
+    catch (error) {
+
+    }
+  }
+  useFocusEffect(useCallback(() => {
+    getInitData()
+  }, []))
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <PageHeader title="管理招聘" />
-      <View style={styles.list}>
-        <FlatList data={jobList} renderItem={job => <RecruitJobCard data={job} />} keyExtractor={item => item.id} />
-      </View>
+      {jobList.length
+        ? (
+          <View style={styles.list}>
+            <FlatList data={jobList} renderItem={job => <RecruitJobCard data={job.item} type="manage" />} keyExtractor={item => String(item.id)} />
+          </View>
+          )
+        : <View style={styles.empty}><Empty /></View>}
     </View>
   )
 }
@@ -45,6 +62,11 @@ const styles = create({
   },
   list: {
     width: '100%',
-    height: 960,
+    flex: 1,
+  },
+  empty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

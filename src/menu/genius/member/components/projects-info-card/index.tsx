@@ -38,7 +38,7 @@ function MemberProjectsInfoCard(props: { data: UserProject[], loading: boolean }
     if (supported)
       await Linking.openURL(url)
     else
-      Toast.fail('无法该打开链接')
+      Toast.fail('无法打开该链接')
   }
 
   return (

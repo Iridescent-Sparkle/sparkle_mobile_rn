@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { useUserStore } from '../../../store/user/index'
 import Form from '@/core/components/Form'
 import Input from '@/core/components/Input'
 import MultiSelect from '@/core/components/MultiSelect'
@@ -15,7 +16,7 @@ import { useJobStore } from '@/store/job'
 
 export default function PublishJob() {
   const insets = useSafeAreaInsets()
-
+  const userStore = useUserStore()
   const form = Form.useForm()
 
   const navigation = useNavigation()
@@ -32,6 +33,7 @@ export default function PublishJob() {
       ...values,
       minSalary,
       maxSalary,
+      companyId: userStore.userInfo.companyId,
     }, { url: 'boss/job' })
 
     await Toast.success({

@@ -7,10 +7,10 @@
     "node": ">=18"
   },
   "scripts": {
+    "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator 'iPhone 15 Pro'",
     "lint": "eslint .",
-    "start": "react-native start",
     "clear-run": "react-native start --reset-cache",
     "test": "jest"
   },

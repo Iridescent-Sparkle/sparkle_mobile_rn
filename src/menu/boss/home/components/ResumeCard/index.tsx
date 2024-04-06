@@ -1,33 +1,29 @@
 import { Card, Space, Tag } from '@fruits-chain/react-native-xiaoshu'
-import FastImage from 'react-native-fast-image'
-import React, { useState } from 'react'
-import { Pressable, Text, View } from 'react-native'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { StackActions, useNavigation } from '@react-navigation/native'
+import dayjs from 'dayjs'
+import React from 'react'
+import { Pressable, Text, View } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
-import Visible from '@/core/components/Visible'
 
 interface Props {
-  handleCollectClick?: () => void
-  data: any
+  data: UserProfileList
   showCollectBtn?: boolean
 }
 
 function ResumeListCard(props: Props) {
-  const { data, handleCollectClick, showCollectBtn = true } = props
-
-  const [bookmark, setBookmark] = useState(false)
+  const { data } = props
 
   const navigation = useNavigation()
-  const onCollectClick = () => {
-    setBookmark(!bookmark)
-    handleCollectClick && handleCollectClick()
-  }
+
   const handleCardClick = () => {
-    navigation.dispatch(StackActions.push('JobDetail'))
+    navigation.dispatch(StackActions.push('ResumeDetail', {
+      profileId: data.id,
+    }))
   }
+  const totalTime = dayjs(data.experience[data.experience.length - 1].endTime).diff(data.experience[data.experience.length - 1].startTime, 'year') >= 1 ? `${dayjs(data.experience[data.experience.length - 1].endTime).diff(data.experience[data.experience.length - 1].startTime, 'year')}年` : `${dayjs(data.experience[data.experience.length - 1].endTime).diff(data.experience[data.experience.length - 1].startTime, 'month') || 1}月`
 
   return (
     <Pressable onPress={handleCardClick}>
@@ -37,22 +33,23 @@ function ResumeListCard(props: Props) {
             <FastImage
               style={styles.logo}
               source={{
-                uri: `${IMAGE_PREFIX}/stars.png`,
+                uri: data.user?.avatar || `${IMAGE_PREFIX}/stars.png`,
               }}
             />
             <View style={styles.titleWrapper}>
-              <Text style={styles.title}>UI/UX Designer</Text>
-              <Text style={styles.company}>Google LLC</Text>
+              <Text style={styles.title}>{data.user?.occupation}</Text>
+              <Text style={styles.desc} numberOfLines={1}>{data.summary}</Text>
             </View>
           </Space>
-          <Text style={styles.time}>1小时前在线</Text>
         </Space>
         <Space style={styles.body}>
-          <Text style={styles.desc} numberOfLines={2}>California, United States,California, United States,California, United States</Text>
           <Space direction="horizontal">
-            <Tag type="ghost" color="#1976D2">Web前端</Tag>
-            <Tag type="ghost" color="#1976D2">3年经验</Tag>
-            <Tag type="ghost" color="#1976D2">门头沟学院</Tag>
+            <Tag type="ghost" color="#1976D2">
+              {totalTime}
+              经验
+            </Tag>
+            <Tag type="ghost" color="#1976D2">{data.address}</Tag>
+            <Tag type="ghost" color="#1976D2">{data.eduction?.[data.eduction?.length - 1].school}</Tag>
           </Space>
         </Space>
       </Card>
@@ -89,8 +86,9 @@ const styles = create({
     color: themeColor.black65,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     color: themeColor.black85,
+    fontWeight: '700',
   },
   company: {
     fontSize: 34,

@@ -1,7 +1,7 @@
 import { Button, Uploader } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LicenseUploader from './components/license-uploader'
 import { request } from '@/core/api'
@@ -34,7 +34,7 @@ export default function CompanyAuth() {
       navigation.goBack()
     }
     catch (error) {
-
+      console.log(error)
     }
     finally {
       setLoading(false)
@@ -62,19 +62,22 @@ export default function CompanyAuth() {
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
-      <View>
+      <ScrollView>
         <Form form={form}>
-          <Form.Item name="companyAvatar" title="公司头像">
+          <Form.Item name="companyAvatar" title="企业头像">
             <ImageUploader />
           </Form.Item>
-          <Form.Item name="companyName" title="公司名称">
+          <Form.Item name="companyName" title="企业名称">
             <Input />
           </Form.Item>
           <Form.Item name="companyLicense" title="上传营业执照">
             <LicenseUploader />
           </Form.Item>
+          <Form.Item name="companyDesc" title="企业描述">
+            <Input />
+          </Form.Item>
         </Form>
-      </View>
+      </ScrollView>
       <Button loading={loading} onPress={handleComfirmClick} style={styles.button}>提交</Button>
     </View>
   )

@@ -12,7 +12,7 @@ import { IMAGE_PREFIX } from '@/core/constants'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
-  type: 'deliver'
+  type: 'deliver' | 'manage'
   data: JobDetail
 }
 
@@ -21,7 +21,9 @@ function RecruitJobCard(props: Props) {
   const navigation = useNavigation()
 
   const handleEditJob = () => {
-    navigation.dispatch(StackActions.push('PublishJob'))
+    navigation.dispatch(StackActions.push('PublishJob', {
+      jobId: data.id,
+    }))
   }
 
   const handleViewJob = () => {
@@ -30,10 +32,17 @@ function RecruitJobCard(props: Props) {
     }))
   }
 
+  const handleManageJob = () => {
+    navigation.dispatch(StackActions.push('JobDetail', {
+      jobId: data.id,
+      type: 'manage',
+    }))
+  }
+
   return (
-    <Pressable style={styles.container} onPress={handleViewJob}>
+    <View style={styles.container}>
       <Space direction="horizontal" style={styles.header}>
-        <Space direction="horizontal" gap={pxToDp(32)}>
+        <Pressable style={styles.left} onPress={handleManageJob}>
           <FastImage
             style={styles.logo}
             source={{
@@ -42,7 +51,7 @@ function RecruitJobCard(props: Props) {
           />
           <Space gap={pxToDp(20)}>
             <Text style={styles.title}>{data.jobName}</Text>
-            <Text style={styles.company}>{data.companyName}</Text>
+            <Text style={styles.company}>{data.company.companyName}</Text>
             <Space direction="horizontal">
               <Tag type="ghost" color="#979797">
                 {data.minSalary}
@@ -59,7 +68,7 @@ function RecruitJobCard(props: Props) {
                 : <Tag type="ghost" color="#979797">线下办公</Tag>}
             </Space>
           </Space>
-        </Space>
+        </Pressable>
         {
           type === 'deliver'
             ? <MaterialIcons name="arrow-forward-ios" size={pxToDp(32)} color="black" />
@@ -67,13 +76,13 @@ function RecruitJobCard(props: Props) {
               <Space direction="vertical" gap={pxToDp(70)}>
                 <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} onPress={handleEditJob} />
                 <Badge dot offset={[5, -2]}>
-                  <Feather name="list" size={pxToDp(32)} color={themeColor.primary} />
+                  <Feather name="list" size={pxToDp(32)} color={themeColor.primary} onPress={handleViewJob} />
                 </Badge>
               </Space>
               )
         }
       </Space>
-    </Pressable>
+    </View>
   )
 }
 
@@ -83,6 +92,10 @@ const styles = create({
     marginBottom: 32,
     borderBottomWidth: 2,
     borderColor: '#F0F1F1',
+  },
+  left: {
+    flexDirection: 'row',
+    gap: 32,
   },
   header: {
     flexDirection: 'row',

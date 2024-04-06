@@ -3,14 +3,15 @@ import { Text, View } from 'react-native'
 import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
-function ResumeSummaryCard() {
+interface Props {
+  data: UserProfileList
+}
+function ResumeSummaryCard(props: Props) {
+  const { data } = props
   return (
     <View style={styles.container}>
       <Text style={styles.content}>
-        Hello, I'm Andrew.I am a designer with more
-        than 5 years experience. My main fields are Ul/
-        UX Design, Illustration and Graphic Design. You
-        can check the portfolio on my profil
+        {data.summary}
       </Text>
     </View>
   )

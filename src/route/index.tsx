@@ -2,6 +2,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
 import { IMAGE_PREFIX } from '@/core/constants'
@@ -46,10 +48,11 @@ function RouteProvider() {
   const jobStore = useJobStore()
 
   const initApp = async () => {
-    await userStore.initData()
+    try {
+      await userStore.initData()
 
-    if (userStore.token) {
-      await userStore.getUserInfo()
+      if (userStore.token)
+        await userStore.getUserInfo()
       jobStore.getJobOptions()
       const contactUserId = userStore.role === 'boss' ? userStore.userInfo.contactIdToC : userStore.userInfo.contactIdToB
       contactUserId && await im.login({
@@ -62,6 +65,12 @@ function RouteProvider() {
           console.log('im login', res)
         },
       })
+    }
+    catch (error: any) {
+      if (error.response?.status === 401) {
+        await AsyncStorage.setItem('token', '')
+        Toast.fail('登录失效，请重新登录')
+      }
     }
   }
 
@@ -81,19 +90,19 @@ function RouteProvider() {
                     ? (
                       <Stack.Group>
                         <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
-                        <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ title: '在线简历' }} />
+                        <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ headerShown: false }} />
                         <Stack.Screen name="PublishJob" component={PublishJob} options={{ title: '发布职位' }} />
                         <Stack.Screen name="SearchPage" component={SearchPage} options={{ headerShown: false }} />
                         <Stack.Screen name="DeliverList" component={DeliverList} options={{ title: '投递者列表' }} />
                         <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} options={{ title: '积分充值' }} />
                         <Stack.Screen name="IntegralList" component={IntegralList} options={{ title: '我的积分' }} />
-                        <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={{ title: '企业信息' }} />
+
                       </Stack.Group>
                       )
                     : (
                       <Stack.Group>
                         <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
-                        <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
+
                         <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
                         <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ title: '联系信息' }} />
                         <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} options={{ title: '个人总结' }} />
@@ -113,6 +122,8 @@ function RouteProvider() {
                   <Stack.Screen name="UserChange" component={UserChange} options={{ title: '切换角色' }} />
                   <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
                   <Stack.Screen name="CompanyAuth" component={CompanyAuth} options={{ title: '企业信息' }} />
+                  <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={{ headerShown: false }} />
+                  <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
                 </Stack.Group>
               </>
               )

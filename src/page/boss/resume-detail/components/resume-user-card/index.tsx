@@ -7,7 +7,10 @@ import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 
-function ResumeUserCard() {
+interface Props {
+  data: UserProfileList
+}
+function ResumeUserCard(props: Props) {
   return (
     <View style={styles.container}>
       <Space>

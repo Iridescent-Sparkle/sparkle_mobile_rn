@@ -4,6 +4,9 @@ import ResumeCardHeader from '../resume-card-header'
 import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
+interface Props {
+  data: UserProfileList
+}
 function ResumeSkillsInfoCard() {
   return (
     <View style={styles.container}>

@@ -1,15 +1,18 @@
-import { Card } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
 import ResumeCardHeader from '../resume-card-header'
-import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
-function ResumeSalaryCard() {
+interface Props {
+  data: UserProfileList
+}
+function ResumeSalaryCard(props: Props) {
+  const { data } = props
   return (
     <View style={styles.container}>
       <ResumeCardHeader title="期望薪资" />
       <Text style={styles.info}>
-        $10,000 - $25,000/month
+        { `￥${data.minSalary} - ￥${data.maxSalary} 千元/月`}
       </Text>
     </View>
   )

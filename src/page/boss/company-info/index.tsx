@@ -1,44 +1,38 @@
 import { Button, NavBar } from '@fruits-chain/react-native-xiaoshu'
-import { useFocusEffect } from '@react-navigation/native'
-import React, { useCallback, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import React, { useEffect } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { request } from '@/core/api'
-import { IMAGE_PREFIX } from '@/core/constants'
-import { create } from '@/core/styleSheet'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useUserStore } from '@/store/user'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { create } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 export default function CompanyInfo() {
-  const [jobList, setJobList] = useState([] as JobDetail[])
-
-  const getInitData = async () => {
-    try {
-      const { data: jobListData } = await request.get({}, {
-        url: `/genius/deliveries/user`,
-      })
-      setJobList(jobListData)
-    }
-    catch (error) {
-
-    }
+  const insets = useSafeAreaInsets()
+  const userStore = useUserStore()
+  const navigation = useNavigation()
+  const handleBackClick = () => {
+    navigation.goBack()
   }
 
-  useFocusEffect(useCallback(() => {
-    getInitData()
-  }, []))
+  useEffect(() => {
+    userStore.getUserInfo()
+  }, [])
+
   return (
-    <View style={styles.container}>
-      {/* <NavBar /> */}
+    <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <NavBar onPressBackArrow={handleBackClick} />
       <ScrollView>
         <View style={styles.header}>
-          <FastImage source={{ uri: `${IMAGE_PREFIX}/stars.png` }} style={styles.logo} resizeMode="contain"></FastImage>
-          <Text style={styles.title}>成都鱼泡科技有限公司</Text>
-          <FastImage source={{ uri: `${IMAGE_PREFIX}/license.png` }} style={styles.license} resizeMode="contain"></FastImage>
-          <Text style={styles.desc}>成都鱼泡科技有限公司于2017年成立，法定代表人周峰。成都鱼泡科技有限公司是一家致力于数字技术在建筑用工领域创新应用的国家高新技术企业 [1]，成都市重点梯度培育企业 [2]。主要为工程建筑、装修及物流等行业工友或企业，提供集"智能招聘+用工SaaS"于一体的数字化用工服务。鱼泡网是国内领先的技术蓝领招聘平台，专为建筑劳务工人、班组和企业提供安全、高效的招工找活服务。</Text>
-          <Text style={styles.desc}>成都鱼泡科技有限公司于2017年成立，法定代表人周峰。成都鱼泡科技有限公司是一家致力于数字技术在建筑用工领域创新应用的国家高新技术企业 [1]，成都市重点梯度培育企业 [2]。主要为工程建筑、装修及物流等行业工友或企业，提供集"智能招聘+用工SaaS"于一体的数字化用工服务。鱼泡网是国内领先的技术蓝领招聘平台，专为建筑劳务工人、班组和企业提供安全、高效的招工找活服务。</Text>
+          <FastImage source={{ uri: userStore.userInfo.company?.companyAvatar || `${IMAGE_PREFIX}/stars.png` }} style={styles.logo} resizeMode="contain"></FastImage>
+          <Text style={styles.title}>{userStore.userInfo.company?.companyName}</Text>
+          <FastImage source={{ uri: userStore.userInfo.company?.companyLicense || `${IMAGE_PREFIX}/license.png` }} style={styles.license} resizeMode="contain"></FastImage>
+          <Text style={styles.desc}>{userStore.userInfo.company?.companyDesc}</Text>
         </View>
       </ScrollView>
-      <Button style={styles.payButton}>解除绑定</Button>
+      <Button style={styles.payButton}>{userStore.userInfo.company.status === 1 ? '解除绑定' : '审核中'}</Button>
     </View>
   )
 }

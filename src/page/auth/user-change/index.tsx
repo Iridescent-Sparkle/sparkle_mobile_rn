@@ -26,7 +26,7 @@ function UserChange() {
   const navigation = useNavigation()
   const im = useChatContext()
   const handleContinueClick = async () => {
-    if (userStore.userInfo.company) {
+    if (userStore.userInfo.company && userStore.userInfo.company.status === 1) {
       await im.logout({
         result(params) {
           console.log('im 退出', params)
@@ -36,6 +36,9 @@ function UserChange() {
       await userStore.changeUser(userStore.role === 'genius' ? 'boss' : 'genius')
 
       navigation.dispatch(StackActions.replace(userStore.role === 'genius' ? 'Boss' : 'Genius'))
+    }
+    else if (userStore.userInfo.company && userStore.userInfo.company.status === 0) {
+      navigation.dispatch(StackActions.replace('CompanyInfo'))
     }
     else {
       navigation.dispatch(StackActions.replace('CompanyAuth'))
@@ -47,12 +50,12 @@ function UserChange() {
       <FastImage
         style={styles.banner}
         source={{
-          uri: `${IMAGE_PREFIX}/${GUIDE_DATA[userStore.role].img}`,
+          uri: `${IMAGE_PREFIX}/${GUIDE_DATA[userStore.role]?.img}`,
         }}
       >
       </FastImage>
-      <Text style={styles.title}>{GUIDE_DATA[userStore.role].title}</Text>
-      <Button style={styles.button} onPress={handleContinueClick}>{GUIDE_DATA[userStore.role].button}</Button>
+      <Text style={styles.title}>{GUIDE_DATA[userStore.role]?.title}</Text>
+      <Button style={styles.button} onPress={handleContinueClick}>{GUIDE_DATA[userStore.role]?.button}</Button>
     </View>
   )
 }

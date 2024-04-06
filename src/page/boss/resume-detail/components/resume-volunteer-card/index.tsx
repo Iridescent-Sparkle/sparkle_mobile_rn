@@ -1,34 +1,50 @@
 import { Space } from '@fruits-chain/react-native-xiaoshu'
+import dayjs from 'dayjs'
 import { Text, View } from 'react-native'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import ResumeCardHeader from '../resume-card-header'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import Visible from '@/core/components/Visible'
 
-function ResumeVolunteerInfoCard() {
+interface Props {
+  data: UserProfileList
+}
+function ResumeVolunteerInfoCard(props: Props) {
+  const { data } = props
   return (
-    <View>
+    <Visible visible={data.volunteer?.length}>
       <ResumeCardHeader title="志愿活动经历" />
-      <Space direction="horizontal" style={styles.header}>
-        <Space direction="horizontal" gap={pxToDp(32)}>
-          <View style={styles.logo}>
-            <FontAwesome6 name="user-group" size={pxToDp(42)} color={themeColor.primary} />
-          </View>
-          <Space gap={pxToDp(20)}>
-            <Text style={styles.title}>Event Booking App</Text>
-            <Text style={styles.company}>Interaction Designer</Text>
-            <Text style={styles.date}>May 2022 - Sept 2022 (4 months)</Text>
-          </Space>
-        </Space>
+      {
+          data.volunteer?.map((item) => {
+            const startTime = dayjs(item.startTime).format('YYYY-MM')
+            const endTime = dayjs(item.endTime).format('YYYY-MM')
+            const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
+            return (
+              <View key={item.id}>
+                <Space direction="horizontal" style={styles.header}>
+                  <Space direction="horizontal" gap={pxToDp(32)}>
+                    <View style={styles.logo}>
+                      <FontAwesome6 name="user-group" size={pxToDp(42)} color={themeColor.primary} />
+                    </View>
+                    <Space gap={pxToDp(20)}>
+                      <Text style={styles.title}>{item.activityName}</Text>
+                      <Text style={styles.company}>{item.role}</Text>
+                      <Text style={styles.date}>
+                        {`${startTime} - ${endTime}（${totalTime}）`}
+                      </Text>
+                    </Space>
+                  </Space>
 
-      </Space>
-      <Text style={styles.content}>
-        Hello, I'm Andrew.I am a designer with more
-        than 5 years experience. My main fields are Ul/
-        UX Design, Illustration and Graphic Design. You
-        can check the portfolio on my profil
-      </Text>
-    </View>
+                </Space>
+                <Text style={styles.content}>
+                  {data.summary}
+                </Text>
+              </View>
+            )
+          })
+        }
+    </Visible>
   )
 }
 

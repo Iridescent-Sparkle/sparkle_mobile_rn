@@ -1,24 +1,37 @@
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { useCallback, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import { G } from 'react-native-svg'
+import { Empty } from '@fruits-chain/react-native-xiaoshu'
 import PageHeader from '../manage/components/PageHeader'
 import ResumeListCard from './components/ResumeCard'
 import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 import { create } from '@/core/styleSheet'
+import { useUserStore } from '@/store/user'
+import { request } from '@/core/api'
 
 export default function BossManage() {
   const insets = useSafeAreaInsets()
-  const jobList = [
-    {
-      id: '1',
-      title: 'Web前端开发工程师',
-      description: '负责公司网站前端开发',
-      date: '2021-08-01',
-      salary: '10000-15000',
-      address: '北京',
-      contact: '18888888888',
-    },
-  ]
+
+  const [resumeList, setResumeList] = useState([] as UserProfileList[])
+  const getInitData = async () => {
+    try {
+      const { data: { data: resumeListData } } = await request.post({
+
+      }, {
+        url: `/genius/profile/all`,
+      })
+      setResumeList(resumeListData)
+    }
+    catch (error) {
+
+    }
+  }
+  useFocusEffect(useCallback(() => {
+    getInitData()
+  }, []))
 
   const tip = (function () {
     const date = new Date()
@@ -36,9 +49,14 @@ export default function BossManage() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <PageHeader title={tip} />
       <SearchBar />
-      <View style={styles.list}>
-        <FlatList data={jobList} renderItem={job => <ResumeListCard data={job} />} keyExtractor={item => item.id} />
-      </View>
+      {resumeList.length
+        ? (
+          <View style={styles.list}>
+            <FlatList data={resumeList} renderItem={resume => <ResumeListCard data={resume.item} />} keyExtractor={item => String(item.id)} />
+          </View>
+          )
+        : <View style={styles.empty}><Empty /></View>}
+
     </View>
   )
 }
@@ -63,5 +81,10 @@ const styles = create({
     width: '100%',
     height: 960,
     marginTop: 24,
+  },
+  empty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

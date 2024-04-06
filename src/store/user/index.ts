@@ -45,7 +45,7 @@ export const useUserStore = create<State & Action>(set => ({
   },
   initData: async () => {
     const token = await AsyncStorage.getItem('token') || ''
-    const role = <'boss' | 'genius'>(await AsyncStorage.getItem('role') || '')
+    const role = <'boss' | 'genius'>(await AsyncStorage.getItem('role') || 'genius')
     set(state => ({
       ...state,
       token,
@@ -86,7 +86,7 @@ export const useUserStore = create<State & Action>(set => ({
   },
   logout: async () => {
     await AsyncStorage.setItem('token', '')
-    Toast.success('登录成功')
+    console.log(1)
     set(state => ({
       ...state,
       token: '',
@@ -96,7 +96,7 @@ export const useUserStore = create<State & Action>(set => ({
     const userInfo = await request.get({}, {
       url: '/user/info',
     })
-
+    console.log(userInfo)
     await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo.data))
 
     return set(state => ({

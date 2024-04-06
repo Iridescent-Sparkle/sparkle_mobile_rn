@@ -1,4 +1,4 @@
-import { Button, Card, NavBar, Notify, Popup, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Card, Dialog, NavBar, Notify, Popup, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
@@ -39,13 +39,14 @@ function JobDetail() {
 
   const navigation = useNavigation()
 
-  const route = useRoute<{ key: any, name: any, params: { jobId: string } }>()
+  const route = useRoute<{ key: any, name: any, params: { jobId: string, type: string } }>()
 
   const jobStore = useJobStore()
 
   const listRef = useRef<FlatList>(null)
 
   const [popupVisible, setPopupVisible] = useState(false)
+  const [popupCloseJobVisible, setPopupCloseJobVisible] = useState(false)
 
   const [loading, setLoading] = useState(true)
 
@@ -147,6 +148,31 @@ function JobDetail() {
     }
   }
 
+  const handlePopupCloseJobShow = () => {
+    setPopupCloseJobVisible(true)
+  }
+  const handlePopupCloseJobCancel = () => {
+    setPopupCloseJobVisible(false)
+  }
+
+  const handleCloseJobConfirm = async () => {
+    try {
+      setPopupCloseJobVisible(false)
+      await request.post({
+        jobId: route.params.jobId,
+      }, {
+        url: '/boss/job/remove',
+      })
+      Dialog({
+        title: '关闭成功',
+      }).then(() => {
+        navigation.goBack()
+      })
+    }
+    catch (error) {
+      Toast.fail('关闭失败')
+    }
+  }
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
 
@@ -160,7 +186,7 @@ function JobDetail() {
             )
           : (
             <>
-              <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={<CollectButton jobDetail={jobDetail} handleCollectClick={getInitData} />} rightStyle={styles.rightExtra} divider={false} />
+              <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={route.params.type === 'manage' ? null : <CollectButton jobDetail={jobDetail} handleCollectClick={getInitData} />} rightStyle={styles.rightExtra} divider={false} />
               <View style={styles.list}>
                 <FlatList
                   ListHeaderComponent={<RecruitDetailCard data={jobDetail} />}
@@ -174,17 +200,24 @@ function JobDetail() {
               <Card>
                 <View style={styles.buttonWrapper}>
                   {
-                    jobDetail.jobDeliverStatus === 0
+
+                    route.params.type === 'manage'
                       ? (
-                        <Button style={styles.button} onPress={handlePopupShow}>
-                          投递
+                        <Button style={styles.dangerButton} onPress={handlePopupCloseJobShow}>
+                          关闭职位
                         </Button>
                         )
-                      : (
-                        <View style={[styles.disableButton, { backgroundColor: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].bgColor }]}>
-                          <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].color }}>{JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].label}</Text>
-                        </View>
-                        )
+                      : jobDetail.jobDeliverStatus === 0
+                        ? (
+                          <Button style={styles.button} onPress={handlePopupShow}>
+                            投递
+                          </Button>
+                          )
+                        : (
+                          <View style={[styles.disableButton, { backgroundColor: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].bgColor }]}>
+                            <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].color }}>{JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].label}</Text>
+                          </View>
+                          )
                   }
                 </View>
               </Card>
@@ -201,6 +234,18 @@ function JobDetail() {
         <View style={styles.popupWrapper}>
           <Button style={styles.popupButton} onPress={handlePopupClose} type="hazy" disabled={confirmLoading}>取消</Button>
           <Button style={styles.popupButton} onPress={handleConfirmClick} loading={confirmLoading} loadingText="投递">投递</Button>
+        </View>
+      </Popup>
+      <Popup
+        safeAreaInsetBottom
+        visible={popupCloseJobVisible}
+        position="bottom"
+        round
+      >
+        <Popup.Header title="是否要关闭该职位" showClose={false} style={styles.popupHeader} titleTextStyle={styles.popupHeaderText} divider={true} />
+        <View style={styles.popupWrapper}>
+          <Button style={styles.popupButton} onPress={handlePopupCloseJobCancel} type="outline" disabled={confirmLoading}>取消</Button>
+          <Button style={styles.popupDangerButton} onPress={handleCloseJobConfirm} loading={confirmLoading}>关闭</Button>
         </View>
       </Popup>
     </View>
@@ -231,8 +276,14 @@ const styles = create({
     alignItems: 'center',
   },
   button: {
-    width: 660,
+    width: '100%',
     borderRadius: 40,
+  },
+  dangerButton: {
+    width: '100%',
+    borderRadius: 40,
+    color: '#FFF2F2',
+    backgroundColor: '#F86060',
   },
   disableButton: {
     flex: 1,
@@ -257,6 +308,12 @@ const styles = create({
     paddingBottom: 40,
   },
   popupButton: {
+    width: 320,
+    borderRadius: 40,
+  },
+  popupDangerButton: {
+    color: '#FFF2F2',
+    backgroundColor: '#F86060',
     width: 320,
     borderRadius: 40,
   },

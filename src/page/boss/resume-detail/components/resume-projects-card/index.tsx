@@ -1,38 +1,64 @@
-import { Space } from '@fruits-chain/react-native-xiaoshu'
-import { Text, View } from 'react-native'
+import { Space, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { Linking, Pressable, Text, View } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import dayjs from 'dayjs'
 import ResumeCardHeader from '../resume-card-header'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import Visible from '@/core/components/Visible'
 
-function ResumeProjectsInfoCard() {
+interface Props {
+  data: UserProfileList
+}
+function ResumeProjectsInfoCard(props: Props) {
+  const { data } = props
+  const handleDisplayProject = async (url: string) => {
+    const supported = await Linking.canOpenURL(url)
+
+    if (supported)
+      await Linking.openURL(url)
+    else
+      Toast.fail('无法打开该链接')
+  }
   return (
-    <View style={styles.container}>
-      <ResumeCardHeader title="项目经历" />
-      <Space direction="horizontal" style={styles.header}>
-        <Space direction="horizontal" gap={pxToDp(32)}>
-          <View style={styles.logo}>
-            <MaterialCommunityIcons name="chart-box" size={pxToDp(64)} color={themeColor.primary} />
-          </View>
-          <Space gap={pxToDp(20)}>
-            <Text style={styles.title}>Event Booking App</Text>
-            <Text style={styles.company}>Interaction Designer</Text>
-            <Text style={styles.date}>May 2022 - Sept 2022 (4 months)</Text>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>展示项目</Text>
-              <FontAwesome5 name="telegram-plane" size={pxToDp(32)} color={themeColor.primary} />
+    <Visible visible={data.project?.length}>
+      <View style={styles.container}>
+        <ResumeCardHeader title="项目经历" />
+        {
+        data.project?.map((item) => {
+          const startTime = dayjs(item.startTime).format('YYYY-MM')
+          const endTime = dayjs(item.endTime).format('YYYY-MM')
+          const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
+          return (
+            <View key={item.id}>
+              <Space direction="horizontal" style={styles.header}>
+                <Space direction="horizontal" gap={pxToDp(32)}>
+                  <View style={styles.logo}>
+                    <MaterialCommunityIcons name="chart-box" size={pxToDp(64)} color={themeColor.primary} />
+                  </View>
+                  <Space gap={pxToDp(20)}>
+                    <Text style={styles.title}>{item.projectName}</Text>
+                    <Text style={styles.company}>{item.role}</Text>
+                    <Text style={styles.date}>
+                      {`${startTime} - ${endTime}（${totalTime}）`}
+                    </Text>
+                    <Pressable onPress={() => handleDisplayProject(item.website)} style={styles.button}>
+                      <Text style={styles.buttonText}>展示项目</Text>
+                      <FontAwesome5 name="telegram-plane" size={pxToDp(32)} color={themeColor.primary} />
+                    </Pressable>
+                  </Space>
+                </Space>
+              </Space>
+              <Text style={styles.content}>
+                {item.description}
+              </Text>
             </View>
-          </Space>
-        </Space>
-      </Space>
-      <Text style={styles.content}>
-        Hello, I'm Andrew.I am a designer with more
-        than 5 years experience. My main fields are Ul/
-        UX Design, Illustration and Graphic Design. You
-        can check the portfolio on my profil
-      </Text>
-    </View>
+          )
+        })
+       }
+      </View>
+    </Visible>
 
   )
 }

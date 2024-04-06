@@ -1,26 +1,33 @@
 import { Pressable, Text, View } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
+import FastImage from 'react-native-fast-image'
 import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { useUserStore } from '@/store/user'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 export default function UserCard() {
   const navigation = useNavigation()
-  const hanldeIntegralClick = () => {
+  const userStore = useUserStore()
+  const handleIntegralClick = () => {
     navigation.dispatch(StackActions.push('IntegralList'))
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <View style={styles.image}></View>
-        <Text style={styles.name}>张楚焓</Text>
-        <Text style={styles.desc}>非洲黑奴</Text>
+
+        <FastImage style={styles.image} source={{ uri: userStore.userInfo.avatar || `${IMAGE_PREFIX}/stars.png` }} />
+
+        <Text style={styles.name}>{userStore.userInfo.nickname}</Text>
+        <Text style={styles.desc}>{userStore.userInfo.occupation}</Text>
         <View style={styles.sourceWrapper}>
-          <Pressable style={styles.sourceBox} onPress={hanldeIntegralClick}>
-            <Text style={styles.sourceNumber}>31</Text>
+          <Pressable style={styles.sourceBox} onPress={handleIntegralClick}>
+            <Text style={styles.sourceNumber}>{userStore.userInfo.integral}</Text>
             <Text style={styles.sourceText}>我的积分</Text>
           </Pressable>
           <Pressable style={styles.sourceBox}>
-            <Text style={styles.sourceNumber}>31</Text>
+            <Text style={styles.sourceNumber}>{userStore.userInfo.contactId?.length}</Text>
             <Text style={styles.sourceText}>我联系的</Text>
           </Pressable>
         </View>
