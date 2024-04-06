@@ -3,11 +3,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback } from 'react'
 import PageHeader from '../manage/components/PageHeader'
 import MenuList from './components/member-module/MenuList'
 import UserCard from './components/member-module/UserCard'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import { useUserStore } from '@/store/user'
 
 const MENU_ACCOUNT = [
   {
@@ -46,6 +49,12 @@ const MENU_OTHER = [
   },
 ]
 export default function BossMember() {
+  const userStore = useUserStore()
+
+  useFocusEffect(useCallback(() => {
+    userStore.getUserInfo()
+  }, []))
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>

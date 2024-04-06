@@ -1,25 +1,46 @@
-import { FlatList, Pressable, Text, View } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { Pressable, Text, View } from 'react-native'
+import dayjs from 'dayjs'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import Entypo from 'react-native-vector-icons/Entypo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
-  name: string
-  date: string
-  number: string
+  data: IntegralRecord
 }
-
+const DESC_MAP = {
+  chat: {
+    title: '发起聊天',
+    icon: <Ionicons name="chatbox-ellipses-outline" size={pxToDp(36)} color={themeColor.primary} />,
+  },
+  publish: {
+    title: '发布职位',
+    icon: <AntDesign name="solution1" size={pxToDp(36)} color={themeColor.primary} />,
+  },
+  recharge: {
+    title: '充值积分',
+    icon: <Entypo name="rocket" size={pxToDp(36)} color={themeColor.primary} />,
+  },
+}
 export default function ConsumeListCard(props: Props) {
-  const { name, date, number } = props
+  const { data } = props
   return (
     <Pressable style={styles.contentBox}>
       <View style={styles.left}>
         <View style={styles.img}>
-          {name}
+          {DESC_MAP[data.type].icon}
         </View>
-        <Text style={styles.title}>{date}</Text>
+        <View>
+          <Text style={styles.title}>
+            {DESC_MAP[data.type].title}
+          </Text>
+          <Text style={styles.date}>
+            {dayjs(data.updateTime).format('YYYY-MM-DD HH:mm:ss')}
+          </Text>
+        </View>
       </View>
-      <Text>{number}</Text>
+      <Text style={styles.integral}>{`${data.type === 'recharge' ? '+' : '-'}${data.integral}`}</Text>
     </Pressable>
   )
 }
@@ -29,9 +50,10 @@ const styles = create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 32,
     width: '100%',
     height: 120,
-    borderRadius: 16,
+    // borderRadius: 16,
     backgroundColor: '#fff',
   },
   left: {
@@ -51,11 +73,16 @@ const styles = create({
   title: {
     color: themeColor.black85,
     fontWeight: '700',
-    fontSize: 34,
+    fontSize: 32,
   },
-  list: {
-    width: '100%',
-
-    marginTop: 24,
+  date: {
+    color: themeColor.black45,
+    fontWeight: '700',
+    fontSize: 24,
+  },
+  integral: {
+    color: themeColor.black85,
+    fontWeight: '700',
+    fontSize: 34,
   },
 })

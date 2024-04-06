@@ -1,15 +1,12 @@
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
-import { useCallback, useState } from 'react'
-import { useFocusEffect } from '@react-navigation/native'
-import { G } from 'react-native-svg'
 import { Empty } from '@fruits-chain/react-native-xiaoshu'
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback, useState } from 'react'
 import PageHeader from '../manage/components/PageHeader'
 import ResumeListCard from './components/ResumeCard'
 import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 import { create } from '@/core/styleSheet'
-import { useUserStore } from '@/store/user'
 import { request } from '@/core/api'
 
 export default function BossManage() {
@@ -52,7 +49,7 @@ export default function BossManage() {
       {resumeList.length
         ? (
           <View style={styles.list}>
-            <FlatList data={resumeList} renderItem={resume => <ResumeListCard data={resume.item} />} keyExtractor={item => String(item.id)} />
+            <FlatList data={resumeList} renderItem={resume => <ResumeListCard data={resume.item} from="home" />} keyExtractor={item => String(item.id)} />
           </View>
           )
         : <View style={styles.empty}><Empty /></View>}

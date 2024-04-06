@@ -11,19 +11,23 @@ import { IMAGE_PREFIX } from '@/core/constants'
 interface Props {
   data: UserProfileList
   showCollectBtn?: boolean
+  from?: 'home'
 }
 
 function ResumeListCard(props: Props) {
-  const { data } = props
+  const { data, from } = props
 
   const navigation = useNavigation()
 
   const handleCardClick = () => {
     navigation.dispatch(StackActions.push('ResumeDetail', {
       profileId: data.id,
+      status: data.status,
+      deliverId: data.deliverId,
+      from,
     }))
   }
-  const totalTime = dayjs(data.experience[data.experience.length - 1].endTime).diff(data.experience[data.experience.length - 1].startTime, 'year') >= 1 ? `${dayjs(data.experience[data.experience.length - 1].endTime).diff(data.experience[data.experience.length - 1].startTime, 'year')}年` : `${dayjs(data.experience[data.experience.length - 1].endTime).diff(data.experience[data.experience.length - 1].startTime, 'month') || 1}月`
+  const totalTime = dayjs(data.experience[data.experience.length - 1]?.endTime).diff(data.experience[data.experience.length - 1]?.startTime, 'year') >= 1 ? `${dayjs(data.experience[data.experience.length - 1]?.endTime).diff(data.experience[data.experience.length - 1]?.startTime, 'year')}年` : `${dayjs(data.experience[data.experience.length - 1]?.endTime).diff(data.experience[data.experience.length - 1]?.startTime, 'month') || 1}月`
 
   return (
     <Pressable onPress={handleCardClick}>
@@ -49,7 +53,7 @@ function ResumeListCard(props: Props) {
               经验
             </Tag>
             <Tag type="ghost" color="#1976D2">{data.address}</Tag>
-            <Tag type="ghost" color="#1976D2">{data.eduction?.[data.eduction?.length - 1].school}</Tag>
+            <Tag type="ghost" color="#1976D2">{data.eduction?.[data.eduction?.length - 1]?.school}</Tag>
           </Space>
         </Space>
       </Card>

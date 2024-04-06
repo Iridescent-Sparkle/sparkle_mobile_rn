@@ -33,4 +33,4 @@ export const JOB_DELIVER_STATUS = {
     bgColor: '#FFF2F2',
     color: '#F86060',
   },
-}
+} as Record<any, any>

@@ -186,7 +186,7 @@ function JobDetail() {
             )
           : (
             <>
-              <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={route.params.type === 'manage' ? null : <CollectButton jobDetail={jobDetail} handleCollectClick={getInitData} />} rightStyle={styles.rightExtra} divider={false} />
+              <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={route.params.type === 'manage' ? undefined : <CollectButton jobDetail={jobDetail} handleCollectClick={getInitData} />} rightStyle={styles.rightExtra} divider={false} />
               <View style={styles.list}>
                 <FlatList
                   ListHeaderComponent={<RecruitDetailCard data={jobDetail} />}

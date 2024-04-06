@@ -3,6 +3,7 @@ import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import FastImage from 'react-native-fast-image'
 import Octicons from 'react-native-vector-icons/Octicons'
+import { useNavigation } from '@react-navigation/native'
 import { create, pxToDp } from '@/core/styleSheet'
 import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 import RecruitJobCard from '@/menu/genius/home/components/recruit-list-card'
@@ -35,10 +36,13 @@ const DATA = [
 
 export default function SearchResult() {
   const insets = useSafeAreaInsets()
-
+  const navigation = useNavigation()
+  const handleBackClick = () => {
+    navigation.goBack()
+  }
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <NavBar rightExtra={<SearchBar />} rightStyle={styles.searchBar} divider={false} />
+      <NavBar onPressBackArrow={handleBackClick} rightExtra={<SearchBar />} rightStyle={styles.searchBar} divider={false} />
       <Visible visible={false}>
         <View style={styles.loading}>
           <Loading vertical>加载中...</Loading>
@@ -54,7 +58,7 @@ export default function SearchResult() {
         <View style={styles.list}>
           {
             DATA.length
-              ? <FlatList data={DATA} renderItem={() => <RecruitJobCard />} keyExtractor={item => item.id} />
+              ? <FlatList data={DATA} renderItem={() => <RecruitJobCard data={undefined} />} keyExtractor={item => item.id} />
               : (
                 <Space>
                   <FastImage

@@ -37,6 +37,7 @@ import RechargeIntegral from '@/page/boss/recharge-integral'
 import CompanyAuth from '@/page/auth/company-auth'
 import IntegralList from '@/page/boss/integral-list'
 import CompanyInfo from '@/page/boss/company-info'
+import ContactList from '@/page/boss/contact-list'
 
 const Stack = createNativeStackNavigator()
 
@@ -55,6 +56,7 @@ function RouteProvider() {
         await userStore.getUserInfo()
       jobStore.getJobOptions()
       const contactUserId = userStore.role === 'boss' ? userStore.userInfo.contactIdToC : userStore.userInfo.contactIdToB
+
       contactUserId && await im.login({
         userId: contactUserId,
         userToken: userStore.userInfo.contactPassword,
@@ -76,7 +78,7 @@ function RouteProvider() {
 
   useEffect(() => {
     initApp()
-  }, [userStore.role, userStore.token])
+  }, [userStore.role, userStore.token, userStore.userInfo.id])
 
   return (
     <NavigationContainer>
@@ -93,16 +95,15 @@ function RouteProvider() {
                         <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ headerShown: false }} />
                         <Stack.Screen name="PublishJob" component={PublishJob} options={{ title: '发布职位' }} />
                         <Stack.Screen name="SearchPage" component={SearchPage} options={{ headerShown: false }} />
-                        <Stack.Screen name="DeliverList" component={DeliverList} options={{ title: '投递者列表' }} />
+                        <Stack.Screen name="DeliverList" component={DeliverList} options={{ headerShown: false }} />
                         <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} options={{ title: '积分充值' }} />
                         <Stack.Screen name="IntegralList" component={IntegralList} options={{ title: '我的积分' }} />
-
+                        <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
                       </Stack.Group>
                       )
                     : (
                       <Stack.Group>
                         <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
-
                         <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
                         <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ title: '联系信息' }} />
                         <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} options={{ title: '个人总结' }} />

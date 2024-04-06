@@ -1,21 +1,28 @@
-import { Empty } from '@fruits-chain/react-native-xiaoshu'
-import { useFocusEffect } from '@react-navigation/native'
+import { Empty, NavBar } from '@fruits-chain/react-native-xiaoshu'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useState } from 'react'
 import { FlatList, View } from 'react-native'
-import { request } from '@/core/api'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import ResumeListCard from '@/menu/boss/home/components/ResumeCard'
 import { create } from '@/core/styleSheet'
-import RecruitJobCard from '@/menu/genius/home/components/recruit-job-card'
-import RecruitSearchBar from '@/menu/genius/home/components/recruit-search-bar'
+import { request } from '@/core/api'
 
 export default function ContactList() {
-  const [jobList, setJobList] = useState([] as JobDetail[])
+  const insets = useSafeAreaInsets()
+
+  const navigation = useNavigation()
+
+  const [resumeList, setResumeList] = useState([] as UserProfileList[])
 
   const getInitData = async () => {
     try {
-      const { data: jobListData } = await request.get({}, {
-        url: `/genius/deliveries/user`,
+      const { data: resumeListData } = await request.post({
+
+      }, {
+        url: `boss/contact/user`,
       })
-      setJobList(jobListData)
+
+      setResumeList(resumeListData)
     }
     catch (error) {
 
@@ -25,11 +32,16 @@ export default function ContactList() {
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
+
+  const handleBackClick = () => {
+    navigation.goBack()
+  }
+
   return (
-    <View style={styles.container}>
-      <RecruitSearchBar />
-      {jobList.length
-        ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitJobCard type="deliver" data={job.item} />} keyExtractor={job => String(job.jobDeliverId)} />
+    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom }]}>
+      <NavBar title="联系列表" onPressBackArrow={handleBackClick} />
+      {resumeList.length
+        ? <FlatList style={styles.list} data={resumeList} renderItem={job => <ResumeListCard data={job.item} />} keyExtractor={job => String(job.id)} />
         : <View style={styles.empty}><Empty /></View>}
     </View>
   )

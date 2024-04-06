@@ -1,8 +1,8 @@
-import { Button, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Dialog, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { useUserStore } from '../../../store/user/index'
 import Form from '@/core/components/Form'
 import Input from '@/core/components/Input'
@@ -28,22 +28,50 @@ export default function PublishJob() {
 
     const minSalary = values.salary[0]
     const maxSalary = values.salary[1]
+    if (Number(userStore.userInfo.integral) < 1) {
+      Dialog.confirm({
+        title: '积分不足',
+        message: '本次发布职位需消耗1积分',
+        confirmButtonText: '去充值',
+      }).then(async (action) => {
+        if (action === 'confirm')
+          navigation.dispatch(StackActions.push('RechargeIntegral'))
+      })
+    }
+    else {
+      Dialog.confirm({
+        title: '发布职位',
+        message: '本次发布职位需消耗1积分',
+      }).then(async (action) => {
+        if (action === 'confirm') {
+          await request.post({
+            integral: 1,
+          }, { url: 'boss/integral/consume' })
 
-    await request.post({
-      ...values,
-      minSalary,
-      maxSalary,
-      companyId: userStore.userInfo.companyId,
-    }, { url: 'boss/job' })
+          await request.post({
+            integral: 1,
+            type: 'publish',
+          }, { url: 'boss/consume/create' })
 
-    await Toast.success({
-      message: '发布成功',
-      duration: 200,
-      onClose: navigation.goBack,
-    })
+          await request.post({
+            ...values,
+            minSalary,
+            maxSalary,
+            companyId: userStore.userInfo.companyId,
+          }, { url: 'boss/job' })
+
+          await Toast.success({
+            message: '发布成功',
+            duration: 200,
+            onClose: navigation.goBack,
+          })
+        }
+      })
+    }
   }
 
   useEffect(() => {
+    userStore.getUserInfo()
     form.setFieldsValue({
       companyDescription: '华为创立于1987年，是全球领先的ICT（信息与通信）基础设施和智能终端提供商，我们致力于把数字世界带入每个人、每个家庭、每个组织，构建万物互联的智能世界：让无处不在的联接，成为人人平等的权利；为世界提供最强算力，让云无处不在，让智能无所不及；所有的行业和组织，因强大的数字平台而变得敏捷、高效、生机勃勃；通过AI重新定义体验，让消费者在家居、办公、出行等全场景获得极致的个性化体验。目前华为约有19.4万员工，业务遍及170多个国家和地区，服务30多亿人口。',
       educationRequirement: 1,

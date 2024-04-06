@@ -54,46 +54,7 @@ interface Company {
   createTime: string
   updateTime: string
 }
-interface User {
-  id: number
-  username: string
-  password: string
-  nickname: string
-  avatar: string
-  occupation: string
-  email: string
-  contactIdToB: string
-  contactIdToC: string
-  contactPassword: string
-  companyId: number
-  profileId: number
-  isFrozen: boolean
-  createTime: string
-  updateTime: string
-  company: Company
-  integral: string
-  contactId: string[]
-}
 
-interface User {
-  id: number
-  username: string
-  password: string
-  nickname: string
-  avatar: string
-  occupation?: any
-  email: string
-  contactIdToB: string
-  contactIdToC?: any
-  contactPassword: string
-  integral: number
-  companyId?: any
-  profileId: number
-  contactId: any[]
-  isFrozen: boolean
-  createTime: string
-  updateTime: string
-}
 interface UserProfile {
   nickname: string
   avatar?: any
@@ -110,6 +71,7 @@ interface UserProfile {
   createTime: string
   updateTime: string
 }
+
 interface UserProfileList {
   id: number
   occupation: string
@@ -128,6 +90,8 @@ interface UserProfileList {
   project: Project[]
   volunteer: Volunteer[]
   experience: Experience[]
+  status: number
+  deliverId: number
 }
 
 interface Experience {
@@ -189,26 +153,6 @@ interface Eduction {
   updateTime: string
 }
 
-interface User {
-  id: number
-  username: string
-  password: string
-  nickname: string
-  avatar: string
-  occupation: string
-  email: string
-  contactIdToB: string
-  contactIdToC?: any
-  contactPassword: string
-  integral: number
-  companyId: number
-  profileId: number
-  contactId: any[]
-  isFrozen: boolean
-  createTime: string
-  updateTime: string
-}
-
 interface Resume {
   fileName: string
   fileSize: number
@@ -226,26 +170,6 @@ interface Experience {
   isWork: boolean
   description: string
   isDelete: boolean
-  createTime: string
-  updateTime: string
-}
-
-interface User {
-  id: number
-  username: string
-  password: string
-  nickname: string
-  avatar: string
-  occupation: string
-  email: string
-  contactIdToB: string
-  contactIdToC?: any
-  contactPassword: string
-  integral: number
-  companyId: number
-  profileId: number
-  contactId: any[]
-  isFrozen: boolean
   createTime: string
   updateTime: string
 }
@@ -309,6 +233,65 @@ interface IntegralMeal {
   price: number
   isDefault: boolean
   isFrozen: boolean
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+}
+interface DeliverListIem {
+  id: number
+  jobId: number
+  userId: number
+  status: number
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+  user: User
+}
+
+interface User {
+  id: number
+  username: string
+  password: string
+  nickname: string
+  avatar: string
+  occupation?: any
+  email: string
+  contactIdToB: string
+  contactIdToC: string
+  contactPassword: string
+  integral: number
+  companyId?: any
+  profileId: number
+  contactId: any[]
+  isFrozen: boolean
+  createTime: string
+  updateTime: string
+  profile: Profile
+}
+
+interface Profile {
+  id: number
+  occupation: string
+  address: string
+  phone: string
+  email: string
+  minSalary: string
+  maxSalary: string
+  summary: string
+  resume?: any
+  isDelete: boolean
+  createTime: string
+  updateTime: string
+  eduction: any[]
+  experience: any[]
+  project: any[]
+  volunteer: any[]
+}
+interface IntegralRecord {
+  id: number
+  userId: number
+  integral: number
+  type: 'chat' | 'recharge' | 'publish'
   isDelete: boolean
   createTime: string
   updateTime: string

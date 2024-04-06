@@ -1,5 +1,5 @@
 import { Button } from '@fruits-chain/react-native-xiaoshu'
-import { useFocusEffect } from '@react-navigation/native'
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useCallback, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { BarChart, PieChart } from 'react-native-gifted-charts'
@@ -7,16 +7,18 @@ import ConsumeListCard from './components/consume-list-card'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { request } from '@/core/api'
+import { useUserStore } from '@/store/user'
 
 export default function IntegralList() {
-  const [jobList, setJobList] = useState([] as JobDetail[])
-
+  const userStore = useUserStore()
+  const navigation = useNavigation()
+  const [consumeList, setConsumeList] = useState([] as IntegralRecord[])
   const getInitData = async () => {
     try {
-      const { data: jobListData } = await request.get({}, {
-        url: `/genius/deliveries/user`,
+      const { data: consumeListData } = await request.post({}, {
+        url: `/boss/consume/user`,
       })
-      setJobList(jobListData)
+      setConsumeList(consumeListData)
     }
     catch (error) {
 
@@ -26,11 +28,16 @@ export default function IntegralList() {
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
+  const handleRechargeClick = () => {
+    navigation.dispatch(StackActions.replace('RechargeIntegral'))
+  }
+
   const pieData = [
     { value: 54, color: '#177AD5' },
     { value: 40, color: '#79D2DE' },
     { value: 20, color: '#ED6665' },
   ]
+
   const barData = [
     { value: 250, label: 'M' },
     { value: 500, label: 'T', frontColor: '#177AD5' },
@@ -48,10 +55,12 @@ export default function IntegralList() {
           {/* 标题 */}
           <View style={styles.header}>
             <View>
-              <Text style={styles.headerTitle}>当前积分</Text>
+              <Text style={styles.headerTitle}>
+                {`当前积分 ${userStore.userInfo.integral}`}
+              </Text>
               <Text style={styles.headerDesc}>积分可用于发布职位、发起聊天</Text>
             </View>
-            <Button type="hazy" style={styles.headerButton} size="s">去充值</Button>
+            <Button onPress={handleRechargeClick} type="hazy" style={styles.headerButton} size="s">去充值</Button>
           </View>
           {/* 饼图 */}
           <View style={styles.pieWrapper}>
@@ -80,9 +89,9 @@ export default function IntegralList() {
           </View>
         </>
       )}
-      data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]}
+      data={consumeList}
       renderItem={item => (
-        <ConsumeListCard name="" date="" number=""></ConsumeListCard>
+        <ConsumeListCard data={item.item}></ConsumeListCard>
       )}
     />
 

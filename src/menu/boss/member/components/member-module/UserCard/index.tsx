@@ -12,6 +12,9 @@ export default function UserCard() {
   const handleIntegralClick = () => {
     navigation.dispatch(StackActions.push('IntegralList'))
   }
+  const handleContactClick = () => {
+    navigation.dispatch(StackActions.push('ContactList'))
+  }
 
   return (
     <View style={styles.container}>
@@ -26,7 +29,7 @@ export default function UserCard() {
             <Text style={styles.sourceNumber}>{userStore.userInfo.integral}</Text>
             <Text style={styles.sourceText}>我的积分</Text>
           </Pressable>
-          <Pressable style={styles.sourceBox}>
+          <Pressable style={styles.sourceBox} onPress={handleContactClick}>
             <Text style={styles.sourceNumber}>{userStore.userInfo.contactId?.length}</Text>
             <Text style={styles.sourceText}>我联系的</Text>
           </Pressable>

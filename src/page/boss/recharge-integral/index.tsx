@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { Button, Toast } from '@fruits-chain/react-native-xiaoshu'
@@ -7,16 +7,19 @@ import Alipay from 'alipay-rn'
 import { create, pxToDp, s } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { useUserStore } from '@/store/user'
 
 const alipayErrorReason = {
   6001: '支付取消',
   6002: '网络连接出错',
   4000: '支付失败',
   5000: '重复请求',
-}
+} as Record<string, string>
 export default function RechargeIntegral() {
   const [integralMeal, setIntegralMeal] = useState([] as IntegralMeal[])
   const [selectMeal, setSelectMeal] = useState({} as IntegralMeal)
+  const navigation = useNavigation()
+  const userStore = useUserStore()
 
   const getInitData = async () => {
     try {
@@ -49,22 +52,41 @@ export default function RechargeIntegral() {
         url: `/boss/order/create`,
       })
       Alipay.setSandbox(true)
-      const result = await Alipay.pay(data)
-      console.log(JSON.parse(result.result))
+      const payResponse = await Alipay.pay(data)
+
+      if (JSON.parse(payResponse.result).alipay_trade_app_pay_response?.code === '10000') {
+        await request.post({
+          integral: selectMeal.integralNum,
+        }, { url: 'boss/integral/recharge' })
+        await userStore.getUserInfo()
+
+        await request.post({
+          integral: selectMeal.integralNum,
+          type: 'recharge',
+        }, { url: 'boss/consume/create' })
+
+        Toast.success('充值成功')
+      }
+
+      alipayErrorReason[payResponse.resultStatus] && Toast.fail(alipayErrorReason[payResponse.resultStatus])
     }
-    catch (error) {
+    catch (error: any) {
       console.log(error)
+      Toast.fail('支付失败')
     }
+  }
+  const handleViewListClick = () => {
+    navigation.dispatch(StackActions.replace('IntegralList'))
   }
   return (
     <View style={styles.container}>
       <View>
         <View style={styles.header}>
           <View>
-            <Text style={styles.headerTitle}>剩余积分</Text>
+            <Text style={styles.headerTitle}>{`剩余积分 ${userStore.userInfo.integral}`}</Text>
             <Text style={styles.headerDesc}>积分可用于发布职位、发起聊天</Text>
           </View>
-          <Button type="hazy" style={styles.headerButton} size="s">积分明细</Button>
+          <Button onPress={handleViewListClick} type="hazy" style={styles.headerButton} size="s">积分明细</Button>
         </View>
         <View style={styles.panelWrapper}>
           <Text style={styles.panelTitle}>请选择充值数量</Text>
