@@ -3,32 +3,42 @@ import React, { useMemo } from 'react'
 import type { TextInputProps } from 'react-native'
 import { Text } from 'react-native'
 import useCountDown from './useCountDown'
-import { isPhone } from '@/core/tools/validator'
+import { isEmail, isPhone } from '@/core/tools/validator'
 import { c, create } from '@/core/styleSheet'
 import { useRefState } from '@/core/hooks/useRefState'
 import TouchView from '@/core/components/TouchView'
 
 type Props = TextInputProps & {
-  tel: string
-  getVerifyCode: (tel: string) => Promise<any>
+  value: string
+  type?: 'email' | 'phone'
+  getVerifyCode: (value: string) => Promise<any>
 }
 
 function VerifyCode(props: Props) {
-  const { getVerifyCode, tel } = props
+  const { getVerifyCode, value, type = 'phone' } = props
   const [countDown, setCountDown, $countDown] = useCountDown()
   const [loading, setLoading, $loading] = useRefState(false)
 
   async function fetchVerifyCode() {
     if (getVerifyCode && !$loading() && $countDown() <= 0) {
-      if (!tel)
-        return Toast.fail('请先输入手机号')
+      if (type === 'phone') {
+        if (!value)
+          return Toast.fail('请先输入手机号')
 
-      if (!isPhone(tel))
-        return Toast.fail('请输入正确的手机号')
+        if (!isPhone(value))
+          return Toast.fail('请输入正确的手机号')
+      }
+
+      if (type === 'email') {
+        if (!value)
+          return Toast.fail('请先输入邮箱')
+        if (!isEmail(value))
+          return Toast.fail('请输入正确的邮箱')
+      }
 
       try {
         setLoading(true)
-        const data = await getVerifyCode(tel)
+        const data = await getVerifyCode(value)
         setCountDown(data)
       }
       catch (error) {

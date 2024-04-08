@@ -9,9 +9,12 @@ import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { request } from '@/core/api'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { useUserStore } from '@/store/user'
 
 function ResetPassword() {
   const insets = useSafeAreaInsets()
+
+  const userStore = useUserStore()
 
   const [form] = Form.useForm()
 
@@ -35,13 +38,14 @@ function ResetPassword() {
         username: route.params.phone,
         password: formValues.password,
       }, {
-        url: '/user/resetPassword',
+        url: '/user/reset/password',
       })
       Toast.success({
         message: '密码重置成功',
         duration: 1000,
-        onClose: () => {
-          navigation.dispatch(StackActions.replace('Login'))
+        onClose: async () => {
+          await userStore.logout()
+          navigation.dispatch(StackActions.replace('Guide'))
         },
       })
     }

@@ -17,24 +17,57 @@ interface Action {
   login: (params: { username: string, password: string }) => void
   logout: () => Promise<void>
 }
+const initUserInfo = {
+  id: 0,
+  username: '',
+  password: '',
+  nickname: '',
+  avatar: '',
+  email: '',
+  contactIdToB: '',
+  contactIdToC: '',
+  contactPassword: '',
+  isFrozen: false,
+  createTime: '',
+  updateTime: '',
+  integral: 0,
+  profileId: 0,
+  contactId: [],
+  profile: {
+    id: 0,
+    occupation: '',
+    address: '',
+    phone: '',
+    email: '',
+    minSalary: '',
+    maxSalary: '',
+    summary: '',
+    isDelete: false,
+    createTime: '',
+    updateTime: '',
+    eduction: [],
+    experience: [],
+    project: [],
+    volunteer: [],
+  },
+  company: {
+    user: [],
+    id: 0,
+    companyName: '',
+    companyAvatar: '',
+    companyLicense: '',
+    companyDesc: '',
+    status: 0,
+    isDelete: false,
+    createTime: '',
+    updateTime: '',
+  },
+}
 
 export const useUserStore = create<State & Action>(set => ({
   token: '',
   role: 'genius',
-  userInfo: {
-    id: 0,
-    username: '',
-    password: '',
-    nickname: '',
-    avatar: '',
-    email: '',
-    contactIdToB: '',
-    contactIdToC: '',
-    contactPassword: '',
-    isFrozen: false,
-    createTime: '',
-    updateTime: '',
-  },
+  userInfo: initUserInfo,
   setData: (params) => {
     set(state => ({
       ...state,
@@ -78,10 +111,13 @@ export const useUserStore = create<State & Action>(set => ({
   },
   logout: async () => {
     await AsyncStorage.setItem('token', '')
+    await AsyncStorage.setItem('role', 'genius')
 
     set(state => ({
       ...state,
+      userInfo: initUserInfo,
       token: '',
+      role: 'genius',
     }))
   },
   getUserInfo: async () => {

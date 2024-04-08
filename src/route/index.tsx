@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Toast } from '@fruits-chain/react-native-xiaoshu'
+import { Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
 import { IMAGE_PREFIX } from '@/core/constants'
@@ -38,6 +38,9 @@ import CompanyAuth from '@/page/auth/company-auth'
 import IntegralList from '@/page/boss/integral-list'
 import CompanyInfo from '@/page/boss/company-info'
 import ContactList from '@/page/boss/contact-list'
+import BindEmail from '@/page/auth/bind-email'
+import ResetGuide from '@/page/auth/reset-guide'
+import VerifyCodeForm from '@/page/auth/verify-code-form'
 
 const Stack = createNativeStackNavigator()
 
@@ -64,9 +67,11 @@ function RouteProvider() {
         userToken: userStore.userInfo.contactPassword,
         userAvatarURL: `${IMAGE_PREFIX}/stars.png`,
         usePassword: true,
-        result: (res) => {
-          // eslint-disable-next-line no-console
-          console.log('im login', res)
+        result: () => {
+          Notify({
+            type: 'success',
+            message: 'IM 聊天登录',
+          })
         },
       })
     }
@@ -120,13 +125,16 @@ function RouteProvider() {
                       )
                 }
                 <Stack.Group>
-                  <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false, title: '' }} />
-                  <Stack.Screen name="Setting" component={Setting} options={{ title: '设置' }} />
+                  <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false }} />
+                  <Stack.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
                   <Stack.Screen name="UserChange" component={UserChange} options={{ title: '切换角色' }} />
                   <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
                   <Stack.Screen name="CompanyAuth" component={CompanyAuth} options={{ title: '企业信息' }} />
                   <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={{ headerShown: false }} />
-                  <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false, title: '' }} />
+                  <Stack.Screen name="BindEmail" component={BindEmail} options={{ headerShown: false }} />
+                  <Stack.Screen name="ResetGuide" component={ResetGuide} options={{ headerShown: false }} />
+                  <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false }} />
+                  <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} options={{ headerShown: false }} />
                 </Stack.Group>
               </>
               )
@@ -136,11 +144,12 @@ function RouteProvider() {
                 <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="ForgetGuide" component={ForgetGuide} options={{ headerShown: false }} />
-                <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
               </Stack.Group>
               )
         }
-
+        <Stack.Group>
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   )

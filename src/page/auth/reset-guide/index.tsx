@@ -1,29 +1,32 @@
 import { Button, Space } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import React, { useState } from 'react'
+import { Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import React, { useEffect } from 'react'
-import { ScrollView, Text, View } from 'react-native'
-import { IMAGE_PREFIX } from '@/core/constants'
-import { create, pxToDp } from '@/core/styleSheet'
+import { useUserStore } from '@/store/user'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { create, pxToDp } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
+import Page from '@/core/components/Page'
 
 function ResetGuide() {
-  // const router = useRouter()
-  // const navigation = useNavigation()
+  const userStore = useUserStore()
 
-  useEffect(() => {
-    // navigation.setOptions({
-    //   headerTitle: '修改密码',
-    // })
-  }, [])
+  const navigation = useNavigation()
+
+  const [selectWay, setSelectWay] = useState({
+    type: 'phone',
+    value: userStore.userInfo.username,
+  })
 
   const handleContinueClick = () => {
-    // router.push('/(auth)/(password)/verification-code')
+    navigation.dispatch(StackActions.replace('VerifyCodeForm', selectWay))
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <Page title="重置密码">
       <View style={styles.bannerWrapper}>
         <FastImage
           style={styles.banner}
@@ -34,38 +37,46 @@ function ResetGuide() {
         </FastImage>
       </View>
       <Text style={styles.title}>选择使用哪种联系方式来重置您的密码</Text>
-      <View style={styles.card}>
+      <Pressable
+        onPress={() => setSelectWay({
+          type: 'phone',
+          value: userStore.userInfo.username,
+        })}
+        style={[styles.card, selectWay.type === 'phone' ? styles.cardActive : null]}
+      >
         <View style={styles.circle}>
           <AntDesign name="message1" size={pxToDp(48)} color="#3E7CFD" />
         </View>
         <Space>
           <Text style={styles.desc}>通过短信：</Text>
           <Text style={styles.content}>
-            +86 183****7538
+            {`+86 ${userStore.userInfo.username}`}
           </Text>
         </Space>
-      </View>
-      <View style={styles.card}>
+      </Pressable>
+      <Pressable
+        onPress={() => setSelectWay({
+          type: 'email',
+          value: userStore.userInfo.email,
+        })}
+        style={[styles.card, selectWay.type === 'email' ? styles.cardActive : null]}
+      >
         <View style={styles.circle}>
           <MaterialCommunityIcons name="email-outline" size={pxToDp(48)} color="#3E7CFD" />
         </View>
         <Space>
           <Text style={styles.desc}>通过邮箱：</Text>
           <Text style={styles.content}>
-            +86 183****7538
+            {userStore.userInfo.email}
           </Text>
         </Space>
-      </View>
+      </Pressable>
       <Button style={styles.button} onPress={handleContinueClick}>继续</Button>
-    </ScrollView>
+    </Page>
   )
 }
 
 const styles = create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 40,
-  },
   bannerWrapper: {
     width: '100%',
     alignItems: 'center',
@@ -75,7 +86,9 @@ const styles = create({
     height: 540,
   },
   title: {
-    fontSize: 40,
+    textAlign: 'center',
+    color: themeColor.black85,
+    fontSize: 32,
     fontWeight: '700',
     marginBottom: 42,
   },
@@ -87,6 +100,11 @@ const styles = create({
     borderRadius: 64,
     borderWidth: 2,
     borderColor: '#F2F1F1',
+  },
+  cardActive: {
+    borderWidth: 4,
+    padding: 38,
+    borderColor: '#3E7CFD',
   },
   circle: {
     alignItems: 'center',

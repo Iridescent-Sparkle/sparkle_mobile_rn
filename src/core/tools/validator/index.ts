@@ -32,6 +32,14 @@ export function isPhone(tel: string | undefined): boolean {
   return reg.test(tel)
 }
 
+export function isEmail(email: string | undefined): boolean {
+  if (!email)
+    return false
+
+  const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+  return reg.test(email)
+}
+
 /**
  * @name: isNumber for jsxin
  * @params: num: any 当前需要验证的数据

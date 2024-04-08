@@ -43,18 +43,13 @@ function Register() {
   }
 
   const getVerifyCode = async (phone: string) => {
-    try {
-      const { data } = await request.get({
-        phone,
-      }, {
-        url: '/user/register-smsCode',
-      })
+    const { data } = await request.get({
+      phone,
+    }, {
+      url: '/user/register-smsCode',
+    })
 
-      return data.countDown
-    }
-    catch (error) {
-
-    }
+    return data.countDown
   }
 
   const handleRegisterClick = async () => {
@@ -165,7 +160,7 @@ function Register() {
             >
               <TextInput style={styles.input} placeholder="请输入验证码" inputWidth={pxToDp(400)} />
             </Form.Item>
-            <VerifyCode tel={phone} getVerifyCode={getVerifyCode} />
+            <VerifyCode value={phone} type="phone" getVerifyCode={getVerifyCode} />
           </View>
         </Form>
         <View style={styles.passwordTipWrapper}>

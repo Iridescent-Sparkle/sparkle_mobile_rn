@@ -27,11 +27,7 @@ function UserChange() {
   const im = useChatContext()
   const handleContinueClick = async () => {
     if (userStore.userInfo.company && userStore.userInfo.company.status === 1) {
-      await im.logout({
-        result(params) {
-          console.log('im 退出', params)
-        },
-      })
+      await im.logout({})
 
       await userStore.changeUser(userStore.role === 'genius' ? 'boss' : 'genius')
 

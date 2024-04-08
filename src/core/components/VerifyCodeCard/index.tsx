@@ -59,7 +59,7 @@ const styles = create({
   cell: {
     width: 144,
     height: 108,
-    lineHeight: 96,
+    lineHeight: 108,
     fontSize: 48,
     borderWidth: 4,
     borderColor: '#00000030',

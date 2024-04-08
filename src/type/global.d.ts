@@ -267,6 +267,7 @@ interface User {
   createTime: string
   updateTime: string
   profile: Profile
+  company: Company
 }
 
 interface Profile {

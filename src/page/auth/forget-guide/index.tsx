@@ -79,7 +79,7 @@ function ForgetGuide() {
       setConfrimLoading(true)
 
       await request.post({ phone, code }, {
-        url: '/user/validateSmsCode',
+        url: '/user/validate/sms',
       })
 
       navigation.dispatch(StackActions.replace('ResetPassword', { phone }))
@@ -110,7 +110,7 @@ function ForgetGuide() {
                   </Text>
                 </Space>
               </Space>
-              <Button style={styles.button} onPress={handleConfrimClick} loading={getCodeLoading} loadingText="确认">确认</Button>
+              <Button style={styles.button} onPress={handleConfrimClick} loading={confrimLoading} loadingText="确认">确认</Button>
             </KeyboardAvoidingView>
           </View>
           )
@@ -123,7 +123,7 @@ function ForgetGuide() {
                 <Feather name="phone" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
                 <NumberInput inputWidth={pxToDp(420)} placeholder="请输入手机号" onChange={value => setPhone(String(value))} />
               </View>
-              <Button style={styles.button} onPress={handleGetSmsCode} loading={confrimLoading} loadingText="发送验证码">发送验证码</Button>
+              <Button style={styles.button} onPress={handleGetSmsCode} loading={getCodeLoading} loadingText="发送验证码">发送验证码</Button>
             </ScrollView>
           </View>
           ) }
@@ -177,6 +177,7 @@ const styles = create({
     fontSize: 32,
     color: themeColor.black85,
     textAlign: 'center',
+    fontWeight: '700',
   },
   textWrapper: {
     justifyContent: 'center',
