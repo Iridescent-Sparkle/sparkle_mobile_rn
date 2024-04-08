@@ -5,6 +5,7 @@ import { Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { themeColor } from '@/core/styleSheet/themeColor'
 
 function Guide() {
   const navigation = useNavigation()
@@ -39,8 +40,9 @@ function Guide() {
 const styles = create({
   container: {
     flex: 1,
+    alignItems: 'center',
     paddingTop: 200,
-    paddingHorizontal: 60,
+    paddingHorizontal: 48,
     backgroundColor: '#fff',
   },
   banner: {
@@ -51,15 +53,21 @@ const styles = create({
     marginBottom: 96,
   },
   title: {
+    textAlign: 'left',
     fontSize: 40,
+    color: themeColor.black85,
     fontWeight: '700',
     marginBottom: 42,
   },
   subTitle: {
-    fontSize: 32,
-
+    textAlign: 'left',
+    fontSize: 36,
+    color: themeColor.black85,
+    fontWeight: '700',
   },
   buttonWrapper: {
+    width: '100%',
+    paddingHorizontal: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

@@ -75,7 +75,7 @@ export default function GeniusUpdateExperience() {
   }, [route.params.isEdit])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <View>
         <Form form={form}>
           <Form.Item name="profession" title="职位">

@@ -1,33 +1,35 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Text } from 'react-native'
-
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field'
+import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 
 const CELL_COUNT = 4
+
 interface Prop {
   onChange: (value: any) => void
 }
-function App(prop: Prop) {
+function VerifyCodeCard(prop: Prop) {
   const { onChange } = prop
+
   const [value, setValue] = useState('')
+
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT })
+
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   })
 
   return (
-    <>
+    <Fragment>
       <CodeField
         ref={ref}
-        {...props}
-        // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
         value={value}
         onChangeText={(value) => {
           onChange(value)
@@ -46,8 +48,9 @@ function App(prop: Prop) {
             {symbol || (isFocused ? <Cursor /> : null)}
           </Text>
         )}
+        {...props}
       />
-    </>
+    </Fragment>
   )
 }
 
@@ -62,6 +65,7 @@ const styles = create({
     borderColor: '#00000030',
     textAlign: 'center',
     borderRadius: 20,
+    color: themeColor.black85,
     backgroundColor: '#FAFAFA',
   },
   focusCell: {
@@ -70,4 +74,4 @@ const styles = create({
   },
 })
 
-export default App
+export default VerifyCodeCard

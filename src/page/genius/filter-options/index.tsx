@@ -54,7 +54,7 @@ function FilterOptions() {
   const listRef = useRef<FlatList>(null)
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <View>
         <FilterTabs listRef={listRef} data={listData} />
       </View>

@@ -1,6 +1,6 @@
 import { Button, NavBar, NumberInput, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { KeyboardAvoidingView, ScrollView, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
@@ -12,35 +12,21 @@ import useCountDown from '@/core/components/VerifyCodeButton/useCountDown'
 import { request } from '@/core/api'
 
 function ForgetGuide() {
-  const navigation = useNavigation()
-  const [phone, setPhone] = useState('')
-  const [code, setCode] = useState('')
-  const [showVerificationCode, setShowVerificationCode] = useState(false)
-  const [countDown, setCountDown, $countDown] = useCountDown()
   const insets = useSafeAreaInsets()
 
-  const handleGetSmsCode = async () => {
-    if ($countDown() <= 0) {
-      if (!isPhone(phone)) {
-        Toast.fail('请输入正确的手机号')
-        return
-      }
-      try {
-        const data = await request.get({
-          phone,
-        }, {
-          url: '/user/register-smsCode',
-        })
+  const navigation = useNavigation()
 
-        setCountDown(data.countDown)
-        setShowVerificationCode(true)
-      }
-      finally { /* empty */ }
-    }
-    else {
-      setShowVerificationCode(true)
-    }
-  }
+  const [phone, setPhone] = useState('')
+
+  const [code, setCode] = useState('')
+
+  const [showVerificationCode, setShowVerificationCode] = useState(false)
+
+  const [getCodeLoading, setGetCodeLoading] = useState(false)
+
+  const [confrimLoading, setConfrimLoading] = useState(false)
+
+  const [countDown, setCountDown, $countDown] = useCountDown()
 
   const onPressBackArrow = () => {
     if (showVerificationCode)
@@ -49,25 +35,73 @@ function ForgetGuide() {
       navigation.goBack()
   }
 
-  const handleConfrimClick = async () => {
-    await request.post({ phone, code }, {
-      url: '/user/validateSmsCode',
-    })
+  const handleGetSmsCode = async () => {
+    if ($countDown() <= 0) {
+      if (!isPhone(phone)) {
+        Toast.fail('请输入正确的手机号')
+        return
+      }
+      try {
+        setGetCodeLoading(true)
 
-    navigation.dispatch(StackActions.replace('ResetPassword', { phone }))
+        const { data } = await request.get({
+          phone,
+        }, {
+          url: '/user/register-smsCode',
+        })
+
+        setCountDown(Number(data.countDown))
+
+        setShowVerificationCode(true)
+      }
+      catch {
+        Toast.fail('获取验证码失败，请稍后再试')
+      }
+      finally {
+        setGetCodeLoading(false)
+      }
+    }
+    else {
+      setShowVerificationCode(true)
+    }
   }
-  return (
-    <>
 
+  const handleConfrimClick = async () => {
+    try {
+      if (!code) {
+        Toast.fail('请输入验证码')
+        return
+      }
+      if (code.length !== 4) {
+        Toast.fail('请输入4位验证码')
+        return
+      }
+      setConfrimLoading(true)
+
+      await request.post({ phone, code }, {
+        url: '/user/validateSmsCode',
+      })
+
+      navigation.dispatch(StackActions.replace('ResetPassword', { phone }))
+    }
+    catch (error) {
+      Toast.fail('验证码错误')
+    }
+    finally {
+      setConfrimLoading(false)
+    }
+  }
+
+  return (
+    <Fragment>
       {showVerificationCode
         ? (
-          <View style={[styles.container, { padding: insets.top }]}>
+          <View style={[styles.container, { padding: insets.top, bottom: insets.bottom || 12 }]}>
             <NavBar title="忘记密码" onPressBackArrow={onPressBackArrow} />
             <KeyboardAvoidingView style={styles.body}>
               <Space gap={pxToDp(112)} style={styles.code}>
                 <Text style={styles.text}>
-                  验证码已发送至
-                  {phone}
+                  {` 验证码已发送至 ${phone}`}
                 </Text>
                 <VerifyCodeCard onChange={value => setCode(value)}></VerifyCodeCard>
                 <Space direction="horizontal" style={styles.textWrapper}>
@@ -76,25 +110,24 @@ function ForgetGuide() {
                   </Text>
                 </Space>
               </Space>
-              <Button style={styles.button} onPress={handleConfrimClick}>确认</Button>
+              <Button style={styles.button} onPress={handleConfrimClick} loading={getCodeLoading} loadingText="确认">确认</Button>
             </KeyboardAvoidingView>
           </View>
-
           )
         : (
-          <View style={[styles.container, { padding: insets.top }]}>
+          <View style={[styles.container, { padding: insets.top, bottom: insets.bottom || 12 }]}>
             <NavBar title="验证码" onPressBackArrow={onPressBackArrow} />
             <ScrollView style={styles.body}>
               <Text style={styles.title}>现在重置你的密码</Text>
               <View style={styles.formItem}>
                 <Feather name="phone" size={pxToDp(48)} color="#A9A9A9" style={styles.icon} />
-                <NumberInput inputWidth={pxToDp(420)} placeholder="请输入手机号" onChange={value => setPhone(value)} />
+                <NumberInput inputWidth={pxToDp(420)} placeholder="请输入手机号" onChange={value => setPhone(String(value))} />
               </View>
-              <Button style={styles.button} onPress={handleGetSmsCode}>发送验证码</Button>
+              <Button style={styles.button} onPress={handleGetSmsCode} loading={confrimLoading} loadingText="发送验证码">发送验证码</Button>
             </ScrollView>
           </View>
           ) }
-    </>
+    </Fragment>
   )
 }
 
@@ -110,6 +143,7 @@ const styles = create({
     backgroundColor: '#fff',
   },
   title: {
+    color: themeColor.black85,
     fontSize: 40,
     fontWeight: '700',
     marginTop: 48,
@@ -141,6 +175,7 @@ const styles = create({
   },
   text: {
     fontSize: 32,
+    color: themeColor.black85,
     textAlign: 'center',
   },
   textWrapper: {

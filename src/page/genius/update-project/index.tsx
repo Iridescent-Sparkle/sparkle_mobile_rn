@@ -75,7 +75,7 @@ export default function GeniusUpdateProject() {
   }, [route.params.isEdit])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <View>
         <Form form={form}>
           <Form.Item name="projectName" title="项目名称">

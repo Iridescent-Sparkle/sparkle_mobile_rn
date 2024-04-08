@@ -41,7 +41,7 @@ export default function SearchResult() {
     navigation.goBack()
   }
   return (
-    <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom || 16 }]}>
       <NavBar onPressBackArrow={handleBackClick} rightExtra={<SearchBar />} rightStyle={styles.searchBar} divider={false} />
       <Visible visible={false}>
         <View style={styles.loading}>

@@ -154,7 +154,7 @@ export default function ResumeDetail() {
   }
 
   return (
-    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom || 16 }]}>
       <NavBar onPressBackArrow={handleBackClick} />
       <View style={styles.content}>
         <ScrollView style={styles.body}>

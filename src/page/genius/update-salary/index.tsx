@@ -57,7 +57,7 @@ export default function GeniusUpdateSalary() {
   }, [route.params.isEdit])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <View>
         <Form form={form}>
           <Form.Item name="minSalary" title="最低薪资 千元/月">

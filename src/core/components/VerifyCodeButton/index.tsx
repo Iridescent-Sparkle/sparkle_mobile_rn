@@ -10,7 +10,7 @@ import TouchView from '@/core/components/TouchView'
 
 type Props = TextInputProps & {
   tel: string
-  getVerifyCode: () => Promise<any>
+  getVerifyCode: (tel: string) => Promise<any>
 }
 
 function VerifyCode(props: Props) {
@@ -20,14 +20,19 @@ function VerifyCode(props: Props) {
 
   async function fetchVerifyCode() {
     if (getVerifyCode && !$loading() && $countDown() <= 0) {
-      if (!isPhone(tel)) {
-        Toast.fail('请输入正确的手机号')
-        return
-      }
+      if (!tel)
+        return Toast.fail('请先输入手机号')
+
+      if (!isPhone(tel))
+        return Toast.fail('请输入正确的手机号')
+
       try {
         setLoading(true)
-        const data = await getVerifyCode()
+        const data = await getVerifyCode(tel)
         setCountDown(data)
+      }
+      catch (error) {
+        Toast.fail('获取验证码失败，请稍后再试')
       }
       finally {
         setLoading(false)

@@ -1,4 +1,3 @@
-import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
 import { request } from '@/core/api'
@@ -33,7 +32,6 @@ export const useUserStore = create<State & Action>(set => ({
     contactIdToC: '',
     contactPassword: '',
     isFrozen: false,
-    isAdmin: false,
     createTime: '',
     updateTime: '',
   },
@@ -65,28 +63,22 @@ export const useUserStore = create<State & Action>(set => ({
     })
   },
   login: async (params) => {
-    try {
-      const loginRes = await request.post(params, {
-        url: '/user/login',
-      })
+    const loginRes = await request.post(params, {
+      url: '/user/login',
+    })
 
-      await AsyncStorage.setItem('token', loginRes.data.accessToken || '')
+    await AsyncStorage.setItem('token', loginRes.data.accessToken || '')
 
-      return set((state) => {
-        return {
-          ...state,
-          token: loginRes.data.accessToken,
-        }
-      })
-    }
-    catch (error) {
-      Toast.fail('登录失败')
-      console.error(error)
-    }
+    return set((state) => {
+      return {
+        ...state,
+        token: loginRes.data.accessToken,
+      }
+    })
   },
   logout: async () => {
     await AsyncStorage.setItem('token', '')
-    console.log(1)
+
     set(state => ({
       ...state,
       token: '',
@@ -96,7 +88,6 @@ export const useUserStore = create<State & Action>(set => ({
     const userInfo = await request.get({}, {
       url: '/user/info',
     })
-    console.log(userInfo)
     await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo.data))
 
     return set(state => ({

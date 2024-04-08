@@ -71,7 +71,7 @@ export default function RechargeIntegral() {
       alipayErrorReason[payResponse.resultStatus] && Toast.fail(alipayErrorReason[payResponse.resultStatus])
     }
     catch (error: any) {
-      console.log(error)
+    
       Toast.fail('支付失败')
     }
   }

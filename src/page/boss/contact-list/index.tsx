@@ -38,7 +38,7 @@ export default function ContactList() {
   }
 
   return (
-    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom || 16 }]}>
       <NavBar title="联系列表" onPressBackArrow={handleBackClick} />
       {resumeList.length
         ? <FlatList style={styles.list} data={resumeList} renderItem={job => <ResumeListCard data={job.item} />} keyExtractor={job => String(job.id)} />

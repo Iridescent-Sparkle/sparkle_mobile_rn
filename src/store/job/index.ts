@@ -73,7 +73,7 @@ export const useJobStore = create<State & Action>(set => ({
       }))
     }
     catch (error) {
-      console.log(error)
+
     }
   },
 }

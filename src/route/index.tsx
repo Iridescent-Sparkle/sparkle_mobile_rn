@@ -52,9 +52,11 @@ function RouteProvider() {
     try {
       await userStore.initData()
 
-      if (userStore.token)
+      if (userStore.token) {
         await userStore.getUserInfo()
-      jobStore.getJobOptions()
+        await jobStore.getJobOptions()
+      }
+
       const contactUserId = userStore.role === 'boss' ? userStore.userInfo.contactIdToC : userStore.userInfo.contactIdToB
 
       contactUserId && await im.login({
@@ -130,11 +132,11 @@ function RouteProvider() {
               )
             : (
               <Stack.Group>
-                <Stack.Screen name="Guide" component={Guide} options={{ title: '' }} />
-                <Stack.Screen name="Register" component={Register} options={{ title: '' }} />
-                <Stack.Screen name="Login" component={Login} options={{ title: '' }} />
+                <Stack.Screen name="Guide" component={Guide} options={{ headerShown: false }} />
+                <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="ForgetGuide" component={ForgetGuide} options={{ headerShown: false }} />
-                <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ title: '' }} />
+                <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
               </Stack.Group>
               )
         }

@@ -72,7 +72,7 @@ export default function GeniusUpdateVolunteer() {
   }, [route.params.isEdit])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <View>
         <Form form={form}>
           <Form.Item name="activityName" title="活动名称">

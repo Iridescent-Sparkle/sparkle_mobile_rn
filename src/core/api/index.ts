@@ -14,6 +14,7 @@ export class Request {
     this.axios = axios.create(params)
 
     this.axios.interceptors.request.use((config) => {
+      console.log(`请求${config.url}`)
       return config
     }, (error) => {
       return Promise.reject(error)
@@ -85,7 +86,7 @@ export class Request {
 
 export const request = new Request({
   // baseURL: 'http://10.254.0.148:3000',
-  baseURL: 'http://192.168.1.6:3000',
+  baseURL: 'http://192.168.1.2:3000',
   // baseURL: 'https://api.iridescent.icu',
   // baseURL: 'http://101.42.153.172:3000',
   httpsAgent: {

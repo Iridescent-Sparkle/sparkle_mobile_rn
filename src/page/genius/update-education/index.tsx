@@ -75,7 +75,7 @@ export default function GeniusUpdateEducation() {
   }, [route.params.isEdit])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <View>
         <Form form={form}>
           <Form.Item name="school" title="学校">

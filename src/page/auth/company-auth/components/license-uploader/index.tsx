@@ -31,7 +31,6 @@ function LicenseUploader(props: Props) {
       Toast.success('上传成功')
     }
     catch (error) {
-      console.log(error)
       Toast.fail('上传失败')
       return Promise.reject(error)
     }

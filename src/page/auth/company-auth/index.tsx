@@ -34,7 +34,7 @@ export default function CompanyAuth() {
       navigation.goBack()
     }
     catch (error) {
-      console.log(error)
+
     }
     finally {
       setLoading(false)
@@ -61,7 +61,7 @@ export default function CompanyAuth() {
   }, [])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
       <ScrollView>
         <Form form={form}>
           <Form.Item name="companyAvatar" title="企业头像">
