@@ -32,9 +32,8 @@ export default function GeniusDeliver() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <RecruitListHeader title="我的投递" />
-      <RecruitSearchBar />
       {jobList.length
-        ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitJobCard type="deliver" data={job.item} />} keyExtractor={job => String(job.jobDeliverId)} />
+        ? <FlatList data={jobList} renderItem={job => <RecruitJobCard type="deliver" data={job.item} />} keyExtractor={job => String(job.jobDeliverId)} />
         : <View style={styles.empty}><Empty /></View>}
     </View>
   )
@@ -46,9 +45,7 @@ const styles = create({
     paddingHorizontal: 44,
     backgroundColor: '#FFF',
   },
-  list: {
-    marginTop: 40,
-  },
+
   popupHeader: {
     height: 180,
   },

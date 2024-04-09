@@ -1,14 +1,11 @@
-import { ScrollView, Text, View } from 'react-native'
 import { Search } from '@fruits-chain/react-native-xiaoshu'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import PageHeader from '../../../manage/components/PageHeader'
+import { View } from 'react-native'
+import Page from '@/core/components/Page'
 import { create } from '@/core/styleSheet'
-import SearchBar from '@/components/recruit/recruit-list/recruit-search-bar'
-import { themeColor } from '@/core/styleSheet/themeColor'
-import TabList from '@/components/TabList'
-import Recommendation from '@/components/Recommendation'
+import Recommendation from '@/page/boss/BossSearch/components/Recommendation'
+import TabList from '@/page/boss/BossSearch/components/TabList'
 
-export default function SearchPage() {
+export default function BossSearch() {
   const data = [
     {
       title: 'UI/UX Designer',
@@ -23,6 +20,7 @@ export default function SearchPage() {
       desc: '120 Result',
     },
   ]
+
   const data1 = [
     {
       title: '12',
@@ -37,9 +35,9 @@ export default function SearchPage() {
       money: '$22-30$',
     },
   ]
+
   return (
-    <ScrollView style={styles.scrollView}>
-      <PageHeader back={true} />
+    <Page title="搜索">
       <View style={styles.container}>
         <View style={styles.SearchBox}>
           <Search style={styles.search} showSearchButton={false} />
@@ -48,9 +46,8 @@ export default function SearchPage() {
         <TabList title="Search History" record={data} />
         <TabList title="Search History" record={data} />
         <Recommendation title="Recommended for you" record={data1}></Recommendation>
-
       </View>
-    </ScrollView>
+    </Page>
   )
 }
 const styles = create({

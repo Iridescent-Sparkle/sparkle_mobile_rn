@@ -24,7 +24,9 @@ export default function GeniusHome() {
   const [activeTab, setActiveTab] = useState('1')
 
   const currentPage = useRef(1)
+
   const total = useRef(0)
+
   const getInitData = async () => {
     try {
       setLoading(true)
@@ -75,6 +77,7 @@ export default function GeniusHome() {
       setLoading(false)
     }
   }
+
   const onPageChange = async (tab: string) => {
     try {
       currentPage.current += 1
@@ -101,6 +104,7 @@ export default function GeniusHome() {
   const handleTabChange = (tab: string) => {
     onTabChange && onTabChange(tab)
   }
+
   useEffect(() => {
     getInitData()
   }, [])

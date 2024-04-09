@@ -32,8 +32,7 @@ export default function GeniusCollect() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <RecruitListHeader title="我的收藏" />
-      <RecruitSearchBar />
-      {jobList.length ? <FlatList style={styles.list} data={jobList} renderItem={job => <RecruitListCard data={job.item} handleCollectClick={getInitData} />} keyExtractor={job => String(job.jobCollectId)} /> : <View style={styles.empty}><Empty /></View>}
+      {jobList.length ? <FlatList data={jobList} renderItem={job => <RecruitListCard data={job.item} handleCollectClick={getInitData} />} keyExtractor={job => String(job.jobCollectId)} /> : <View style={styles.empty}><Empty /></View>}
     </View>
   )
 }
@@ -43,9 +42,6 @@ const styles = create({
     flex: 1,
     paddingHorizontal: 44,
     backgroundColor: '#FFF',
-  },
-  list: {
-    marginTop: 40,
   },
   popupHeader: {
     height: 180,

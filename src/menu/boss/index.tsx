@@ -11,7 +11,7 @@ import { themeColor } from '@/core/styleSheet/themeColor'
 const Tab = createBottomTabNavigator()
 export default function BossTabLayout() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: themeColor.primary }}>
+    <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true, tabBarStyle: { height: pxToDp(120), paddingBottom: pxToDp(16) }, headerShown: false, tabBarActiveTintColor: themeColor.primary }}>
       <Tab.Screen
         name="index"
         component={BossHome}

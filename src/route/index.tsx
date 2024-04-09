@@ -7,7 +7,7 @@ import { Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
 import { IMAGE_PREFIX } from '@/core/constants'
-import SearchPage from '@/menu/boss/member/components/Search'
+import SearchPage from '@/page/boss/BossSearch'
 import ForgetGuide from '@/page/auth/forget-guide'
 import Guide from '@/page/auth/guide'
 import Login from '@/page/auth/login'
@@ -41,6 +41,9 @@ import ContactList from '@/page/boss/contact-list'
 import BindEmail from '@/page/auth/bind-email'
 import ResetGuide from '@/page/auth/reset-guide'
 import VerifyCodeForm from '@/page/auth/verify-code-form'
+import SearchResult from '@/page/genius/search-result'
+import BossSearch from '@/page/boss/BossSearch'
+import FilterOptions from '@/page/genius/filter-options'
 
 const Stack = createNativeStackNavigator()
 
@@ -106,6 +109,7 @@ function RouteProvider() {
                         <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} options={{ title: '积分充值' }} />
                         <Stack.Screen name="IntegralList" component={IntegralList} options={{ title: '我的积分' }} />
                         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
+                        <Stack.Screen name="BossSearch" component={BossSearch} options={{ headerShown: false }} />
                       </Stack.Group>
                       )
                     : (
@@ -121,6 +125,8 @@ function RouteProvider() {
                         <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ title: '志愿活动经历' }} />
                         <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ title: '附件简历' }} />
                         <Stack.Screen name="ResumePreview" component={ResumePreview} options={{ title: '预览简历' }} />
+                        <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false }} />
+                        <Stack.Screen name="FilterOptions" component={FilterOptions} options={{ headerShown: false }} />
                       </Stack.Group>
                       )
                 }

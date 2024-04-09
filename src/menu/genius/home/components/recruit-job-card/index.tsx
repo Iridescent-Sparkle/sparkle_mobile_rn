@@ -51,7 +51,7 @@ function RecruitJobCard(props: Props) {
           />
           <Space gap={pxToDp(20)}>
             <Text style={styles.title}>{data.jobName}</Text>
-            <Text style={styles.company}>{data.company.companyName}</Text>
+            <Text style={styles.company}>{data.company?.companyName}</Text>
             <Space direction="horizontal">
               <Tag type="ghost" color="#979797">
                 {data.minSalary}

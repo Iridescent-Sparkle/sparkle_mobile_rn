@@ -8,7 +8,7 @@ interface props {
   title?: string
   record?: any[]
 }
-export default function index(props: props) {
+export default function TabList(props: props) {
   const { title, record } = props
   return (
     <View style={styles.box}>

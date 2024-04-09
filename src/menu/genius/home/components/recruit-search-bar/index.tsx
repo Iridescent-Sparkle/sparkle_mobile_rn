@@ -1,29 +1,27 @@
-import { Search, Toast } from '@fruits-chain/react-native-xiaoshu'
-import React, { useState } from 'react'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Search } from '@fruits-chain/react-native-xiaoshu'
+import React from 'react'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { create } from '@/core/styleSheet'
-import { themeColor } from '@/core/styleSheet/themeColor'
+import { useUserStore } from '@/store/user'
 
 function RecruitSearchBar() {
-  const [value, setValue] = useState('')
+  const navigation = useNavigation()
 
-  const onSearch = () => {
-    const { close } = Toast.loading('加载中')
-    setTimeout(() => {
-      close()
-    }, 800)
+  const userStore = useUserStore()
+
+  const onSearch = (value: string) => {
+    navigation.dispatch(StackActions.push(userStore.role === 'genius' ? 'SearchResult' : 'BossSearch', {
+      keyword: value,
+    }))
   }
 
   return (
     <Search
       key="keyword"
       placeholder="请输入关键词搜索"
-      value={value}
-      onChangeText={setValue}
       onSearch={onSearch}
       style={styles.search}
-      showSearchButton={false}
-      extra={<Ionicons name="options-outline" size={24} color={themeColor.primary} />}
+      showSearchButton={true}
     />
   )
 }
