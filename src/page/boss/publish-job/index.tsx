@@ -28,7 +28,7 @@ export default function PublishJob() {
 
     const minSalary = values.salary[0]
     const maxSalary = values.salary[1]
-    if (route.params.jobId) {
+    if (route.params?.jobId) {
       await request.post({
         ...values,
         minSalary,
@@ -67,6 +67,7 @@ export default function PublishJob() {
           await request.post({
             integral: 1,
             type: 'publish',
+            isConsume: true,
           }, { url: 'boss/consume/create' })
 
           await request.post({

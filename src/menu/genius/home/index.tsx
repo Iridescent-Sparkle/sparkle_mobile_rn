@@ -1,29 +1,40 @@
-import { Loading, Toast } from '@fruits-chain/react-native-xiaoshu'
-import React, { useCallback, useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { Loading, Tabs, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { useEffect, useRef, useState } from 'react'
+import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
-import RecentJobList from './components/recent-job-list'
 import RecruitSearchBar from './components/recruit-search-bar'
 import UserCard from './components/recruit-user-card'
-import Skeleton from '@/page/genius/skeleton'
-import { create } from '@/core/styleSheet'
+import RecruitListCard from './components/recruit-list-card'
+import { themeColor } from '@/core/styleSheet/themeColor'
+import { create, pxToDp } from '@/core/styleSheet'
 import { request } from '@/core/api'
+import { useJobStore } from '@/store/job'
 
 export default function GeniusHome() {
   const insets = useSafeAreaInsets()
 
-  const [jobList, setJobList] = useState([])
+  const jobStore = useJobStore()
+
+  const [jobList, setJobList] = useState([] as any)
 
   const [loading, setLoading] = useState(true)
 
+  const [refreshing, setRefreshing] = useState(false)
+
+  const [activeTab, setActiveTab] = useState('1')
+
+  const currentPage = useRef(1)
+  const total = useRef(0)
   const getInitData = async () => {
     try {
       setLoading(true)
 
-      const jobListData = await request.get({}, { url: `boss/category/job/1` })
-
-      setJobList(jobListData.data)
+      const { data: { data: jobListData, total } } = await request.post({
+        categoryId: 1,
+        pageSize: 4,
+      }, { url: '/boss/category/job' })
+      total.current = total
+      setJobList(jobListData)
     }
     catch (error) {
       Toast.fail({
@@ -37,10 +48,20 @@ export default function GeniusHome() {
   }
 
   const onTabChange = async (tab: string) => {
+    setActiveTab(tab)
+    currentPage.current = 1
+    total.current = 0
     try {
-      const { data: jobListData } = await request.get({}, {
-        url: `/category/job/${tab}`,
+      setLoading(true)
+
+      const { data: { data: jobListData, total } } = await request.post({
+        categoryId: tab,
+        pageSize: 4,
+        page: currentPage.current,
+      }, {
+        url: '/boss/category/job',
       })
+      total.current = total
 
       setJobList(jobListData)
     }
@@ -50,12 +71,36 @@ export default function GeniusHome() {
         duration: 500,
       })
     }
+    finally {
+      setLoading(false)
+    }
+  }
+  const onPageChange = async (tab: string) => {
+    try {
+      currentPage.current += 1
+      if (currentPage.current * 3 < total.current) {
+        const { data: { data: jobListData, total } } = await request.post({
+          categoryId: tab,
+          pageSize: currentPage.current,
+          page: currentPage.current,
+        }, {
+          url: '/boss/category/job',
+        })
+        total.current = total
+        setJobList([...jobList, ...jobListData])
+      }
+    }
+    catch (error) {
+      Toast.fail({
+        message: '网络错误',
+        duration: 500,
+      })
+    }
   }
 
-  // useFocusEffect(React.useCallback(() => {
-  //   getInitData()
-  // }, []))
-
+  const handleTabChange = (tab: string) => {
+    onTabChange && onTabChange(tab)
+  }
   useEffect(() => {
     getInitData()
   }, [])
@@ -64,13 +109,27 @@ export default function GeniusHome() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <UserCard />
       <RecruitSearchBar />
-      {
-        loading
-          ? <View style={styles.spinner}><Loading size={18} type="spinner" /></View>
-          : (
-            <RecentJobList jobList={jobList} onTabChange={onTabChange} />
-            )
-      }
+      <Tabs activeKey={activeTab} indicatorHeight={0} tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={handleTabChange}>
+        {
+           jobStore.jobCategoryOptions.map(category => (
+             <Tabs.TabPane key={String(category?.value)} tab={category?.label}>
+               <FlatList
+                 data={jobList}
+                 onEndReachedThreshold={0.2}
+                 onEndReached={() => onPageChange(String(category?.value))}
+                 refreshing={refreshing}
+                 onRefresh={() => setRefreshing(true)}
+                 ListFooterComponent={() => {
+                   return loading ? <View style={styles.loading}><Loading size={pxToDp(56)} /></View> : null
+                 }}
+                 renderItem={jobDetail => <RecruitListCard data={jobDetail.item} />}
+                 keyExtractor={jobDetail => String(jobDetail.id)}
+               />
+             </Tabs.TabPane>
+           ))
+        }
+      </Tabs>
+
     </View>
   )
 }
@@ -85,5 +144,14 @@ const styles = create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  tabBar: {
+    height: 114,
+    padding: 0,
+  },
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 32,
   },
 })
