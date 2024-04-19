@@ -1,4 +1,4 @@
-import React, { cloneElement, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { Fragment, cloneElement, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import Schema from 'async-validator'
 import { Cell, Toast } from '@fruits-chain/react-native-xiaoshu'
 
@@ -160,25 +160,19 @@ function FormItem(props: FormItemProps) {
   const form = useContext(FormContext)
   /** 表单初始值 */
   const value = useWatch(form, name)
-
   useEffect(() => {
     // 更新规则
-    if (rules) {
-      form[setRulesSy]?.(
-        (formRules: { [x: string]: any }, rulesOrder: { [x: string]: any }) => {
-          rulesOrder[name] = ruleIndex
-          formRules[name] = rules
-        },
-      )
-    }
+    rules && form[setRulesSy]?.((formRules: { [x: string]: any }, rulesOrder: { [x: string]: any }) => {
+      rulesOrder[name] = ruleIndex
+      formRules[name] = rules
+    })
+
     return () => {
       // 销毁后删除对应规则
-      if (rules) {
-        form[setRulesSy]?.((formRules: object, rulesOrder: object) => {
-          Reflect.deleteProperty(formRules, name)
-          Reflect.deleteProperty(rulesOrder, name)
-        })
-      }
+      rules && form[setRulesSy]?.((formRules: object, rulesOrder: object) => {
+        Reflect.deleteProperty(formRules, name)
+        Reflect.deleteProperty(rulesOrder, name)
+      })
     }
   }, [rules, name, form, ruleIndex])
 
@@ -191,6 +185,7 @@ function FormItem(props: FormItemProps) {
 
   /** 获取子组件本身的onChange事件 */
   const onPropsChange = useRef(children.props?.onChange)
+
   onPropsChange.current = children.props?.onChange
 
   const onChange = useCallback(
@@ -205,7 +200,7 @@ function FormItem(props: FormItemProps) {
     return children
 
   return (
-    <>
+    <Fragment>
       {title
         ? (
           <Cell
@@ -216,7 +211,7 @@ function FormItem(props: FormItemProps) {
           />
           )
         : <>{cloneElement(children, { value, onChange })}</>}
-    </>
+    </Fragment>
   )
 }
 

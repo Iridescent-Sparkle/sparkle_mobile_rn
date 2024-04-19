@@ -52,6 +52,7 @@ export default function RechargeIntegral() {
         url: `/boss/order/create`,
       })
       Alipay.setSandbox(true)
+
       const payResponse = await Alipay.pay(data)
 
       if (JSON.parse(payResponse.result).alipay_trade_app_pay_response?.code === '10000') {
@@ -71,7 +72,6 @@ export default function RechargeIntegral() {
       alipayErrorReason[payResponse.resultStatus] && Toast.fail(alipayErrorReason[payResponse.resultStatus])
     }
     catch (error: any) {
-    
       Toast.fail('支付失败')
     }
   }

@@ -56,27 +56,19 @@ function PdfPicker(props: Props) {
 
   const handlePickPdf = async () => {
     try {
-      const [file] = await pick(
-        {
-          mode: 'import',
-          type: [types.pdf],
-        },
-      )
+      const [file] = await pick({ mode: 'import', type: [types.pdf] })
 
       if (!file.name?.endsWith('.pdf'))
         return Promise.reject(new Error('请选择PDF文件'))
+
       setLoading(true)
+
       if (file.uri.startsWith('content://')) {
         const urlComponents = file.uri.split('/')
         const fileNameAndExtension = urlComponents[urlComponents.length - 1]
         const destPath = `${RNFS.TemporaryDirectoryPath}/${fileNameAndExtension}`
         await RNFS.copyFile(file.uri, destPath)
-
-        await putMediaToOss({
-          fileName: file.name,
-          filePath: decodeURIComponent(`file://${destPath}`),
-          fileSize: (file.size || 0) / 1024,
-        })
+        await putMediaToOss({ fileName: file.name, filePath: decodeURIComponent(`file://${destPath}`), fileSize: (file.size || 0) / 1024 })
       }
     }
     catch (error: any) {
