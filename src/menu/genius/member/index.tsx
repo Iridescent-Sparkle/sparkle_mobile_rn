@@ -1,7 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useRef, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Switch } from '@fruits-chain/react-native-xiaoshu'
 import MemberContactInfoCard from './components/contact-info-card'
 import MemberEducationInfoCard from './components/education-info-card'
 import MemberExpectedSalaryCard from './components/expected-salary-card'
@@ -11,6 +12,7 @@ import MemberSummaryCard from './components/summary-info-card'
 import MemberUserCard from './components/user-info-card'
 import MemberVolunteerInfoCard from './components/volunteer-info-card'
 import MemberWorkExperienceCard from './components/work-experience-card'
+import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
 
@@ -104,7 +106,11 @@ export default function GeniusMember() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <MemberUserCard />
-      <FlatList style={styles.list} data={listData} renderItem={item => item.item.component} keyExtractor={item => item.id} />
+      <View style={styles.header}>
+        <Text style={styles.title}>在线简历</Text>
+        <Switch defaultValue activeChildren="开启求职" inactiveChildren="暂不求职" />
+      </View>
+      <FlatList data={listData} renderItem={item => item.item.component} keyExtractor={item => item.id} />
     </View>
   )
 }
@@ -115,8 +121,16 @@ const styles = create({
     paddingHorizontal: 44,
     backgroundColor: '#FFF',
   },
-  list: {
-    marginTop: 40,
+  header: {
+    height: 96,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 36,
+    color: themeColor.black85,
+    fontWeight: '700',
   },
   popupHeader: {
     height: 180,

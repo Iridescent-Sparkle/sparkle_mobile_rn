@@ -45,7 +45,6 @@ const styles = create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 168,
-    marginHorizontal: 32,
     borderBottomWidth: 4,
     borderBottomColor: '#F2F2F2',
   },

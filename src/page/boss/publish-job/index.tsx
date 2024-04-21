@@ -125,54 +125,50 @@ export default function PublishJob() {
       <ScrollView>
         <Form form={form}>
           <Form.Item title="职位名称" name="jobName" rules={[{ required: true, message: '请输入职位名称' }]}>
-            <Input></Input>
+            <Input placeholder="请输入职位名称" />
           </Form.Item>
           <Form.Item title="薪资" name="salary" rules={[{ required: true, message: '请输入薪资' }]}>
-            <Slider
-              min={1}
-              max={100}
-            >
+            <Slider min={1} max={100}>
             </Slider>
           </Form.Item>
-          <Form.Item title="是否全职" name="isFullTime" rules={[{ required: true, message: '请输入是否全职' }]}>
-            <SingleSelect options={jobStore.jobFullTimeOptions}>
-            </SingleSelect>
+          <Form.Item title="是否全职" name="isFullTime" rules={[{ required: true, message: '请选择是否全职' }]}>
+            <SingleSelect options={jobStore.jobFullTimeOptions} visible={false} title="是否全职" placeholder="请选择是否全职" />
           </Form.Item>
-          <Form.Item title="是否线上工作" name="isOnsite" rules={[{ required: true, message: '请输入是否线上工作' }]}>
-            <SingleSelect options={jobStore.jobFullTimeOptions}></SingleSelect>
+          <Form.Item title="是否线上工作" name="isOnsite" rules={[{ required: true, message: '请选择是否线上工作' }]}>
+            <SingleSelect options={jobStore.jobFullTimeOptions} visible={false} title="是否线上工作" placeholder="请选择是否线上工作" />
           </Form.Item>
           <Form.Item title="工作描述" name="jobDescription" rules={[{ required: true, message: '请输入工作描述' }]}>
-            <TextArea />
+            <TextArea placeholder="请输入工作描述" />
           </Form.Item>
           <Form.Item title="工作要求" name="jobRequirements" rules={[{ required: true, message: '请输入工作要求' }]}>
-            <TextArea />
+            <TextArea placeholder="请输入工作要求" />
           </Form.Item>
           <Form.Item title="工作地点" name="address" rules={[{ required: true, message: '请输入工作地点' }]}>
-            <Input></Input>
+            <Input placeholder="请输入工作地点" />
           </Form.Item>
-          <Form.Item title="福利" name="jobBonus" rules={[{ required: true, message: '请输入福利待遇' }]}>
-            <MultiSelect options={jobStore.jobBonusOptions}></MultiSelect>
+          <Form.Item title="福利" name="jobBonus" rules={[{ required: true, message: '请选择福利待遇' }]}>
+            <MultiSelect options={jobStore.jobBonusOptions} visible={false} title="福利" placeholder="请选择福利待遇" />
           </Form.Item>
-          <Form.Item title="经验" name="jobExperienceId" rules={[{ required: true, message: '请输入工作经验' }]}>
-            <SingleSelect options={jobStore.jobExperienceOptions}></SingleSelect>
+          <Form.Item title="经验" name="jobExperienceId" rules={[{ required: true, message: '请选择工作经验要求' }]}>
+            <SingleSelect options={jobStore.jobExperienceOptions} visible={false} title="经验" placeholder="请选择工作经验要求" />
           </Form.Item>
-          <Form.Item title="学历要求" name="jobEducationId" rules={[{ required: true, message: '请输入学历要求' }]}>
-            <SingleSelect options={jobStore.jobEducationOptions}></SingleSelect>
+          <Form.Item title="学历要求" name="jobEducationId" rules={[{ required: true, message: '请选择学历要求' }]}>
+            <SingleSelect options={jobStore.jobEducationOptions} visible={false} title="学历要求" placeholder="请选择学历要求" />
           </Form.Item>
-          <Form.Item title="工作水平" name="jobLevelId" rules={[{ required: true, message: '请输入工作水平' }]}>
-            <SingleSelect options={jobStore.jobLevelOptions}></SingleSelect>
+          <Form.Item title="工作水平" name="jobLevelId" rules={[{ required: true, message: '请选择工作水平要求' }]}>
+            <SingleSelect options={jobStore.jobLevelOptions} visible={false} title="工作水平" placeholder="请选择工作水平要求" />
           </Form.Item>
-          <Form.Item title="工作类型" name="jobCategoryId" rules={[{ required: true, message: '请输入工作类型' }]}>
-            <SingleSelect options={jobStore.jobCategoryOptions}></SingleSelect>
+          <Form.Item title="工作类型" name="jobCategoryId" rules={[{ required: true, message: '请选择工作类型' }]}>
+            <SingleSelect options={jobStore.jobCategoryOptions} visible={false} title="工作类型" placeholder="请选择工作类型" />
           </Form.Item>
           <Form.Item title="空缺" name="headCount" rules={[{ required: true, message: '请输入空缺' }]}>
-            <Input></Input>
+            <Input placeholder="请输入空缺" />
           </Form.Item>
-          <Form.Item title="网站" name="website">
-            <Input></Input>
+          <Form.Item title="公司网址" name="website">
+            <Input placeholder="请输入公司网址" />
           </Form.Item>
-          <Form.Item title="关于" name="companyDescription">
-            <TextArea />
+          <Form.Item title="公司介绍" name="companyDescription">
+            <TextArea placeholder="请输入公司介绍" />
           </Form.Item>
         </Form>
       </ScrollView>
