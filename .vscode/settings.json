@@ -72,5 +72,7 @@
     "RNFS",
     "xiaoshu"
   ],
-  "search.useIgnoreFiles": true
+  "search.useIgnoreFiles": true,
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

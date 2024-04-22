@@ -1,16 +1,19 @@
-import { Portal, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Portal, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { CameraRoll } from '@react-native-camera-roll/camera-roll'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { BackHandler, PermissionsAndroid, Platform, Pressable, Text, View } from 'react-native'
 import { ChatMessageType } from 'react-native-chat-sdk'
 import type { MessageModel, SystemMessageModel, TimeMessageModel } from 'react-native-chat-uikit'
 import { ConversationDetail } from 'react-native-chat-uikit'
+import RNFS from 'react-native-fs'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Video from 'react-native-video'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import ReactNativeBlobUtil from 'react-native-blob-util'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 
@@ -67,6 +70,21 @@ async function savePicture(url: string) {
   }
 };
 
+async function saveFile(remotePath: string, fileName: string) {
+  try {
+    const { data } = await ReactNativeBlobUtil.config({ fileCache: true }).fetch('GET', remotePath)
+
+    const targetPath = `${RNFS.DocumentDirectoryPath}/${fileName}`
+
+    await RNFS.copyFile(data, targetPath)
+
+    Toast.success(`文件已保存至${targetPath}`)
+  }
+  catch (error) {
+    Toast.fail('保存文件时出错')
+  }
+}
+
 function Menu({ cancel, saveToLocal }: any) {
   return (
     <View style={styles.menu}>
@@ -79,6 +97,7 @@ function Menu({ cancel, saveToLocal }: any) {
     </View>
   )
 }
+
 export default function GeniusChatDetail() {
   const insets = useSafeAreaInsets()
 
@@ -90,6 +109,8 @@ export default function GeniusChatDetail() {
 
   const [videoUrl, setVideoUrl] = useState('')
 
+  const [file, setFile] = useState({})
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -97,16 +118,60 @@ export default function GeniusChatDetail() {
         return true
       },
     )
-
     return () => backHandler.remove()
   }, [])
 
   const handleImageClose = () => {
     setImageUrl('')
   }
+
   const handleVideoClose = () => {
     setVideoUrl('')
   }
+
+  const handleFileClose = () => {
+    setFile({})
+  }
+  const fileIcon = () => {
+    const fileExtension = file.displayName?.split('.').at(-1)
+    let iconComponent
+
+    switch (fileExtension) {
+      case 'pdf':
+        iconComponent = <AntDesign name="pdffile1" size={pxToDp(96)} color="#F75555" />
+        break
+      case 'xlsx':
+        iconComponent = <AntDesign name="exclefile1" size={pxToDp(96)} color="black" />
+        break
+      case 'pptx':
+        iconComponent = <AntDesign name="pptfile1" size={pxToDp(96)} color="black" />
+        break
+      case 'md':
+        iconComponent = <AntDesign name="file-markdown" size={pxToDp(96)} color="black" />
+        break
+      case 'docx':
+        iconComponent = <AntDesign name="wordfile1" size={pxToDp(96)} color="black" />
+        break
+      case 'txt':
+        iconComponent = <AntDesign name="filetext1" size={pxToDp(96)} color="black" />
+        break
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        iconComponent = <FontAwesome name="file-image-o" size={pxToDp(96)} color="black" />
+        break
+      default:
+        iconComponent = <AntDesign name="unknowfile1" size={pxToDp(96)} color="black" />
+        break
+    }
+    return iconComponent
+  }
+
+  const handleFileDownload = () => {
+    saveFile(file.remotePath, file.displayName)
+  }
+
   return (
     <Fragment>
       <GestureHandlerRootView style={{ flex: 1, paddingTop: insets.top, backgroundColor: '#FFF' }}>
@@ -126,19 +191,13 @@ export default function GeniusChatDetail() {
                 if (model.modelType !== 'message')
                   return
                 const msgModel = model as MessageModel
-                if (msgModel.msg.body.type === ChatMessageType.IMAGE) {
-                  setImageUrl(`file://${msgModel.msg.body.localPath}`)
-                }
-                else if (msgModel.msg.body.type === ChatMessageType.VIDEO) {
-                  setVideoUrl(`file://${msgModel.msg.body.localPath}`)
-                }
+                if (msgModel.msg.body.type === ChatMessageType.IMAGE) { setImageUrl(`file://${msgModel.msg.body.localPath}`) }
+
+                else if (msgModel.msg.body.type === ChatMessageType.VIDEO) { setVideoUrl(`file://${msgModel.msg.body.localPath}`) }
+
                 else if (msgModel.msg.body.type === ChatMessageType.FILE) {
-                  // navigation.push('FileMessagePreview', {
-                  //   params: {
-                  //     msgId: msgModel.msg.msgId,
-                  //     localMsgId: msgModel.msg.localMsgId,
-                  //   },
-                  // })
+                  setFile(msgModel.msg.body)
+                  console.log(msgModel.msg.body)
                 }
               },
             },
@@ -174,6 +233,22 @@ export default function GeniusChatDetail() {
               controls
               resizeMode="stretch"
             />
+          </Portal>
+        )
+      }
+      {
+        JSON.stringify(file) !== '{}' && (
+          <Portal>
+            <View style={styles.fileHeader}>
+              <AntDesign name="close" size={pxToDp(48)} color="black" onPress={handleFileClose} />
+            </View>
+            <View style={styles.fileBackground}>
+              <View style={styles.fileWrapper}>
+                {fileIcon()}
+                <Text numberOfLines={1}>{file.displayName}</Text>
+              </View>
+              <Button type="hazy" style={styles.fileButton} onPress={handleFileDownload}>保存</Button>
+            </View>
           </Portal>
         )
       }
@@ -219,5 +294,37 @@ const styles = create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  fileHeader: {
+    justifyContent: 'center',
+    paddingLeft: 32,
+    width: '100%',
+    height: 90,
+    backgroundColor: '#fff',
+  },
+  fileBackground: {
+    position: 'absolute',
+    top: 90,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 24,
+  },
+  fileWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 200,
+    height: 200,
+    backgroundColor: '#f3f3f3',
+    borderRadius: 32,
+    gap: 4,
+    padding: 4,
+  },
+  fileButton: {
+    width: 200,
+    borderRadius: 32,
   },
 })
