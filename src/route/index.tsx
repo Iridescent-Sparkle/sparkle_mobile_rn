@@ -1,25 +1,35 @@
+import { Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
-import { IMAGE_PREFIX } from '@/core/constants'
-import SearchPage from '@/page/boss/BossSearch'
+import BindEmail from '@/page/auth/bind-email'
+import CompanyAuth from '@/page/auth/company-auth'
 import ForgetGuide from '@/page/auth/forget-guide'
 import Guide from '@/page/auth/guide'
 import Login from '@/page/auth/login'
 import Register from '@/page/auth/register'
+import ResetGuide from '@/page/auth/reset-guide'
 import ResetPassword from '@/page/auth/reset-password'
 import UserChange from '@/page/auth/user-change'
+import VerifyCodeForm from '@/page/auth/verify-code-form'
+import { default as BossSearch, default as SearchPage } from '@/page/boss/BossSearch'
+import CompanyInfo from '@/page/boss/company-info'
+import ContactList from '@/page/boss/contact-list'
+import DeliverList from '@/page/boss/deliver-list'
+import IntegralList from '@/page/boss/integral-list'
 import PublishJob from '@/page/boss/publish-job'
+import RechargeIntegral from '@/page/boss/recharge-integral'
 import ResumeDetail from '@/page/boss/resume-detail'
 import GeniusChatDetail from '@/page/genius/chat-detail'
 import DeliverDetail from '@/page/genius/deliver-detail'
+import FilterOptions from '@/page/genius/filter-options'
 import JobDetail from '@/page/genius/job-detail'
 import ResumePreview from '@/page/genius/resume-preview'
+import SearchResult from '@/page/genius/search-result'
 import GeniusUpdateContact from '@/page/genius/update-contact'
 import GeniusUpdateEducation from '@/page/genius/update-education'
 import GeniusUpdateExperience from '@/page/genius/update-experience'
@@ -32,18 +42,6 @@ import GeniusUpdateVolunteer from '@/page/genius/update-volunteer'
 import Setting from '@/page/setting'
 import { useJobStore } from '@/store/job'
 import { useUserStore } from '@/store/user'
-import DeliverList from '@/page/boss/deliver-list'
-import RechargeIntegral from '@/page/boss/recharge-integral'
-import CompanyAuth from '@/page/auth/company-auth'
-import IntegralList from '@/page/boss/integral-list'
-import CompanyInfo from '@/page/boss/company-info'
-import ContactList from '@/page/boss/contact-list'
-import BindEmail from '@/page/auth/bind-email'
-import ResetGuide from '@/page/auth/reset-guide'
-import VerifyCodeForm from '@/page/auth/verify-code-form'
-import SearchResult from '@/page/genius/search-result'
-import BossSearch from '@/page/boss/BossSearch'
-import FilterOptions from '@/page/genius/filter-options'
 
 const Stack = createNativeStackNavigator()
 
@@ -68,7 +66,7 @@ function RouteProvider() {
       contactUserId && await im.login({
         userId: contactUserId,
         userToken: userStore.userInfo.contactPassword,
-        userAvatarURL: `${IMAGE_PREFIX}/stars.png`,
+        userAvatarURL: userStore.userInfo.avatar,
         usePassword: true,
         result: () => {
           Notify({

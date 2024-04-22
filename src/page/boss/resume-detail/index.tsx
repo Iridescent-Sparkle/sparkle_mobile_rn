@@ -40,7 +40,8 @@ export default function ResumeDetail() {
       ])
 
       setResumeList(resumeListData[0])
-      setDeliverStatusData(deliverStatusData)
+
+      setDeliverStatusData(deliverStatusData || {})
       if (route.params.deliverId && deliverStatusData.status === 1) {
         await request.post({
           deliverId: route.params.deliverId,
@@ -80,10 +81,12 @@ export default function ResumeDetail() {
             await Promise.all([
               await request.post({
                 integral: 1,
+
               }, { url: 'boss/integral/consume' }),
               await request.post({
                 integral: 1,
                 type: 'chat',
+                isConsume: true,
               }, { url: 'boss/consume/create' }),
               await request.post({
                 profileId: route.params.profileId,
@@ -94,6 +97,7 @@ export default function ResumeDetail() {
               resumeList.user.contactIdToB && navigation.dispatch(StackActions.push('GeniusChatDetail', {
                 convType: 0,
                 convId: resumeList.user.contactIdToB,
+                convName: '',
               }))
             }
           }
@@ -104,9 +108,11 @@ export default function ResumeDetail() {
       await request.post({
         profileId: route.params.profileId,
       }, { url: '/boss/contact/create' })
+
       resumeList.user.contactIdToB && navigation.dispatch(StackActions.push('GeniusChatDetail', {
         convType: 0,
         convId: resumeList.user.contactIdToB,
+        convName: '',
       }))
     }
   }
@@ -167,7 +173,7 @@ export default function ResumeDetail() {
           <ResumeVolunteerInfoCard data={resumeList} />
         </ScrollView>
         <Visible visible={resumeList.user?.id !== userStore.userInfo.id}>
-          <Visible visible={deliverStatusData.status === 3}>
+          <Visible visible={deliverStatusData.status === 3 || !deliverStatusData.status}>
             <Button style={styles.button} onPress={handleChatClick}>发起聊天</Button>
           </Visible>
           <Visible visible={deliverStatusData.status === 4}>

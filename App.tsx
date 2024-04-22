@@ -5,6 +5,7 @@ import type { DataModel, DataModelType, UIKitError } from 'react-native-chat-uik
 import { Container, useLightTheme, usePresetPalette } from 'react-native-chat-uikit'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
+import { ChatClient } from 'react-native-chat-sdk'
 import { useUserStore } from '@/store/user'
 import RouteProvider from '@/route'
 import customTheme from '@/core/styleSheet/component'
@@ -24,32 +25,27 @@ function App() {
         error?: UIKitError
       ) => void
     }) => {
-      params.ids.get('user')
-      const res: any = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([
-            {
-              id: 'sparkle',
-              type: 'chat',
-              name: 'test',
-              avatar: `${IMAGE_PREFIX}/stars.png`,
-            },
-            {
-              id: 'iridescent',
-              type: 'chat',
-              name: 'test',
-              avatar: `${IMAGE_PREFIX}/stars.png`,
-            },
-          ])
-        }, 1000)
+      const userIds = params.ids.get('user') || []
+
+      const res = await ChatClient.getInstance()
+        .userManager.fetchUserInfoById(userIds)
+
+      const users = [] as DataModel[]
+
+      res.forEach((item) => {
+        users.push(
+          {
+            id: item.userId,
+            type: 'user',
+            name: item.nickName,
+            avatar: item.avatarUrl,
+          },
+        )
       })
-      // const finalUsers = userIds?.map<DataModel>((id) => {
-      //   return list.current.get(id) as DataModel
-      // })
 
       params?.result(
         new Map([
-          ['user', res ?? []],
+          ['user', users ?? []],
         ]),
       )
     },

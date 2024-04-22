@@ -41,6 +41,7 @@ function DeliverDetail() {
       navigation.dispatch(StackActions.push('GeniusChatDetail', {
         convType: 0,
         convId: jobDetail.user.contactIdToB,
+        convName: '',
       }))
     }
     else if (jobDetail.jobDeliverStatus === 4) {

@@ -30,9 +30,10 @@ export default function BossChat() {
           navigation.dispatch(StackActions.push('GeniusChatDetail', {
             convId: data.convId,
             convType: data.convType,
-            convName: data.convName || data.convId,
+            convName: '',
           }))
         }}
+
       />
     </View>
   )
