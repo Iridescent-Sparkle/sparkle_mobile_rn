@@ -5,23 +5,22 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { create } from '@/core/styleSheet'
 
 interface props {
-  title?: string
-  record?: any[]
+  title: string
+  data: any[]
 }
 export default function TabList(props: props) {
-  const { title, record } = props
+  const { title, data } = props
   return (
     <View style={styles.box}>
       <Text style={styles.title}>{title}</Text>
       {
-        record?.map((text, index) => (
-          <Space key={index} direction="horizontal" style={styles.Tlist}>
-            <View style={styles.TOlist}>
-              <Text style={styles.rTitle}>{text?.title}</Text>
-              <Text style={styles.desc}>{text?.desc}</Text>
+        data?.map((item, index) => (
+          <Space key={index} direction="horizontal" style={styles.listWrapper}>
+            <View style={styles.titleWrapper}>
+              <Text style={styles.itemTitle}>{item}</Text>
             </View>
             <View>
-              <AntDesign name="right" size={20} color="#ADADAD" />
+              <AntDesign name="right" size={20} color="#2A3A49" />
             </View>
           </Space>
         ))
@@ -39,16 +38,18 @@ const styles = create({
     color: '#B8B8B8',
     marginBottom: 20,
   },
-  Tlist: {
+  listWrapper: {
     justifyContent: 'space-between',
   },
-  TOlist: {
+  titleWrapper: {
     flexDirection: 'column',
     height: 100,
     alignContent: 'space-between',
   },
-  rTitle: {
+  itemTitle: {
     color: '#2A3A49',
+    fontWeight: '700',
+    fontSize: 32,
   },
   desc: {
     fontSize: 18,

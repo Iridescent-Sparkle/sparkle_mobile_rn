@@ -202,6 +202,7 @@ export default function GeniusChatDetail() {
               },
             },
           }}
+
           onBack={() => {
             navigation.goBack()
           }}
