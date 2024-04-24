@@ -24,17 +24,25 @@ export default function SearchResult() {
 
   const currentPage = useRef(1)
 
-  const total = useRef(0)
+  const [total, setTotal] = useState(0)
 
-  const getInitData = async () => {
+  const onSearch = async (keyword: string) => {
     try {
       setLoading(true)
 
+      if (!keyword?.trim()) {
+        setJobList([])
+        setTotal(0)
+        return
+      }
       const { data: { data: jobListData, total } } = await request.post({
-        categoryId: 1,
-        pageSize: 4,
-      }, { url: '/boss/category/job' })
-      total.current = total
+        page: currentPage.current,
+        pageSize: 10,
+        jobName: keyword,
+      }, { url: '/boss/job/all' })
+
+      setTotal(total)
+
       setJobList(jobListData)
     }
     catch (error) {
@@ -49,7 +57,7 @@ export default function SearchResult() {
   }
 
   useEffect(() => {
-    getInitData()
+    onSearch(route.params.keyword)
   }, [])
 
   const handleShowFilter = () => {
@@ -57,18 +65,18 @@ export default function SearchResult() {
   }
 
   return (
-    <Page title="搜索">
+    <Page title="搜索" isScrollView={false}>
       <View style={styles.container}>
-        <SearchBar />
-        <Visible visible={false}>
+        <SearchBar onSearch={onSearch} />
+        <Visible visible={loading}>
           <View style={styles.loading}>
             <Loading vertical>加载中...</Loading>
           </View>
         </Visible>
-        <Visible visible={true}>
+        <Visible visible={!loading}>
           <View style={styles.header}>
             <Text style={styles.result}>
-              {`共 ${3779} 个结果`}
+              {`共 ${total} 个结果`}
             </Text>
             <Ionicons name="options-outline" size={pxToDp(48)} color={themeColor.primary} onPress={handleShowFilter} />
           </View>
@@ -122,8 +130,6 @@ const styles = create({
   list: {
     flex: 1,
     paddingHorizontal: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   banner: {
     height: 540,

@@ -28,6 +28,14 @@ export default function PublishJob() {
 
     const minSalary = values.salary[0]
     const maxSalary = values.salary[1]
+
+    await request.post({
+      ...values,
+      minSalary,
+      maxSalary,
+      companyId: userStore.userInfo.companyId,
+    }, { url: 'boss/job' })
+
     if (route.params?.jobId) {
       await request.post({
         ...values,
@@ -108,6 +116,13 @@ export default function PublishJob() {
           headCount: String(jobDetail.headCount),
           website: jobDetail.website,
           companyDescription: jobDetail.companyDescription,
+        })
+      }
+      else {
+        form.setFieldsValue({
+          salary: [1, 100],
+          isFullTime: true,
+          isOnsite: false,
         })
       }
     }

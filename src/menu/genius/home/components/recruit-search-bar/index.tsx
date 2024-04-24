@@ -4,16 +4,11 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
 
-function RecruitSearchBar() {
-  const navigation = useNavigation()
-
-  const userStore = useUserStore()
-
-  const onSearch = (value: string) => {
-    navigation.dispatch(StackActions.push(userStore.role === 'genius' ? 'SearchResult' : 'BossSearch', {
-      keyword: value,
-    }))
-  }
+interface Props {
+  onSearch: (value: string) => void
+}
+function RecruitSearchBar(props: Props) {
+  const { onSearch } = props
 
   return (
     <Search

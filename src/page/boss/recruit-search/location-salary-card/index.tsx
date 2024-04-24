@@ -2,9 +2,12 @@ import { Space } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
 import Slider from 'react-native-a11y-slider'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { cloneElement } from 'react'
 import BaseCard from '../recruit-base-card'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import Input from '@/core/components/Input'
+import Form from '@/core/components/Form'
 
 function LocationSalaryCard() {
   return (
@@ -12,20 +15,20 @@ function LocationSalaryCard() {
       <Space>
         <View style={styles.card}>
           <MaterialIcons name="location-on" size={pxToDp(36)} color="black" />
-          <Text style={styles.text}>China</Text>
+          <Form.Item name="address">
+            <Input placeholder="请输入目标城市"></Input>
+          </Form.Item>
         </View>
-        <Slider
-          min={1}
-          max={100}
-          labelStyle={styles.label}
-          labelTextStyle={styles.labelText}
-          markerColor={themeColor.primary}
-          values={[10, 87]}
-        />
-        <View style={[styles.card, styles.unit]}>
-          <Text style={styles.text}>per month</Text>
-          <MaterialIcons name="arrow-drop-down" size={pxToDp(48)} color="black" />
-        </View>
+        <Form.Item name="salary">
+          <Slider
+            min={1}
+            max={100}
+            labelStyle={styles.label}
+            labelTextStyle={styles.labelText}
+            markerColor={themeColor.primary}
+            values={[1, 100]}
+          />
+        </Form.Item>
       </Space>
     </BaseCard>
   )

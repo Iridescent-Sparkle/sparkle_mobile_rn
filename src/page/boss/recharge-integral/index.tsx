@@ -126,7 +126,7 @@ export default function RechargeIntegral() {
           <Text style={styles.payTitle}>订单金额：</Text>
           <Text style={styles.payNumber}>
             ¥
-            {selectMeal.price}
+            {selectMeal?.price}
           </Text>
         </View>
         <Button style={styles.payButton} onPress={handlePayClick}>立即支付</Button>

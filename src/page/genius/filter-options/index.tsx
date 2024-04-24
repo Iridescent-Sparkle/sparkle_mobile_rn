@@ -1,6 +1,6 @@
 import { Button, Card } from '@fruits-chain/react-native-xiaoshu'
-import React, { useRef } from 'react'
-import { FlatList, View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { BackHandler, FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import FilterTabs from '@/page/boss/recruit-search/recruit-filter-tabs'
 import LocationSalaryCard from '@/page/boss/recruit-search/location-salary-card'
@@ -9,12 +9,15 @@ import SingleSelectCard from '@/page/boss/recruit-search/single-select-card'
 import Form from '@/core/components/Form'
 import { create } from '@/core/styleSheet'
 import { useJobStore } from '@/store/job'
+import Page from '@/core/components/Page'
 
 function FilterOptions() {
   const form = Form.useForm()
-  const insets = useSafeAreaInsets()
+
   const listRef = useRef<FlatList>(null)
+
   const jobStore = useJobStore()
+
   const listData = [
     {
       id: '1',
@@ -24,36 +27,57 @@ function FilterOptions() {
     {
       id: '2',
       title: '工作类型',
-      component: <SingleSelectCard title="工作类型" data={jobStore.jobCategoryOptions} />,
+      component: <SingleSelectCard title="工作类型" name="jobCategoryId" data={jobStore.jobCategoryOptions} />,
     },
     {
       id: '3',
-      title: '工作水平',
-      component: <MultiSelectCard title="工作水平" data={jobStore.jobLevelOptions} />,
+      title: '岗位职级',
+      component: <MultiSelectCard title="岗位职级" name="jobLevelId" data={jobStore.jobLevelOptions} />,
     },
     {
       id: '4',
-      title: '就业类型',
-      component: <MultiSelectCard title="就业类型" data={jobStore.jobFullTimeOptions} />,
+      title: '是否全职',
+      component: <MultiSelectCard title="是否全职" name="isFullTime" data={jobStore.jobFullTimeOptions} />,
     },
     {
       id: '5',
       title: '工作经验',
-      component: <MultiSelectCard title="工作经验" data={jobStore.jobExperienceOptions} />,
+      component: <MultiSelectCard title="工作经验" name="jobExperienceId" data={jobStore.jobExperienceOptions} />,
     },
     {
       id: '6',
-      title: '教育层次',
-      component: <MultiSelectCard title="教育层次" data={jobStore.jobEducationOptions} />,
+      title: '学历要求',
+      component: <MultiSelectCard title="学历要求" name="jobEducationId" data={jobStore.jobEducationOptions} />,
     },
     {
       id: '7',
-      title: '工作职能',
-      component: <MultiSelectCard title="工作职能" data={jobStore.jobBonusOptions} />,
+      title: '福利',
+      component: <MultiSelectCard title="工作职能" name="jobBonus" data={jobStore.jobBonusOptions} />,
     },
   ]
+  const handleResetForm = () => {
+
+  }
+  const handleSubmitForm = () => {
+    const values = form.getFieldsValue()
+    console.log(values)
+  }
+
+  useEffect(() => {
+    form.setFieldsValue({
+      salary: [1, 100],
+    })
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        return true
+      },
+    )
+    return () => backHandler.remove()
+  }, [])
+
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
+    <Page isScrollView={false} conntentStyle={styles.container}>
       <View>
         <FilterTabs listRef={listRef} data={listData} />
       </View>
@@ -64,17 +88,17 @@ function FilterOptions() {
       </View>
       <Card>
         <View style={styles.buttonWrapper}>
-          <Button type="ghost" style={styles.button}>重置</Button>
-          <Button style={styles.button}>确认</Button>
+          <Button type="ghost" style={styles.button} onPress={handleResetForm}>重置</Button>
+          <Button style={styles.button} onPress={handleSubmitForm}>确认</Button>
         </View>
       </Card>
-    </View>
+    </Page>
   )
 }
 
 const styles = create({
   container: {
-    flex: 1,
+    paddingHorizontal: 0,
   },
   tabBar: {
     height: 114,
