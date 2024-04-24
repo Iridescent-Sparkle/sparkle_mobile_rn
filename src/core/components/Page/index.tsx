@@ -15,18 +15,24 @@ interface Props {
   children?: React.ReactNode
   isScrollView?: boolean
   conntentStyle?: ViewProps['style']
+  navigationBack?: () => void
 }
 function Page(props: Props) {
-  const { title, navBarProps, scrollViewProps, children, isScrollView = true, conntentStyle = {}, viewProps } = props
+  const { title, navBarProps, scrollViewProps, children, isScrollView = true, conntentStyle = {}, viewProps, navigationBack } = props
+
   const navigation = useNavigation()
 
   const insets = useSafeAreaInsets()
+
+  const handleNavigationBack = () => {
+    navigationBack ? navigationBack() : navigation.goBack()
+  }
 
   return (
     <View style={[styles.container, { padding: insets.top, bottom: insets.bottom || 12 }]}>
       <NavBar
         title={title}
-        onPressBackArrow={navigation.goBack}
+        onPressBackArrow={handleNavigationBack}
         {...navBarProps}
       />
       {

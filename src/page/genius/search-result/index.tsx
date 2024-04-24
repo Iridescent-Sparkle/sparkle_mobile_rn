@@ -16,7 +16,7 @@ import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 export default function SearchResult() {
   const navigation = useNavigation()
 
-  const route = useRoute<{ key: any, name: any, params: { keyword: string } }>()
+  const route = useRoute<{ key: any, name: any, params: { keyword: string, filter: any } }>()
 
   const [jobList, setJobList] = useState([] as any)
 
@@ -26,6 +26,10 @@ export default function SearchResult() {
 
   const [total, setTotal] = useState(0)
 
+  const keywordRef = useRef<string | null>()
+
+  const searchRef = useRef<{ setValue: (value: string) => void }>(null)
+  const [filterValues, setFilterValues] = useState({})
   const onSearch = async (keyword: string) => {
     try {
       setLoading(true)
@@ -35,10 +39,12 @@ export default function SearchResult() {
         setTotal(0)
         return
       }
+
       const { data: { data: jobListData, total } } = await request.post({
         page: currentPage.current,
         pageSize: 10,
         jobName: keyword,
+        ...route.params.filter || {},
       }, { url: '/boss/job/all' })
 
       setTotal(total)
@@ -58,16 +64,19 @@ export default function SearchResult() {
 
   useEffect(() => {
     onSearch(route.params.keyword)
-  }, [])
+  }, [filterValues])
 
   const handleShowFilter = () => {
-    navigation.dispatch(StackActions.push('FilterOptions'))
+    navigation.dispatch(StackActions.push('FilterOptions', {
+      keyword: keywordRef.current,
+      setFilterValues,
+    }))
   }
 
   return (
     <Page title="搜索" isScrollView={false}>
       <View style={styles.container}>
-        <SearchBar onSearch={onSearch} />
+        <SearchBar onSearch={onSearch} ref={searchRef} />
         <Visible visible={loading}>
           <View style={styles.loading}>
             <Loading vertical>加载中...</Loading>

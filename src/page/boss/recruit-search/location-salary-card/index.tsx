@@ -9,6 +9,25 @@ import { themeColor } from '@/core/styleSheet/themeColor'
 import Input from '@/core/components/Input'
 import Form from '@/core/components/Form'
 
+interface SliderProps {
+  value?: any
+  onChange?: (value: any) => void
+}
+function SliderBox(props: SliderProps) {
+  const { value = [], onChange } = props
+
+  return (
+    <Slider
+      min={1}
+      max={100}
+      labelStyle={styles.label}
+      labelTextStyle={styles.labelText}
+      markerColor={themeColor.primary}
+      values={value}
+      onChange={onChange}
+    />
+  )
+}
 function LocationSalaryCard() {
   return (
     <BaseCard title="位置和薪酬">
@@ -20,14 +39,7 @@ function LocationSalaryCard() {
           </Form.Item>
         </View>
         <Form.Item name="salary">
-          <Slider
-            min={1}
-            max={100}
-            labelStyle={styles.label}
-            labelTextStyle={styles.labelText}
-            markerColor={themeColor.primary}
-            values={[1, 100]}
-          />
+          <SliderBox></SliderBox>
         </Form.Item>
       </Space>
     </BaseCard>

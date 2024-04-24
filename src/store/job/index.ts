@@ -1,14 +1,32 @@
 import { create } from 'zustand'
-import type { SelectorOption } from '@fruits-chain/react-native-xiaoshu'
+
 import { request } from '@/core/api'
 
 interface State {
-  jobBonusOptions: SelectorOption[]
-  jobExperienceOptions: SelectorOption[]
-  jobEducationOptions: SelectorOption[]
-  jobLevelOptions: SelectorOption[]
-  jobCategoryOptions: SelectorOption[]
-  jobFullTimeOptions: SelectorOption[]
+  jobBonusOptions: {
+    label: string
+    value: string
+  }[]
+  jobExperienceOptions: {
+    label: string
+    value: string
+  }[]
+  jobEducationOptions: {
+    label: string
+    value: string
+  }[]
+  jobLevelOptions: {
+    label: string
+    value: string
+  }[]
+  jobCategoryOptions: {
+    label: string
+    value: string
+  }[]
+  jobFullTimeOptions: {
+    label: string
+    value: boolean
+  }[]
 }
 
 interface Action {
@@ -23,10 +41,10 @@ export const useJobStore = create<State & Action>(set => ({
   jobCategoryOptions: [],
   jobFullTimeOptions: [{
     label: '是',
-    value: true as unknown as number,
+    value: true,
   }, {
     label: '否',
-    value: false as unknown as number,
+    value: false,
   }],
   getJobOptions: async () => {
     try {

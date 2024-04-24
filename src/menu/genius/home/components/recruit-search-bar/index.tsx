@@ -1,14 +1,22 @@
 import { Search } from '@fruits-chain/react-native-xiaoshu'
-import React from 'react'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { create } from '@/core/styleSheet'
-import { useUserStore } from '@/store/user'
+
+interface Ref {
+  setValue: (value: string) => void
+}
 
 interface Props {
   onSearch: (value: string) => void
 }
-function RecruitSearchBar(props: Props) {
+const RecruitSearchBar: React.ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
   const { onSearch } = props
+
+  const [value, setValue] = useState('')
+
+  useImperativeHandle(ref, () => ({
+    setValue,
+  }))
 
   return (
     <Search
@@ -16,10 +24,14 @@ function RecruitSearchBar(props: Props) {
       placeholder="请输入关键词搜索"
       onSearch={onSearch}
       style={styles.search}
+      value={value}
+      onChangeText={setValue}
       showSearchButton={true}
     />
   )
 }
+
+const ForwardRecruitSearchBar = forwardRef(RecruitSearchBar)
 
 const styles = create({
   search: {
@@ -30,4 +42,4 @@ const styles = create({
   },
 })
 
-export default RecruitSearchBar
+export default ForwardRecruitSearchBar

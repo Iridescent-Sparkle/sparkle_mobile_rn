@@ -1,18 +1,20 @@
 import { Button, Card } from '@fruits-chain/react-native-xiaoshu'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useRef } from 'react'
 import { BackHandler, FlatList, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import FilterTabs from '@/page/boss/recruit-search/recruit-filter-tabs'
+import Form from '@/core/components/Form'
+import Page from '@/core/components/Page'
+import { create } from '@/core/styleSheet'
 import LocationSalaryCard from '@/page/boss/recruit-search/location-salary-card'
 import MultiSelectCard from '@/page/boss/recruit-search/multi-select-card'
+import FilterTabs from '@/page/boss/recruit-search/recruit-filter-tabs'
 import SingleSelectCard from '@/page/boss/recruit-search/single-select-card'
-import Form from '@/core/components/Form'
-import { create } from '@/core/styleSheet'
 import { useJobStore } from '@/store/job'
-import Page from '@/core/components/Page'
 
 function FilterOptions() {
   const form = Form.useForm()
+  const route = useRoute<{ key: any, name: any, params: { keyword: string, setFilterValues: (params: Record<string, any>) => void } }>()
+  const navigation = useNavigation()
 
   const listRef = useRef<FlatList>(null)
 
@@ -37,7 +39,7 @@ function FilterOptions() {
     {
       id: '4',
       title: '是否全职',
-      component: <MultiSelectCard title="是否全职" name="isFullTime" data={jobStore.jobFullTimeOptions} />,
+      component: <SingleSelectCard title="是否全职" name="isFullTime" data={jobStore.jobFullTimeOptions} />,
     },
     {
       id: '5',
@@ -55,12 +57,27 @@ function FilterOptions() {
       component: <MultiSelectCard title="工作职能" name="jobBonus" data={jobStore.jobBonusOptions} />,
     },
   ]
-  const handleResetForm = () => {
 
+  const handleResetForm = () => {
+    form.setFieldsValue({
+      address: '',
+      salary: [1, 100],
+      jobExperienceId: [],
+      jobBonus: [],
+      jobCategoryId: null,
+      jobLevelId: [],
+      isFullTime: [],
+    })
   }
+
   const handleSubmitForm = () => {
     const values = form.getFieldsValue()
-    console.log(values)
+
+    route.params.setFilterValues({
+      filter: values,
+      keyword: route.params.keyword,
+    })
+    navigation.goBack()
   }
 
   useEffect(() => {
