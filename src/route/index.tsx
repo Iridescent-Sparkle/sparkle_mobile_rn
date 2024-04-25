@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
+import SplashScreen from 'react-native-splash-screen'
 import BossTabLayout from '../menu/boss'
 import GeniusTabLayout from '../menu/genius'
 import BindEmail from '@/page/auth/bind-email'
@@ -81,6 +82,9 @@ function RouteProvider() {
         await AsyncStorage.setItem('token', '')
         Toast.fail('登录失效，请重新登录')
       }
+    }
+    finally {
+      SplashScreen.hide()
     }
   }
 
