@@ -29,7 +29,9 @@ export default function SearchResult() {
   const keywordRef = useRef<string | null>()
 
   const searchRef = useRef<{ setValue: (value: string) => void }>(null)
+  
   const [filterValues, setFilterValues] = useState({})
+
   const onSearch = async (keyword: string) => {
     try {
       setLoading(true)
@@ -39,12 +41,13 @@ export default function SearchResult() {
         setTotal(0)
         return
       }
+      keywordRef.current = keyword
 
       const { data: { data: jobListData, total } } = await request.post({
         page: currentPage.current,
         pageSize: 10,
         jobName: keyword,
-        ...route.params.filter || {},
+        ...filterValues || {},
       }, { url: '/boss/job/all' })
 
       setTotal(total)
@@ -52,6 +55,7 @@ export default function SearchResult() {
       setJobList(jobListData)
     }
     catch (error) {
+
       Toast.fail({
         message: '网络错误',
         duration: 500,
@@ -63,12 +67,12 @@ export default function SearchResult() {
   }
 
   useEffect(() => {
-    onSearch(route.params.keyword)
+    onSearch(route.params.keyword || keywordRef.current || '')
+
   }, [filterValues])
 
   const handleShowFilter = () => {
     navigation.dispatch(StackActions.push('FilterOptions', {
-      keyword: keywordRef.current,
       setFilterValues,
     }))
   }
@@ -105,7 +109,7 @@ export default function SearchResult() {
                     />
                     <Text style={styles.tip}>对不起，您输入的关键字未找到匹配的结果，请重新检查或搜索另一个关键字。</Text>
                   </Space>
-                  )
+                )
             }
           </View>
         </Visible>

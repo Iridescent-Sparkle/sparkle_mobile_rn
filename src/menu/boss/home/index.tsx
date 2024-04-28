@@ -1,8 +1,8 @@
+import { Empty } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useCallback, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Empty } from '@fruits-chain/react-native-xiaoshu'
-import { useFocusEffect } from '@react-navigation/native'
-import { useCallback, useState } from 'react'
 import PageHeader from '../manage/components/PageHeader'
 import ResumeListCard from './components/ResumeCard'
 import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
@@ -12,7 +12,10 @@ import { request } from '@/core/api'
 export default function BossManage() {
   const insets = useSafeAreaInsets()
 
+  const navigation = useNavigation()
+
   const [resumeList, setResumeList] = useState([] as UserProfileList[])
+
   const getInitData = async () => {
     try {
       const { data: { data: resumeListData } } = await request.post({
@@ -26,6 +29,7 @@ export default function BossManage() {
 
     }
   }
+
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
@@ -42,10 +46,15 @@ export default function BossManage() {
       return '晚上好'
   })()
 
+  const onSearch = (value: string) => {
+    navigation.dispatch(StackActions.push('BossSearch', {
+      keyword: value,
+    }))
+  }
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <PageHeader title={tip} />
-      <SearchBar />
+      <SearchBar onSearch={onSearch} />
       {resumeList.length
         ? (
           <View style={styles.list}>

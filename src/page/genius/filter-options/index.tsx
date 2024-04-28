@@ -1,7 +1,3 @@
-import { Button, Card } from '@fruits-chain/react-native-xiaoshu'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useEffect, useRef } from 'react'
-import { BackHandler, FlatList, View } from 'react-native'
 import Form from '@/core/components/Form'
 import Page from '@/core/components/Page'
 import { create } from '@/core/styleSheet'
@@ -10,6 +6,11 @@ import MultiSelectCard from '@/page/boss/recruit-search/multi-select-card'
 import FilterTabs from '@/page/boss/recruit-search/recruit-filter-tabs'
 import SingleSelectCard from '@/page/boss/recruit-search/single-select-card'
 import { useJobStore } from '@/store/job'
+import { Button, Card } from '@fruits-chain/react-native-xiaoshu'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import omit from 'lodash/omit'
+import React, { useEffect, useRef } from 'react'
+import { BackHandler, FlatList, View } from 'react-native'
 
 function FilterOptions() {
   const form = Form.useForm()
@@ -68,15 +69,17 @@ function FilterOptions() {
       jobLevelId: [],
       isFullTime: [],
     })
+    route.params.setFilterValues({
+
+    })
+    navigation.goBack()
   }
 
   const handleSubmitForm = () => {
     const values = form.getFieldsValue()
+    const params = { ...values, minSalary: values.salary[0], maxSalary: values.salary[1] }
+    route.params.setFilterValues(omit(params, 'salary'))
 
-    route.params.setFilterValues({
-      filter: values,
-      keyword: route.params.keyword,
-    })
     navigation.goBack()
   }
 

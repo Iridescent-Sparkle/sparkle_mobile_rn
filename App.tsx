@@ -1,17 +1,13 @@
+import customTheme from '@/core/styleSheet/component'
+import RouteProvider from '@/route'
 import { Provider } from '@fruits-chain/react-native-xiaoshu'
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { useCallback, useEffect } from 'react'
+import { StatusBar } from 'react-native'
+import { ChatClient } from 'react-native-chat-sdk'
 import type { DataModel, DataModelType, UIKitError } from 'react-native-chat-uikit'
 import { Container, useLightTheme, usePresetPalette } from 'react-native-chat-uikit'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { StatusBar } from 'react-native'
-import { ChatClient } from 'react-native-chat-sdk'
-import { useUserStore } from '@/store/user'
-import RouteProvider from '@/route'
-import customTheme from '@/core/styleSheet/component'
-import { IMAGE_PREFIX } from '@/core/constants'
-import { useJobStore } from '@/store/job'
-import { isAndroid } from '@/core/tools/validator'
 
 function App() {
   const palette = usePresetPalette()

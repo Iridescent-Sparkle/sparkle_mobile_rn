@@ -12,7 +12,7 @@ export default function TabList(props: props) {
   const { title, data } = props
   return (
     <View style={styles.box}>
-      <Text style={styles.title}>{title}</Text>
+      {!!data.length && <Text style={styles.title}>{title}</Text>}
       {
         data?.map((item, index) => (
           <Space key={index} direction="horizontal" style={styles.listWrapper}>

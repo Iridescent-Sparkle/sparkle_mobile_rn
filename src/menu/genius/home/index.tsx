@@ -1,23 +1,20 @@
 import { Loading, Tabs, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import RecruitListCard from './components/recruit-list-card'
 import RecruitSearchBar from './components/recruit-search-bar'
 import UserCard from './components/recruit-user-card'
-import RecruitListCard from './components/recruit-list-card'
+import { useJobStore } from '@/store/job'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { request } from '@/core/api'
-import { useJobStore } from '@/store/job'
-import { useUserStore } from '@/store/user'
 
 export default function GeniusHome() {
   const insets = useSafeAreaInsets()
 
   const navigation = useNavigation()
-
-  const userStore = useUserStore()
 
   const jobStore = useJobStore()
 
@@ -116,7 +113,7 @@ export default function GeniusHome() {
   }, [])
 
   const onSearch = (value: string) => {
-    navigation.dispatch(StackActions.push(userStore.role === 'genius' ? 'SearchResult' : 'BossSearch', {
+    navigation.dispatch(StackActions.push('SearchResult', {
       keyword: value,
     }))
   }
