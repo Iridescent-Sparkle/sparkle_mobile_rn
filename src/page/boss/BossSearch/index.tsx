@@ -1,10 +1,14 @@
 import { request } from '@/core/api'
 import Page from '@/core/components/Page'
-import { create } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
+import { useRefState } from '@/core/hooks/useRefState'
+import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
+import ResumeListCard from '@/menu/boss/home/components/ResumeCard'
 import TabList from '@/page/boss/BossSearch/components/TabList'
-import { Search, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { Loading, Search, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -19,15 +23,13 @@ const useSearchHistory = () => {
     return JSON.parse(data || '[]')
   }
 
-  const setSearchHistoryToStorage = useCallback(() => {
-    async (keyword: string) => {
+  const setSearchHistoryToStorage = useCallback(async (keyword: string) => {
 
-      searchHistoryRef.current = [keyword, ...searchHistoryRef.current]
+    searchHistoryRef.current = [keyword, ...searchHistoryRef.current]
 
-      AsyncStorage.setItem('bossSearchHistory', JSON.stringify(searchHistoryRef.current))
+    AsyncStorage.setItem('bossSearchHistory', JSON.stringify(searchHistoryRef.current))
 
-      setSearchHistory(searchHistoryRef.current)
-    }
+    setSearchHistory(searchHistoryRef.current)
   }, [])
 
   useEffect(() => {
@@ -44,50 +46,55 @@ const useSearchHistory = () => {
 }
 
 export default function BossSearch() {
-  const navigation = useNavigation()
-
   const [searchHistory, setSearchHistory] = useSearchHistory()
 
   const route = useRoute<{ key: any, name: any, params: { keyword: string, filter: any } }>()
 
   const [jobList, setJobList] = useState([] as any)
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading, getLoading] = useRefState(true)
+
+  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(true)
 
   const currentPage = useRef(1)
 
-  const [total, setTotal] = useState(0)
 
   const keywordRef = useRef<string | null>()
 
-  const searchRef = useRef<{ setValue: (value: string) => void }>(null)
-
-  const [filterValues, setFilterValues] = useState({})
-
   const onSearch = async (keyword: string) => {
-    try {
-      setLoading(true)
+    if (getLoading()) {
+      return
+    }
 
+    try {
       if (!keyword?.trim()) {
         setJobList([])
-        setTotal(0)
+        currentPage.current = 1
         return
       }
+
+      setLoading(true)
       keywordRef.current = keyword
+      setSearchHistory(keyword)
+      currentPage.current = 1
 
       const { data: { data: jobListData, total } } = await request.post({
         page: currentPage.current,
         pageSize: 10,
-        jobName: keyword,
-        ...filterValues || {},
+        occupation: keyword,
       }, { url: '/genius/profile/all' })
 
-      setTotal(total)
+      if (currentPage.current * 10 >= total) {
+        setIsLoadEnd(true)
+      } else {
+        setIsLoadEnd(false)
+      }
+
+      currentPage.current += 1
 
       setJobList(jobListData)
     }
     catch (error) {
-
       Toast.fail({
         message: '网络错误',
         duration: 500,
@@ -97,33 +104,79 @@ export default function BossSearch() {
       setLoading(false)
     }
   }
+
+  const onReachBottom = async () => {
+    if (getLoading() || getIsLoaded()) {
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const { data: { data: jobListData, total } } = await request.post({
+        page: currentPage.current,
+        pageSize: 10,
+        occupation: keywordRef.current,
+      }, { url: '/genius/profile/all' })
+
+      setJobList(jobListData)
+      if (currentPage.current * 10 >= total) {
+        setIsLoadEnd(true)
+        return
+      }
+      setIsLoadEnd(false)
+      currentPage.current += 1
+    }
+    catch (error) {
+      Toast.fail({
+        message: '网络错误',
+        duration: 500,
+      })
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     onSearch(route.params.keyword || keywordRef.current || '')
+  }, [])
 
-  }, [filterValues])
+  const ListFooterComponent = () => {
+    if (isLoadEnd) {
+      return <Text style={{ textAlign: 'center' }}>没有更多了</Text>
+    }
+    if (loading) {
+      return <View style={{ height: pxToDp(100) }}>
+        <Loading vertical>加载中...</Loading>
+      </View>
+    }
+    return null
+  }
+
   return (
     <Page title="搜索">
       <Search style={styles.search} showSearchButton={true} />
       <TabList title="搜索历史" data={searchHistory} />
       <View style={styles.list}>
-            {
-              jobList.length
-                ? <FlatList data={jobList} renderItem={job => <RecruitJobCard data={job.item} />} keyExtractor={item => item.id} />
-                : (
-                  <Space>
-                    <FastImage
-                      style={styles.banner}
-                      source={
-                        {
-                          uri: `${IMAGE_PREFIX}/not_found.png`,
-                        }
-                      }
-                    />
-                    <Text style={styles.tip}>对不起，您输入的关键字未找到匹配的结果，请重新检查或搜索另一个关键字。</Text>
-                  </Space>
-                )
-            }
-          </View>
+        {
+          jobList.length
+            ? <FlatList data={jobList} renderItem={job => <ResumeListCard data={job.item} from="home" />} keyExtractor={item => item.id} onEndReached={onReachBottom} ListFooterComponent={ListFooterComponent()} />
+            : (
+              <Space>
+                <FastImage
+                  style={styles.banner}
+                  source={
+                    {
+                      uri: `${IMAGE_PREFIX}/not_found.png`,
+                    }
+                  }
+                />
+                <Text style={styles.tip}>对不起，您输入的关键字未找到匹配的结果，请重新检查或搜索另一个关键字。</Text>
+              </Space>
+            )
+        }
+      </View>
     </Page>
   )
 }
@@ -134,5 +187,17 @@ const styles = create({
     borderRadius: 24,
     paddingRight: 16,
     marginTop: 24,
+  },
+  list: {
+    flex: 1,
+    paddingHorizontal: 4,
+  },
+  banner: {
+    height: 540,
+  },
+  tip: {
+    textAlign: 'center',
+    fontSize: 32,
+    color: themeColor.black65,
   },
 })

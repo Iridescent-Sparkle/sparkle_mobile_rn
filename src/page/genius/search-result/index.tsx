@@ -1,17 +1,18 @@
+import { request } from '@/core/api'
+import Page from '@/core/components/Page'
+import Visible from '@/core/components/Visible'
+import { IMAGE_PREFIX } from '@/core/constants'
+import { useRefState } from '@/core/hooks/useRefState'
+import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
+import RecruitJobCard from '@/menu/genius/home/components/recruit-list-card'
+import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 import { Loading, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { request } from '@/core/api'
-import Page from '@/core/components/Page'
-import Visible from '@/core/components/Visible'
-import { IMAGE_PREFIX } from '@/core/constants'
-import { create, pxToDp } from '@/core/styleSheet'
-import { themeColor } from '@/core/styleSheet/themeColor'
-import RecruitJobCard from '@/menu/genius/home/components/recruit-list-card'
-import SearchBar from '@/menu/genius/home/components/recruit-search-bar'
 
 export default function SearchResult() {
   const navigation = useNavigation()
@@ -20,7 +21,9 @@ export default function SearchResult() {
 
   const [jobList, setJobList] = useState([] as any)
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading, getLoading] = useRefState(true)
+
+  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(true)
 
   const currentPage = useRef(1)
 
@@ -29,19 +32,25 @@ export default function SearchResult() {
   const keywordRef = useRef<string | null>()
 
   const searchRef = useRef<{ setValue: (value: string) => void }>(null)
-  
+
   const [filterValues, setFilterValues] = useState({})
 
   const onSearch = async (keyword: string) => {
-    try {
-      setLoading(true)
+    if (getLoading()) {
+      return
+    }
 
+    try {
       if (!keyword?.trim()) {
         setJobList([])
         setTotal(0)
+        currentPage.current = 1
         return
       }
+
+      setLoading(true)
       keywordRef.current = keyword
+      currentPage.current = 1
 
       const { data: { data: jobListData, total } } = await request.post({
         page: currentPage.current,
@@ -52,10 +61,52 @@ export default function SearchResult() {
 
       setTotal(total)
 
+      if (currentPage.current * 10 >= total) {
+        setIsLoadEnd(true)
+      } else {
+        setIsLoadEnd(false)
+      }
+
+      currentPage.current += 1
+
       setJobList(jobListData)
     }
     catch (error) {
+      Toast.fail({
+        message: '网络错误',
+        duration: 500,
+      })
+    }
+    finally {
+      setLoading(false)
+    }
+  }
 
+  const onReachBottom = async () => {
+    if (getLoading() || getIsLoaded()) {
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const { data: { data: jobListData, total } } = await request.post({
+        page: currentPage.current,
+        pageSize: 10,
+        jobName: keywordRef.current,
+        ...filterValues || {},
+      }, { url: '/boss/job/all' })
+
+      setTotal(total)
+      setJobList(jobListData)
+      if (currentPage.current * 10 >= total) {
+        setIsLoadEnd(true)
+        return
+      }
+      setIsLoadEnd(false)
+      currentPage.current += 1
+    }
+    catch (error) {
       Toast.fail({
         message: '网络错误',
         duration: 500,
@@ -77,6 +128,18 @@ export default function SearchResult() {
     }))
   }
 
+  const ListFooterComponent = () => {
+    if (isLoadEnd) {
+      return <Text style={{ textAlign: 'center' }}>没有更多了</Text>
+    }
+    if (loading) {
+      return <View style={{ height: pxToDp(100) }}>
+        <Loading vertical>加载中...</Loading>
+      </View>
+    }
+    return null
+  }
+
   return (
     <Page title="搜索" isScrollView={false}>
       <View style={styles.container}>
@@ -96,7 +159,7 @@ export default function SearchResult() {
           <View style={styles.list}>
             {
               jobList.length
-                ? <FlatList data={jobList} renderItem={job => <RecruitJobCard data={job.item} />} keyExtractor={item => item.id} />
+                ? <FlatList data={jobList} renderItem={job => <RecruitJobCard data={job.item} />} keyExtractor={item => item.id} onEndReached={onReachBottom} ListFooterComponent={ListFooterComponent()} />
                 : (
                   <Space>
                     <FastImage
