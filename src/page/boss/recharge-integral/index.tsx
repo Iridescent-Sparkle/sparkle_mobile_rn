@@ -15,6 +15,7 @@ const alipayErrorReason = {
   4000: '支付失败',
   5000: '重复请求',
 } as Record<string, string>
+
 export default function RechargeIntegral() {
   const [integralMeal, setIntegralMeal] = useState([] as IntegralMeal[])
   const [selectMeal, setSelectMeal] = useState({} as IntegralMeal)
@@ -48,6 +49,11 @@ export default function RechargeIntegral() {
       const { data } = await request.post({
         totalAmount: selectMeal.price,
         subject: '积分充值',
+        body: `充值${selectMeal.integralNum}积分`,
+        passback_params: {
+          integral: selectMeal.integralNum,
+          price: selectMeal.price,
+        },
       }, {
         url: `/boss/order/create`,
       })

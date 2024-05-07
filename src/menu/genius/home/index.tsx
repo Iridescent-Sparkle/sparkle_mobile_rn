@@ -62,7 +62,7 @@ export default function GeniusHome() {
       const { data: { data: jobListData, total } } = await request.post({
         categoryId: tab,
         pageSize: 4,
-        page: currentPage.current,
+        current: currentPage.current,
       }, {
         url: '/boss/category/job',
       })
@@ -88,7 +88,7 @@ export default function GeniusHome() {
         const { data: { data: jobListData, total } } = await request.post({
           categoryId: tab,
           pageSize: currentPage.current,
-          page: currentPage.current,
+          current: currentPage.current,
         }, {
           url: '/boss/category/job',
         })

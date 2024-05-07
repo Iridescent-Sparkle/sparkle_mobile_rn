@@ -53,7 +53,7 @@ export default function SearchResult() {
       currentPage.current = 1
 
       const { data: { data: jobListData, total } } = await request.post({
-        page: currentPage.current,
+        current: currentPage.current,
         pageSize: 10,
         jobName: keyword,
         ...filterValues || {},
@@ -91,7 +91,7 @@ export default function SearchResult() {
       setLoading(true)
 
       const { data: { data: jobListData, total } } = await request.post({
-        page: currentPage.current,
+        current: currentPage.current,
         pageSize: 10,
         jobName: keywordRef.current,
         ...filterValues || {},

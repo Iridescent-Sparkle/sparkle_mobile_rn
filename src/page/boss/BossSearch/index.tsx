@@ -79,7 +79,7 @@ export default function BossSearch() {
       currentPage.current = 1
 
       const { data: { data: jobListData, total } } = await request.post({
-        page: currentPage.current,
+        current: currentPage.current,
         pageSize: 10,
         occupation: keyword,
       }, { url: '/genius/profile/all' })
@@ -114,7 +114,7 @@ export default function BossSearch() {
       setLoading(true)
 
       const { data: { data: jobListData, total } } = await request.post({
-        page: currentPage.current,
+        current: currentPage.current,
         pageSize: 10,
         occupation: keywordRef.current,
       }, { url: '/genius/profile/all' })
