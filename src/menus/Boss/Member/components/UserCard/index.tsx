@@ -5,6 +5,7 @@ import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { useUserStore } from '@/store/user'
 import { IMAGE_PREFIX } from '@/core/constants'
+import ImagePreview from '@/core/components/ImagePreview'
 
 export default function UserCard() {
   const navigation = useNavigation()
@@ -19,9 +20,7 @@ export default function UserCard() {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-
-        <FastImage style={styles.image} source={{ uri: userStore.userInfo.avatar || `${IMAGE_PREFIX}/stars.png` }} />
-
+        <ImagePreview style={styles.image} url={userStore.userInfo.avatar || `${IMAGE_PREFIX}/stars.png`} />
         <Text style={styles.name}>{userStore.userInfo.nickname}</Text>
         <Text style={styles.desc}>{userStore.userInfo.occupation}</Text>
         <View style={styles.sourceWrapper}>

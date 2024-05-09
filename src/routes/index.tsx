@@ -57,7 +57,7 @@ function RouteProvider() {
     try {
       await userStore.initData()
 
-      if (userStore.token) {
+      if (userStore.accessToken) {
         await userStore.getUserInfo()
         await jobStore.getJobOptions()
       }
@@ -79,7 +79,7 @@ function RouteProvider() {
     }
     catch (error: any) {
       if (error.response?.status === 401) {
-        await AsyncStorage.setItem('token', '')
+        await AsyncStorage.setItem('accessToken', '')
         Toast.fail('登录失效，请重新登录')
       }
     }
@@ -90,13 +90,13 @@ function RouteProvider() {
 
   useEffect(() => {
     initApp()
-  }, [userStore.role, userStore.token, userStore.userInfo.id])
+  }, [userStore.role, userStore.accessToken, userStore.userInfo.id])
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ animation: 'slide_from_right', headerBackTitleVisible: false, headerShadowVisible: false }}>
         {
-          userStore.token
+          userStore.accessToken
             ? (
               <>
                 {

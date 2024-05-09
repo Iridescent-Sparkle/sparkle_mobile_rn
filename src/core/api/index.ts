@@ -2,11 +2,37 @@ import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults } from 'axios'
 import axios from 'axios'
+import { useUserStore } from '@/store/user'
+
+const baseUrl = 'http://10.254.0.148:3000'
+// baseURL: 'http://192.168.1.5:3000',
+// baseURL: 'https://api.iridescent.icu',
+// baseURL: 'http://101.42.153.172:3000',
 
 interface CustomConfig {
   showMsg?: boolean
 }
+interface PendingTask {
+  config: AxiosRequestConfig
+  resolve: Function
+}
+let refreshing = false
 
+const queue: PendingTask[] = []
+async function refreshToken() {
+  const refreshToken = await AsyncStorage.getItem('refreshToken')
+  console.log('refresh', `${baseUrl}/user/refresh`)
+  const { data } = await axios.get(`${baseUrl}/user/refresh`, {
+    params: {
+      refreshToken,
+    },
+  })
+
+  await AsyncStorage.setItem('accessToken', data.data.accessToken || '')
+  await AsyncStorage.setItem('refreshToken', data.data.refreshToken || '')
+
+  return data
+}
 export class Request {
   private readonly axios: AxiosInstance
 
@@ -28,13 +54,13 @@ export class Request {
   }
 
   private async request<T extends Record<string, any>>(requestConfig: AxiosRequestConfig, customConfig: CustomConfig = { showMsg: false }) {
-    const token = await AsyncStorage.getItem('token')
+    const accessToken = await AsyncStorage.getItem('accessToken')
 
     return new Promise<T>((resolve, reject) => {
       this.axios<T>({
         ...requestConfig,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }).then((res) => {
         if (!String(res.data.code).startsWith('20')) {
@@ -44,9 +70,48 @@ export class Request {
         else {
           resolve(res.data)
         }
-      }).catch((error) => {
-        customConfig.showMsg && Toast.fail(error.message)
-        reject(error)
+      }).catch(async (error) => {
+        const { data, config } = error.response
+
+        if (refreshing) {
+          return new Promise((resolve) => {
+            queue.push({
+              config,
+              resolve,
+            })
+          })
+        }
+
+        if (data.code === 401 && !config.url.includes('/user/refresh')) {
+          refreshing = true
+
+          const data = await refreshToken()
+
+          refreshing = false
+
+          if (data.code === 200) {
+            const accessToken = await AsyncStorage.getItem('accessToken')
+
+            queue.forEach(({ config, resolve }: any) => {
+              config.headers.Authorization = `Bearer ${accessToken}`
+              resolve(axios(config))
+            })
+            queue.length = 0
+            config.headers.Authorization = `Bearer ${accessToken}`
+            return axios(config)
+          }
+          else {
+            Toast.fail('登录过期，请重新登录')
+            await AsyncStorage.setItem('role', 'genius')
+            await AsyncStorage.setItem('refreshToken', '')
+            await AsyncStorage.setItem('accessToken', '')
+            useUserStore.getState().logout()
+            return reject(error)
+          }
+        }
+        else {
+          return reject(error)
+        }
       })
     })
   }
@@ -85,10 +150,7 @@ export class Request {
 }
 
 export const request = new Request({
-  baseURL: 'http://10.254.0.148:3000',
-  // baseURL: 'http://192.168.1.5:3000',
-  // baseURL: 'https://api.iridescent.icu',
-  // baseURL: 'http://101.42.153.172:3000',
+  baseURL: baseUrl,
   httpsAgent: {
     rejectUnauthorized: false,
   },

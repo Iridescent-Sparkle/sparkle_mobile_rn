@@ -2,7 +2,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Switch } from '@fruits-chain/react-native-xiaoshu'
+import { Dialog, Switch, Toast } from '@fruits-chain/react-native-xiaoshu'
 import MemberContactInfoCard from './components/ContactInfoCard'
 import MemberEducationInfoCard from './components/EducationInfoCard'
 import MemberExpectedSalaryCard from './components/ExpectedSalaryCard'
@@ -102,13 +102,46 @@ export default function GeniusMember() {
       component: <MemberResumeCvCard data={profileData} loading={loading} />,
     },
   ]
+  const handleHuntJob = async () => {
+    try {
+      if (profileData.isHunting) {
+        await request.post({
+          isHunting: false,
+        }, {
+          url: '/genius/profile/update',
 
+        })
+        await getInitData()
+      }
+      else {
+        const { data } = await request.post({ }, {
+          url: '/genius/profile/judge',
+        })
+
+        if (data.status) {
+          await request.post({ isHunting: true }, {
+            url: '/genius/profile/update',
+
+          })
+          await getInitData()
+        }
+        else {
+          Dialog({
+            message: data.message,
+          })
+        }
+      }
+    }
+    catch (error) {
+
+    }
+  }
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <MemberUserCard />
       <View style={styles.header}>
         <Text style={styles.title}>在线简历</Text>
-        <Switch defaultValue activeChildren="开启求职" inactiveChildren="暂不求职" />
+        <Switch value={profileData.isHunting} activeChildren="开启求职" inactiveChildren="暂不求职" onPress={handleHuntJob} />
       </View>
       <FlatList data={listData} renderItem={item => item.item.component} keyExtractor={item => item.id} />
     </View>

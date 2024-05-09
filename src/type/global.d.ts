@@ -68,6 +68,7 @@ interface UserProfile {
   summary: string
   resume: { accessUrl: string, fileName: string, fileSize: number }
   isDelete: boolean
+  isHunting: boolean
   createTime: string
   updateTime: string
 }

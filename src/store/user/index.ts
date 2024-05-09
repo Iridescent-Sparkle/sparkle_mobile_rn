@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { request } from '@/core/api'
 
 interface State {
-  token: string
+  accessToken: string
   role: 'boss' | 'genius'
   userInfo: User
 }
@@ -65,7 +65,7 @@ const initUserInfo = {
 }
 
 export const useUserStore = create<State & Action>(set => ({
-  token: '',
+  accessToken: '',
   role: 'genius',
   userInfo: initUserInfo,
   setData: (params) => {
@@ -75,11 +75,11 @@ export const useUserStore = create<State & Action>(set => ({
     }))
   },
   initData: async () => {
-    const token = await AsyncStorage.getItem('token') || ''
+    const accessToken = await AsyncStorage.getItem('accessToken') || ''
     const role = <'boss' | 'genius'>(await AsyncStorage.getItem('role') || 'genius')
     set(state => ({
       ...state,
-      token,
+      accessToken,
       role,
     }))
   },
@@ -100,23 +100,25 @@ export const useUserStore = create<State & Action>(set => ({
       url: '/user/login',
     })
 
-    await AsyncStorage.setItem('token', loginRes.data.accessToken || '')
+    await AsyncStorage.setItem('accessToken', loginRes.data.accessToken || '')
+    await AsyncStorage.setItem('refreshToken', loginRes.data.refreshToken || '')
 
     return set((state) => {
       return {
         ...state,
-        token: loginRes.data.accessToken,
+        accessToken: loginRes.data.accessToken,
       }
     })
   },
   logout: async () => {
-    await AsyncStorage.setItem('token', '')
+    await AsyncStorage.setItem('accessToken', '')
     await AsyncStorage.setItem('role', 'genius')
+    await AsyncStorage.setItem('refreshToken', '')
 
     set(state => ({
       ...state,
       userInfo: initUserInfo,
-      token: '',
+      accessToken: '',
       role: 'genius',
     }))
   },
