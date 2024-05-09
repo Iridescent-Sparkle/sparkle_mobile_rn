@@ -109,7 +109,7 @@ export default function GeniusChatDetail() {
 
   const [videoUrl, setVideoUrl] = useState('')
 
-  const [file, setFile] = useState({})
+  const [file, setFile] = useState<any>({})
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -191,21 +191,18 @@ export default function GeniusChatDetail() {
                 if (model.modelType !== 'message')
                   return
                 const msgModel = model as MessageModel
-                if (msgModel.msg.body.type === ChatMessageType.IMAGE) { setImageUrl(`file://${msgModel.msg.body.localPath}`) }
+                if (msgModel.msg.body.type === ChatMessageType.IMAGE)
+                  setImageUrl(`file://${msgModel.msg.body.localPath}`)
 
-                else if (msgModel.msg.body.type === ChatMessageType.VIDEO) { setVideoUrl(`file://${msgModel.msg.body.localPath}`) }
+                else if (msgModel.msg.body.type === ChatMessageType.VIDEO)
+                  setVideoUrl(`file://${msgModel.msg.body.localPath}`)
 
-                else if (msgModel.msg.body.type === ChatMessageType.FILE) {
+                else if (msgModel.msg.body.type === ChatMessageType.FILE)
                   setFile(msgModel.msg.body)
-                  console.log(msgModel.msg.body)
-                }
               },
             },
           }}
-
-          onBack={() => {
-            navigation.goBack()
-          }}
+          onBack={navigation.goBack}
         />
       </GestureHandlerRootView>
       {

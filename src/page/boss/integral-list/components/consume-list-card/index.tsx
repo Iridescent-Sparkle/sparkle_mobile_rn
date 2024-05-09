@@ -1,10 +1,11 @@
-import { Pressable, Text, View } from 'react-native'
 import dayjs from 'dayjs'
+import { Pressable, Text, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { create, pxToDp } from '@/core/styleSheet'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { create, pxToDp } from '@/core/styleSheet'
 
 interface Props {
   data: IntegralRecord
@@ -21,6 +22,10 @@ const DESC_MAP = {
   recharge: {
     title: '充值积分',
     icon: <Entypo name="rocket" size={pxToDp(36)} color={themeColor.primary} />,
+  },
+  refund: {
+    title: '退款',
+    icon: <MaterialIcons name="currency-yuan" size={pxToDp(36)} color={themeColor.primary} />,
   },
 }
 export default function ConsumeListCard(props: Props) {

@@ -8,10 +8,12 @@
   },
   "scripts": {
     "start": "react-native start",
+    "clear:start": "react-native start --reset-cache",
     "android": "react-native run-android",
+    "build:android": "react-native run-android --mode=release",
+    "clean:android": "cd ./android && ./gradlew clean",
     "ios": "react-native run-ios --simulator 'iPhone 15 Pro'",
     "lint": "eslint .",
-    "clear-run": "react-native start --reset-cache",
     "test": "jest"
   },
   "dependencies": {

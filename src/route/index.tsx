@@ -94,7 +94,7 @@ function RouteProvider() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerBackTitleVisible: false, headerShadowVisible: false }}>
+      <Stack.Navigator screenOptions={{ animation: 'slide_from_right', headerBackTitleVisible: false, headerShadowVisible: false }}>
         {
           userStore.token
             ? (
@@ -113,7 +113,7 @@ function RouteProvider() {
                         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
                         <Stack.Screen name="BossSearch" component={BossSearch} options={{ headerShown: false }} />
                       </Stack.Group>
-                      )
+                    )
                     : (
                       <Stack.Group>
                         <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
@@ -130,7 +130,7 @@ function RouteProvider() {
                         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false }} />
                         <Stack.Screen name="FilterOptions" component={FilterOptions} options={{ headerShown: false }} />
                       </Stack.Group>
-                      )
+                    )
                 }
                 <Stack.Group>
                   <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false }} />
@@ -145,7 +145,7 @@ function RouteProvider() {
                   <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} options={{ headerShown: false }} />
                 </Stack.Group>
               </>
-              )
+            )
             : (
               <Stack.Group>
                 <Stack.Screen name="Guide" component={Guide} options={{ headerShown: false }} />
@@ -153,7 +153,7 @@ function RouteProvider() {
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="ForgetGuide" component={ForgetGuide} options={{ headerShown: false }} />
               </Stack.Group>
-              )
+            )
         }
         <Stack.Group>
           <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
