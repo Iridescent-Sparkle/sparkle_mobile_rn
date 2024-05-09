@@ -29,11 +29,11 @@ export default function ConsumeListCard(props: Props) {
     <Pressable style={styles.contentBox}>
       <View style={styles.left}>
         <View style={styles.img}>
-          {DESC_MAP[data.type].icon}
+          {DESC_MAP[data.type]?.icon}
         </View>
         <View>
           <Text style={styles.title}>
-            {DESC_MAP[data.type].title}
+            {DESC_MAP[data.type]?.title}
           </Text>
           <Text style={styles.date}>
             {dayjs(data.updateTime).format('YYYY-MM-DD HH:mm:ss')}

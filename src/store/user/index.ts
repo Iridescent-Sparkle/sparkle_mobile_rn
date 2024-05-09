@@ -121,7 +121,7 @@ export const useUserStore = create<State & Action>(set => ({
     }))
   },
   getUserInfo: async () => {
-    const userInfo = await request.get({}, {
+    const userInfo = await request.post({}, {
       url: '/user/info',
     })
     await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo.data))

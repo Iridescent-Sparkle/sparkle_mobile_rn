@@ -53,6 +53,7 @@ export default function RechargeIntegral() {
         passback_params: {
           integral: selectMeal.integralNum,
           price: selectMeal.price,
+          userId: userStore.userInfo.id,
         },
       }, {
         url: `/boss/order/create`,

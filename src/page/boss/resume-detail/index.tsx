@@ -81,7 +81,6 @@ export default function ResumeDetail() {
             await Promise.all([
               await request.post({
                 integral: 1,
-
               }, { url: 'boss/integral/consume' }),
               await request.post({
                 integral: 1,
