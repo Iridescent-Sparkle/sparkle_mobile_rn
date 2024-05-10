@@ -33,12 +33,22 @@ function MemberProjectsInfoCard(props: { data: UserProject[], loading: boolean }
   }
 
   const handleShowClick = async (url: string) => {
-    const supported = await Linking.canOpenURL(url)
-
-    if (supported)
-      await Linking.openURL(url)
+    let openUrl = ''
+    if (!url.startsWith('http'))
+      openUrl = `http://${url}`
     else
-      Toast.fail('无法打开该链接')
+      openUrl = url
+
+    const supported = await Linking.canOpenURL(openUrl)
+    if (supported) {
+      try {
+        await Linking.openURL(openUrl)
+      }
+      catch (error) {
+        Toast.fail('无法打开该链接')
+      }
+    }
+    else { Toast.fail('无法打开该链接') }
   }
 
   return (
@@ -68,7 +78,9 @@ function MemberProjectsInfoCard(props: { data: UserProject[], loading: boolean }
                       </Visible>
                     </Space>
                   </Space>
-                  <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} onPress={() => onEdit(item.id)} />
+                  <Pressable hitSlop={pxToDp(50)} onPress={() => onEdit(item.id)}>
+                    <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+                  </Pressable>
                 </Space>
               </Card>
             )

@@ -5,7 +5,7 @@
 import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import BaseCollapseCard from '../BaseCollapseCard'
@@ -53,7 +53,9 @@ function MemberWorkExperienceCard(props: { data: UserExperience[], loading: bool
                       </Text>
                     </Space>
                   </Space>
-                  <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} onPress={() => onEdit(item.id)} />
+                  <Pressable hitSlop={pxToDp(50)} onPress={() => onEdit(item.id)}>
+                    <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+                  </Pressable>
                 </Space>
               </Card>
             )

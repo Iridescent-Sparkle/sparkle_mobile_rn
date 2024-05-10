@@ -5,7 +5,7 @@
 import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import BaseCollapseCard from '../BaseCollapseCard'
@@ -35,9 +35,6 @@ function MemberEducationInfoCard(props: { data: UserEducation[], loading: boolea
       <View>
         {
           data.map((item) => {
-            const startTime = dayjs(item.startTime).format('YYYY-MM')
-            const endTime = dayjs(item.endTime).format('YYYY-MM')
-            const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
             return (
               <Card key={item.id}>
                 <Space direction="horizontal" style={styles.header}>
@@ -48,9 +45,6 @@ function MemberEducationInfoCard(props: { data: UserEducation[], loading: boolea
                     <Space gap={pxToDp(20)}>
                       <Text style={styles.title}>{item.school}</Text>
                       <Text style={styles.company}>{item.profession}</Text>
-                      <Text style={styles.date}>
-                        {`${startTime} - ${endTime}（${totalTime}）`}
-                      </Text>
                       <Text style={styles.gpa}>
                         绩点:
                         {item.gpa}
@@ -58,7 +52,9 @@ function MemberEducationInfoCard(props: { data: UserEducation[], loading: boolea
                       </Text>
                     </Space>
                   </Space>
-                  <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} onPress={() => onEdit(item.id)} />
+                  <Pressable hitSlop={pxToDp(50)} onPress={() => onEdit(item.id)}>
+                    <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+                  </Pressable>
                 </Space>
               </Card>
             )

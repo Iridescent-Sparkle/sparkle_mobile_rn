@@ -1,4 +1,4 @@
-import { Dialog, Switch } from '@fruits-chain/react-native-xiaoshu'
+import { Dialog, Switch, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
@@ -47,7 +47,7 @@ export default function GeniusMember() {
           url: '/genius/volunteer/user',
         }),
       ])
-
+      console.log(profileData.data)
       setProfileData(profileData.data)
       setEducationData(educationData.data)
       setProjectData(projectData.data)
@@ -103,6 +103,11 @@ export default function GeniusMember() {
     },
   ]
   const handleHuntJob = async () => {
+    const { close } = Toast.loading({
+      forbidPress: true,
+      duration: 0,
+    })
+
     try {
       if (profileData.isHunting) {
         await request.post({
@@ -114,15 +119,15 @@ export default function GeniusMember() {
         await getInitData()
       }
       else {
-        const { data } = await request.post({ }, {
+        const { data } = await request.post({}, {
           url: '/genius/profile/judge',
         })
 
         if (data.status) {
           await request.post({ isHunting: true }, {
             url: '/genius/profile/update',
-
           })
+
           await getInitData()
         }
         else {
@@ -134,6 +139,9 @@ export default function GeniusMember() {
     }
     catch (error) {
 
+    }
+    finally {
+      close()
     }
   }
   return (

@@ -7,7 +7,7 @@ import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 export default function GeniusUpdateSalary() {
   const form = Form.useForm()
@@ -63,10 +63,10 @@ export default function GeniusUpdateSalary() {
       const { data: profileData } = await request.get({}, {
         url: '/genius/profile/user',
       })
+     
       form.setFieldsValue({
-        address: profileData.address,
-        phone: profileData.phone,
-        email: profileData.email,
+        minSalary: profileData.minSalary,
+        maxSalary: profileData.maxSalary,
       })
     }
     catch (error) {
@@ -81,7 +81,7 @@ export default function GeniusUpdateSalary() {
   return (
     <Page isScrollView={false} title='期望薪资'>
       <View style={styles.container}>
-        <View>
+        <ScrollView>
           <Form form={form}>
             <Form.Item name="minSalary" title="最低薪资 千元/月" rules={[{ required: true, message: '请输入最低薪资' }]}>
               <Input placeholder='请输入最低薪资'/>
@@ -90,7 +90,7 @@ export default function GeniusUpdateSalary() {
               <Input placeholder='请输入最高薪资'/>
             </Form.Item>
           </Form>
-        </View>
+        </ScrollView>
         <Button loading={loading} style={styles.button} onPress={handleComfirmClick} loadingText='提交'>提交</Button>
       </View>
     </Page>

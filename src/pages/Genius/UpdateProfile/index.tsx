@@ -8,7 +8,7 @@ import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 export default function GeniusUpdateProfile() {
   const form = Form.useForm()
@@ -81,7 +81,7 @@ export default function GeniusUpdateProfile() {
   return (
     <Page isScrollView={false} title='修改个人信息'>
       <View style={styles.container}>
-        <View>
+        <ScrollView>
           <Form form={form}>
             <Form.Item name="avatar">
               <ImageUploader />
@@ -93,7 +93,7 @@ export default function GeniusUpdateProfile() {
               <Input placeholder='请输入职业' />
             </Form.Item>
           </Form>
-        </View>
+        </ScrollView>
         <Button loading={loading} onPress={handleComfirmClick} style={styles.button} loadingText='提交'>提交</Button>
       </View>
     </Page>

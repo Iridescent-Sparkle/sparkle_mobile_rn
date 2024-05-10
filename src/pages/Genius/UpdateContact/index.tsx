@@ -7,7 +7,7 @@ import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 export default function GeniusUpdateContact() {
   const form = Form.useForm()
@@ -78,7 +78,7 @@ export default function GeniusUpdateContact() {
   return (
     <Page isScrollView={false} title='联系信息'>
       <View style={styles.container}>
-        <View>
+        <ScrollView>
           <Form form={form}>
             <Form.Item name="address" title="地址" rules={[{ required: true, message: '请输入地址' }]}>
               <Input placeholder='请输入地址'/>
@@ -90,7 +90,7 @@ export default function GeniusUpdateContact() {
               <Input placeholder='请输入邮箱'/>
             </Form.Item>
           </Form>
-        </View>
+        </ScrollView>
         <Button loading={loading} style={styles.button} onPress={handleComfirmClick} loadingText='提交'>提交</Button>
       </View>
     </Page>

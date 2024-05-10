@@ -72,6 +72,10 @@ function PdfPicker(props: Props) {
       }
     }
     catch (error: any) {
+      if (error.code === 'DOCUMENT_PICKER_CANCELED') {
+        Toast.fail('取消选择')
+        return
+      }
       Toast.fail(error.message)
     }
     finally {

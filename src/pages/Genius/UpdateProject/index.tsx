@@ -8,8 +8,9 @@ import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import omit from 'lodash/omit'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 export default function GeniusUpdateProject() {
   const form = Form.useForm()
@@ -19,7 +20,7 @@ export default function GeniusUpdateProject() {
   const route = useRoute<{ key: any, name: any, params: { id: number, isEdit: string } }>()
 
   const userStore = useUserStore()
-  
+
   const [loading, setLoading] = useState(false)
 
   const handleComfirmClick = async () => {
@@ -33,13 +34,13 @@ export default function GeniusUpdateProject() {
       const values = await form.validateFields()
 
       route.params.isEdit
-        ? await request.post({
+        ? await request.post(omit({
           ...values,
           id: route.params.id,
           userId: userStore.userInfo.id,
           startTime: values.projectTime[0],
           endTime: values.projectTime[1],
-        }, {
+        }, 'projectTime'), {
           url: '/genius/project/update',
         })
         : await request.post({
@@ -50,12 +51,12 @@ export default function GeniusUpdateProject() {
           url: '/genius/project/create',
         })
 
-        Notify({
-          type: 'success',
-          duration: 1000,
-          message: '保存成功',
-        })
-  
+      Notify({
+        type: 'success',
+        duration: 1000,
+        message: '保存成功',
+      })
+
       navigation.goBack()
     }
     catch (error) {
@@ -98,7 +99,7 @@ export default function GeniusUpdateProject() {
   return (
     <Page isScrollView={false} title='项目经历'>
       <View style={styles.container}>
-        <View>
+        <ScrollView>
           <Form form={form}>
             <Form.Item name="projectName" title="项目名称" rules={[{ required: true, message: '请输入项目名称' }]}>
               <Input placeholder='请输入项目名称' />
@@ -112,11 +113,11 @@ export default function GeniusUpdateProject() {
             <Form.Item name="description" title="经历描述" rules={[{ required: true, message: '请输入经历描述' }]}>
               <TextArea placeholder='请输入经历描述' />
             </Form.Item>
-            <Form.Item name="website" title="项目地址" rules={[{ required: true, message: '请输入项目地址' }]}>
+            <Form.Item name="website" title="项目地址">
               <TextArea placeholder='请输入项目地址' />
             </Form.Item>
           </Form>
-        </View>
+        </ScrollView>
         <Button loading={loading} onPress={handleComfirmClick} style={styles.button} loadingText='提交'>提交</Button>
       </View>
     </Page>

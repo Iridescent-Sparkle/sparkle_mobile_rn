@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import Visible from '../Visible'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
@@ -32,28 +33,32 @@ function ResumeListCard(props: Props) {
   return (
     <Pressable onPress={handleCardClick}>
       <Card style={styles.container}>
-        <Space direction="horizontal" style={styles.header}>
-          <Space direction="horizontal" gap={pxToDp(32)}>
-            <FastImage
-              style={styles.logo}
-              source={{
-                uri: data.user?.avatar || `${IMAGE_PREFIX}/stars.png`,
-              }}
-            />
-            <View style={styles.titleWrapper}>
-              <Text style={styles.title}>{data.user?.occupation}</Text>
-              <Text style={styles.desc} numberOfLines={1}>{data.summary}</Text>
-            </View>
-          </Space>
-        </Space>
+        <View style={styles.header}>
+          <FastImage
+            style={styles.logo}
+            source={{
+              uri: data.user?.avatar || `${IMAGE_PREFIX}/stars.png`,
+            }}
+          />
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{data.occupation}</Text>
+            <Text style={styles.desc} numberOfLines={1} ellipsizeMode="tail">{data.summary}</Text>
+          </View>
+        </View>
         <Space style={styles.body}>
           <Space direction="horizontal">
-            <Tag type="ghost" color="#1976D2">
-              {totalTime}
-              经验
-            </Tag>
-            <Tag type="ghost" color="#1976D2">{data.address}</Tag>
-            <Tag type="ghost" color="#1976D2">{data.eduction?.[data.eduction?.length - 1]?.school}</Tag>
+            <Visible visible={totalTime}>
+              <Tag type="ghost" color="#1976D2">
+                {totalTime}
+                经验
+              </Tag>
+            </Visible>
+            <Visible visible={data.address}>
+              <Tag type="ghost" color="#1976D2">{data.address}</Tag>
+            </Visible>
+            <Visible visible={data.eduction?.[data.eduction?.length - 1]?.school}>
+              <Tag type="ghost" color="#1976D2">{data.eduction?.[data.eduction?.length - 1]?.school}</Tag>
+            </Visible>
           </Space>
         </Space>
       </Card>
@@ -63,7 +68,6 @@ function ResumeListCard(props: Props) {
 
 const styles = create({
   container: {
-    width: '100%',
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginBottom: 32,

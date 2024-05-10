@@ -3,7 +3,7 @@
  * @Description: C端志愿活动经历卡片
  */
 import { Card, Space } from '@fruits-chain/react-native-xiaoshu'
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
@@ -50,7 +50,9 @@ function MemberVolunteerInfoCard(props: { data: UserVolunteer[], loading: boolea
                       <Text style={styles.date}>{`${startTime} - ${endTime}（${totalTime}）`}</Text>
                     </Space>
                   </Space>
-                  <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} onPress={() => onEdit(item.id)} />
+                  <Pressable hitSlop={pxToDp(50)} onPress={() => onEdit(item.id)}>
+                    <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+                  </Pressable>
                 </Space>
               </Card>
             )

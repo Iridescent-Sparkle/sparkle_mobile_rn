@@ -8,8 +8,9 @@ import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import omit from 'lodash/omit'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 export default function GeniusUpdateEducation() {
   const form = Form.useForm()
@@ -27,18 +28,21 @@ export default function GeniusUpdateEducation() {
       forbidPress: true,
       duration: 0
     })
-    
+
     try {
       setLoading(true)
       const values = await form.validateFields()
+
       route.params.isEdit
-        ? await request.post({
-          ...values,
-          id: route.params.id,
-          userId: userStore.userInfo.id,
-          startTime: values.studyTime[0],
-          endTime: values.studyTime[1],
-        }, {
+        ? await request.post(omit(
+          {
+            ...values,
+            id: route.params.id,
+            userId: userStore.userInfo.id,
+            startTime: values.studyTime[0],
+            endTime: values.studyTime[1],
+          }
+          , 'studyTime'), {
           url: '/genius/education/update',
         })
         : await request.post({
@@ -48,11 +52,11 @@ export default function GeniusUpdateEducation() {
         }, {
           url: '/genius/education/create',
         })
-        Notify({
-          type: 'success',
-          duration: 1000,
-          message: '保存成功',
-        })
+      Notify({
+        type: 'success',
+        duration: 1000,
+        message: '保存成功',
+      })
       navigation.goBack()
     }
     catch (error) {
@@ -80,7 +84,7 @@ export default function GeniusUpdateEducation() {
         school: educationData.school,
         profession: educationData.profession,
         studyTime: [new Date(educationData.startTime), new Date(educationData.endTime)],
-        gpa: educationData.gpa,
+        gpa: String(educationData.gpa),
         description: educationData.description,
       })
     }
@@ -96,25 +100,25 @@ export default function GeniusUpdateEducation() {
   return (
     <Page isScrollView={false} title='教育信息'>
       <View style={styles.container}>
-        <View>
+        <ScrollView>
           <Form form={form}>
             <Form.Item name="school" title="学校" rules={[{ required: true, message: '请输入学校' }]}>
-              <Input />
+              <Input placeholder='请输入学校' />
             </Form.Item>
             <Form.Item name="profession" title="专业" rules={[{ required: true, message: '请输入专业' }]}>
-              <Input />
+              <Input placeholder='请输入专业' />
             </Form.Item>
             <Form.Item name="studyTime" title="起止时间" rules={[{ required: true, message: '请选择起止时间' }]}>
               <RangeDatePicker />
             </Form.Item>
             <Form.Item name="gpa" title="绩点(满绩点：5.0)" rules={[{ required: true, message: '请输入绩点' }]}>
-              <Input />
+              <Input placeholder='请输入绩点' />
             </Form.Item>
             <Form.Item name="description" title="经历描述" rules={[{ required: true, message: '请输入经历描述' }]}>
-              <TextArea />
+              <TextArea placeholder='请输入经历描述' />
             </Form.Item>
           </Form>
-        </View>
+        </ScrollView>
         <Button loading={loading} style={styles.button} onPress={handleComfirmClick} loadingText='提交'>提交</Button>
       </View>
     </Page>

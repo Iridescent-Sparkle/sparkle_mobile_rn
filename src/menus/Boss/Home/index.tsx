@@ -18,7 +18,9 @@ export default function BossManage() {
 
   const getInitData = async () => {
     try {
-      const { data: { data: resumeListData } } = await request.post({}, {
+      const { data: { data: resumeListData } } = await request.post({
+        isHunting: true,
+      }, {
         url: `/genius/profile/all`,
       })
       setResumeList(resumeListData)

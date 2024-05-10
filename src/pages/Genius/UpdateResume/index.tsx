@@ -7,7 +7,7 @@ import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 export default function GeniusUpdateResume() {
   const form = Form.useForm()
@@ -78,7 +78,7 @@ export default function GeniusUpdateResume() {
   return (
     <Page isScrollView={false} title='附件简历'>
       <View style={styles.container}>
-        <View>
+        <ScrollView>
           <Form form={form}>
             <Form.Item name="resume" title="" rules={[
               { required: true, message: '请上传简历' },
@@ -86,7 +86,7 @@ export default function GeniusUpdateResume() {
               <DocumentPicker />
             </Form.Item>
           </Form>
-        </View>
+        </ScrollView>
         <Button loading={loading} onPress={handleComfirmClick} style={styles.button} loadingText='提交'>提交</Button>
       </View>
     </Page>

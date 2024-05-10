@@ -8,6 +8,7 @@ import TextArea from '@/core/components/TextArea'
 import { create } from '@/core/styleSheet'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import omit from 'lodash/omit'
 import { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { useUserStore } from '../../../store/user/index'
@@ -32,13 +33,15 @@ export default function GeniusUpdateExperience() {
       setLoading(true)
       const values = await form.validateFields()
       route.params.isEdit
-        ? await request.post({
-          ...values,
-          id: route.params.id,
-          userId: userStore.userInfo.id,
-          startTime: values.workTime[0],
-          endTime: values.workTime[1],
-        }, {
+        ? await request.post(omit(
+          {
+            ...values,
+            id: route.params.id,
+            userId: userStore.userInfo.id,
+            startTime: values.workTime[0],
+            endTime: values.workTime[1],
+          }, 'workTime'
+        ), {
           url: '/genius/experience/update',
         })
         : await request.post({
