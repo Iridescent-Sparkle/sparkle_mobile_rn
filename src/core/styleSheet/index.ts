@@ -21,7 +21,7 @@ function forStyles(styles: any) {
       /** 修复部分Android机型上的文字兼容性问题 */
       if (
         (styles[key].fontSize || styles[key].fontWeight)
-        && Platform.OS == 'android'
+        && Platform.OS === 'android'
       )
         styles[key].fontFamily = 'System'
     }

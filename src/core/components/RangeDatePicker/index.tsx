@@ -16,7 +16,6 @@ function RangeDatePicker(props: Props) {
       isLink
       arrowDirection="down"
       style={styles.title}
-      innerStyle={styles.inner}
       titleTextNumberOfLines={1}
       divider={false}
       onPress={() => {
@@ -58,9 +57,6 @@ const styles = create({
     borderRadius: 24,
     backgroundColor: '#FAFAFA',
     marginVertical: 24,
-  },
-  inner: {
-    height: 88,
   },
 })
 

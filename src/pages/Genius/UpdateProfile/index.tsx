@@ -41,13 +41,17 @@ export default function GeniusUpdateProfile() {
       Notify({
         type: 'success',
         duration: 1000,
-        message: '修改成功',
+        message: '保存成功',
       })
       
       navigation.goBack()
     }
     catch (error) {
-      Toast.fail('修改失败')
+      Notify({
+        type: 'error',
+        duration: 1000,
+        message: '保存失败',
+      })
     }
     finally {
       close()

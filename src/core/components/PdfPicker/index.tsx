@@ -103,7 +103,7 @@ function PdfPicker(props: Props) {
                   </Text>
                 </Space>
               </Space>
-              <AntDesign name="close" size={pxToDp(32)} color="#F76564" onPress={() => onChange!({})} />
+              <AntDesign name="close" size={pxToDp(32)} color="#F76564" onPress={() => onChange!(null)} />
             </Space>
           </Card>
         </Pressable>

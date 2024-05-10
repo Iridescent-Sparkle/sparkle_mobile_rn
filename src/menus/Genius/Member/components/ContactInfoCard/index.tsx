@@ -4,7 +4,7 @@
  */
 import { Card } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -35,7 +35,14 @@ function MemberContactInfoCard(props: Props) {
   }
 
   return (
-    <BaseCollapseCard title="联系信息" titleLeftExtra={<AntDesign name="contacts" size={pxToDp(36)} color={themeColor.primary} />} loading={loading} showContent={data.address || data.phone || data.email} onAdd={onAdd} onEdit={onEdit}>
+    <BaseCollapseCard
+      title="联系信息"
+      titleLeftExtra={<AntDesign name="contacts" size={pxToDp(36)} color={themeColor.primary} />}
+      loading={loading}
+      showContent={!!data.address || !!data.phone || !!data.email}
+      onAdd={onAdd}
+      onEdit={onEdit}
+    >
       <Card>
         <Visible visible={!!data.address}>
           <View style={styles.info}>

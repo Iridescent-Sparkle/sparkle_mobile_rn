@@ -117,14 +117,14 @@ function RouteProvider() {
                       <Stack.Group>
                         <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
                         <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ title: '联系信息' }} />
-                        <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} options={{ title: '个人总结' }} />
-                        <Stack.Screen name="GeniusUpdateSalary" component={GeniusUpdateSalary} options={{ title: '期望薪资' }} />
-                        <Stack.Screen name="GeniusUpdateExperience" component={GeniusUpdateExperience} options={{ title: '工作经历' }} />
-                        <Stack.Screen name="GeniusUpdateEducation" component={GeniusUpdateEducation} options={{ title: '教育经历' }} />
-                        <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} options={{ title: '项目经历' }} />
-                        <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ title: '志愿活动经历' }} />
-                        <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ title: '附件简历' }} />
+                        <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ headerShown: false  }} />
+                        <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} options={{ headerShown: false }} />
+                        <Stack.Screen name="GeniusUpdateSalary" component={GeniusUpdateSalary} options={{ headerShown: false }} />
+                        <Stack.Screen name="GeniusUpdateExperience" component={GeniusUpdateExperience} options={{ headerShown: false }} />
+                        <Stack.Screen name="GeniusUpdateEducation" component={GeniusUpdateEducation} options={{ headerShown: false}} />
+                        <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} options={{ headerShown: false}} />
+                        <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ headerShown: false }} />
+                        <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ headerShown: false}} />
                         <Stack.Screen name="ResumePreview" component={ResumePreview} options={{ title: '预览简历' }} />
                         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false }} />
                         <Stack.Screen name="FilterOptions" component={FilterOptions} options={{ headerShown: false }} />

@@ -1,24 +1,33 @@
-import { Button } from '@fruits-chain/react-native-xiaoshu'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import { useEffect, useState } from 'react'
-import { View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { request } from '@/core/api'
 import Form from '@/core/components/Form'
 import Input from '@/core/components/Input'
+import Page from '@/core/components/Page'
 import RangeDatePicker from '@/core/components/RangeDatePicker'
 import TextArea from '@/core/components/TextArea'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
+import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { View } from 'react-native'
 
 export default function GeniusUpdateEducation() {
   const form = Form.useForm()
-  const insets = useSafeAreaInsets()
+
   const navigation = useNavigation()
+
   const route = useRoute<{ key: any, name: any, params: { id: number, isEdit: string } }>()
+
   const [loading, setLoading] = useState(false)
+
   const userStore = useUserStore()
+
   const handleComfirmClick = async () => {
+    const { close } = Toast.loading({
+      forbidPress: true,
+      duration: 0
+    })
+    
     try {
       setLoading(true)
       const values = await form.validateFields()
@@ -39,12 +48,22 @@ export default function GeniusUpdateEducation() {
         }, {
           url: '/genius/education/create',
         })
+        Notify({
+          type: 'success',
+          duration: 1000,
+          message: '保存成功',
+        })
       navigation.goBack()
     }
     catch (error) {
-
+      Notify({
+        type: 'error',
+        duration: 1000,
+        message: '保存失败',
+      })
     }
     finally {
+      close()
       setLoading(false)
     }
   }
@@ -66,7 +85,7 @@ export default function GeniusUpdateEducation() {
       })
     }
     catch (error) {
-
+      Toast.fail('获取数据失败')
     }
   }
 
@@ -75,39 +94,40 @@ export default function GeniusUpdateEducation() {
   }, [route.params.isEdit])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
-      <View>
-        <Form form={form}>
-          <Form.Item name="school" title="学校">
-            <Input />
-          </Form.Item>
-          <Form.Item name="profession" title="专业">
-            <Input />
-          </Form.Item>
-          <Form.Item name="studyTime" title="起止时间">
-            <RangeDatePicker />
-          </Form.Item>
-          <Form.Item name="gpa" title="绩点(满绩点：5.0)">
-            <Input />
-          </Form.Item>
-          <Form.Item name="description" title="经历描述">
-            <TextArea />
-          </Form.Item>
-        </Form>
+    <Page isScrollView={false} title='教育信息'>
+      <View style={styles.container}>
+        <View>
+          <Form form={form}>
+            <Form.Item name="school" title="学校" rules={[{ required: true, message: '请输入学校' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="profession" title="专业" rules={[{ required: true, message: '请输入专业' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="studyTime" title="起止时间" rules={[{ required: true, message: '请选择起止时间' }]}>
+              <RangeDatePicker />
+            </Form.Item>
+            <Form.Item name="gpa" title="绩点(满绩点：5.0)" rules={[{ required: true, message: '请输入绩点' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="description" title="经历描述" rules={[{ required: true, message: '请输入经历描述' }]}>
+              <TextArea />
+            </Form.Item>
+          </Form>
+        </View>
+        <Button loading={loading} style={styles.button} onPress={handleComfirmClick} loadingText='提交'>提交</Button>
       </View>
-      <Button loading={loading} style={styles.button} onPress={handleComfirmClick}>提交</Button>
-    </View>
+    </Page>
   )
 }
 
 const styles = create({
   container: {
     flex: 1,
-    paddingHorizontal: 44,
-    backgroundColor: '#FFF',
     justifyContent: 'space-between',
   },
   button: {
     borderRadius: 24,
+    marginBottom: 24,
   },
 })

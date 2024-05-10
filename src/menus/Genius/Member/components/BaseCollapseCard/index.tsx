@@ -1,10 +1,6 @@
-/*
- * @Date: 2024-03-12 16:51:31
- * @Description: C端信息编辑基础卡片
- */
 import { Card } from '@fruits-chain/react-native-xiaoshu'
-import type { ReactElement, ReactNode } from 'react'
-import { Text, View } from 'react-native'
+import { Fragment, type ReactElement, type ReactNode } from 'react'
+import { Pressable, Text, View } from 'react-native'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
@@ -27,14 +23,22 @@ function BaseCollapseCard(props: Props) {
       <Card loading={loading}>
         <View style={[styles.titleWrapper, { borderBottomWidth: showContent ? pxToDp(4) : 0, paddingBottom: showContent ? pxToDp(16) : 0 }]}>
           <View style={styles.title}>
-            <View>{titleLeftExtra}</View>
+            <View style={styles.titleLeft}>{titleLeftExtra}</View>
             <Text style={styles.titleText}>{title}</Text>
           </View>
           {showContent && onEdit
-            ? <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} onPress={onEdit} />
-            : <FontAwesome6 name="add" size={pxToDp(32)} color={themeColor.primary} onPress={onAdd} />}
+            ? (
+              <Pressable hitSlop={pxToDp(50)} onPress={onEdit}>
+                <FontAwesome6 name="pen-to-square" size={pxToDp(32)} color={themeColor.primary} />
+              </Pressable>
+              )
+            : (
+              <Pressable hitSlop={pxToDp(50)} onPress={onAdd}>
+                <FontAwesome6 name="add" size={pxToDp(32)} color={themeColor.primary} />
+              </Pressable>
+              )}
         </View>
-        <>{showContent ? <children.type {...children.props} /> : null}</>
+        <Fragment>{showContent ? <children.type {...children.props} /> : null}</Fragment>
       </Card>
     </View>
   )
@@ -59,6 +63,11 @@ const styles = create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 32,
+  },
+  titleLeft: {
+    width: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleText: {
     fontSize: 36,
