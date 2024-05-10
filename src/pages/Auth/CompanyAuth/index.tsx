@@ -2,23 +2,30 @@ import { request } from '@/core/api'
 import Form from '@/core/components/Form'
 import ImageUploader from '@/core/components/ImageUploader'
 import Input from '@/core/components/Input'
+import Page from '@/core/components/Page'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
-import { Button } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LicenseUploader from './components/LicenseUploader'
 
 export default function CompanyAuth() {
   const form = Form.useForm()
-  const insets = useSafeAreaInsets()
+
   const navigation = useNavigation()
+
   const userStore = useUserStore()
+
   const [loading, setLoading] = useState(false)
 
   const handleComfirmClick = async () => {
+    const { close } = Toast.loading({
+      forbidPress: true,
+      duration: 0
+    })
+
     try {
       setLoading(true)
       const values = await form.validateFields()
@@ -31,12 +38,22 @@ export default function CompanyAuth() {
         url: '/user/company/create',
       })
       await userStore.getUserInfo()
+      Notify({
+        type: 'success',
+        duration: 1000,
+        message: '保存成功',
+      })
       navigation.goBack()
     }
     catch (error) {
-
+      Notify({
+        type: 'error',
+        duration: 1000,
+        message: '保存失败',
+      })
     }
     finally {
+      close()
       setLoading(false)
     }
   }
@@ -52,7 +69,7 @@ export default function CompanyAuth() {
       })
     }
     catch (error) {
-
+      Toast.fail('获取数据失败')
     }
   }
 
@@ -61,37 +78,38 @@ export default function CompanyAuth() {
   }, [])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
-      <ScrollView>
-        <Form form={form}>
-          <Form.Item name="companyAvatar" title="企业头像">
-            <ImageUploader />
-          </Form.Item>
-          <Form.Item name="companyName" title="企业名称">
-            <Input />
-          </Form.Item>
-          <Form.Item name="companyLicense" title="上传营业执照">
-            <LicenseUploader />
-          </Form.Item>
-          <Form.Item name="companyDesc" title="企业描述">
-            <Input />
-          </Form.Item>
-        </Form>
-      </ScrollView>
-      <Button loading={loading} onPress={handleComfirmClick} style={styles.button}>提交</Button>
-    </View>
+    <Page isScrollView={false} title='企业信息'>
+      <View style={styles.container}>
+        <ScrollView>
+          <Form form={form}>
+            <Form.Item name="companyAvatar" title="企业头像">
+              <ImageUploader />
+            </Form.Item>
+            <Form.Item name="companyName" title="企业名称">
+              <Input />
+            </Form.Item>
+            <Form.Item name="companyLicense" title="上传营业执照">
+              <LicenseUploader />
+            </Form.Item>
+            <Form.Item name="companyDesc" title="企业描述">
+              <Input />
+            </Form.Item>
+          </Form>
+        </ScrollView>
+        <Button loading={loading} onPress={handleComfirmClick} style={styles.button} loadingText='提交'>提交</Button>
+      </View>
+    </Page>
   )
 }
 
 const styles = create({
   container: {
     flex: 1,
-    paddingHorizontal: 44,
-    backgroundColor: '#FFF',
     justifyContent: 'space-between',
   },
   button: {
     borderRadius: 24,
+    marginBottom: 24,
   },
   card: {
     justifyContent: 'center',

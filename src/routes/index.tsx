@@ -2,7 +2,7 @@ import { Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import { useChatContext } from 'react-native-chat-uikit'
 import SplashScreen from 'react-native-splash-screen'
 import { useJobStore } from '@/store/job'
@@ -94,69 +94,69 @@ function RouteProvider() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ animation: 'slide_from_right', headerBackTitleVisible: false, headerShadowVisible: false }}>
+      <Stack.Navigator screenOptions={{ animation: 'slide_from_right', headerShown: false, headerBackTitleVisible: false, headerShadowVisible: false }}>
         {
           userStore.accessToken
             ? (
-              <>
+              <Fragment>
                 {
                   userStore.role === 'boss'
                     ? (
                       <Stack.Group>
-                        <Stack.Screen name="Boss" component={BossTabLayout} options={{ headerShown: false }} />
-                        <Stack.Screen name="ResumeDetail" component={ResumeDetail} options={{ headerShown: false }} />
-                        <Stack.Screen name="PublishJob" component={PublishJob} options={{ title: '发布职位' }} />
-                        <Stack.Screen name="DeliverList" component={DeliverList} options={{ headerShown: false }} />
-                        <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} options={{ title: '积分充值' }} />
-                        <Stack.Screen name="IntegralList" component={IntegralList} options={{ title: '我的积分' }} />
-                        <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
-                        <Stack.Screen name="BossSearch" component={BossSearch} options={{ headerShown: false }} />
+                        <Stack.Screen name="Boss" component={BossTabLayout} />
+                        <Stack.Screen name="ResumeDetail" component={ResumeDetail} />
+                        <Stack.Screen name="PublishJob" component={PublishJob} />
+                        <Stack.Screen name="DeliverList" component={DeliverList} />
+                        <Stack.Screen name="RechargeIntegral" component={RechargeIntegral} />
+                        <Stack.Screen name="IntegralList" component={IntegralList} />
+                        <Stack.Screen name="ContactList" component={ContactList} />
+                        <Stack.Screen name="BossSearch" component={BossSearch} />
                       </Stack.Group>
                     )
                     : (
                       <Stack.Group>
-                        <Stack.Screen name="Genius" component={GeniusTabLayout} options={{ headerShown: false }} />
-                        <Stack.Screen name="DeliverDetail" component={DeliverDetail} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} options={{ headerShown: false  }} />
-                        <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateSalary" component={GeniusUpdateSalary} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateExperience" component={GeniusUpdateExperience} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateEducation" component={GeniusUpdateEducation} options={{ headerShown: false}} />
-                        <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} options={{ headerShown: false}} />
-                        <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ headerShown: false }} />
-                        <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ headerShown: false}} />
-                 
-                        <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false }} />
-                        <Stack.Screen name="FilterOptions" component={FilterOptions} options={{ headerShown: false }} />
+                        <Stack.Screen name="Genius" component={GeniusTabLayout} />
+                        <Stack.Screen name="DeliverDetail" component={DeliverDetail} />
+                        <Stack.Screen name="GeniusUpdateContact" component={GeniusUpdateContact} />
+                        <Stack.Screen name="GeniusUpdateSummary" component={GeniusUpdateSummary} />
+                        <Stack.Screen name="GeniusUpdateSalary" component={GeniusUpdateSalary} />
+                        <Stack.Screen name="GeniusUpdateExperience" component={GeniusUpdateExperience} />
+                        <Stack.Screen name="GeniusUpdateEducation" component={GeniusUpdateEducation} />
+                        <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} />
+                        <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} />
+                        <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} />
+
+                        <Stack.Screen name="SearchResult" component={SearchResult} />
+                        <Stack.Screen name="FilterOptions" component={FilterOptions} />
                       </Stack.Group>
                     )
                 }
                 <Stack.Group>
-                  <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false }} />
-                  <Stack.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
-                  <Stack.Screen name="UserChange" component={UserChange} options={{ title: '切换角色' }} />
-                  <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ headerShown: false }} />
-                  <Stack.Screen name="CompanyAuth" component={CompanyAuth} options={{ title: '企业信息' }} />
-                  <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={{ headerShown: false }} />
-                  <Stack.Screen name="BindEmail" component={BindEmail} options={{ headerShown: false }} />
-                  <Stack.Screen name="ResetGuide" component={ResetGuide} options={{ headerShown: false }} />
-                  <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false }} />
-                  <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} options={{ headerShown: false }} />
-                  <Stack.Screen name="ResumePreview" component={ResumePreview} options={{  headerShown: false }} />
+                  <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} />
+                  <Stack.Screen name="Setting" component={Setting} />
+                  <Stack.Screen name="UserChange" component={UserChange} />
+                  <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} />
+                  <Stack.Screen name="CompanyAuth" component={CompanyAuth} />
+                  <Stack.Screen name="CompanyInfo" component={CompanyInfo} />
+                  <Stack.Screen name="BindEmail" component={BindEmail} />
+                  <Stack.Screen name="ResetGuide" component={ResetGuide} />
+                  <Stack.Screen name="JobDetail" component={JobDetail} />
+                  <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
+                  <Stack.Screen name="ResumePreview" component={ResumePreview} />
                 </Stack.Group>
-              </>
+              </Fragment>
             )
             : (
               <Stack.Group>
-                <Stack.Screen name="Guide" component={Guide} options={{ headerShown: false }} />
-                <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                <Stack.Screen name="ForgetGuide" component={ForgetGuide} options={{ headerShown: false }} />
+                <Stack.Screen name="Guide" component={Guide} />
+                <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="ForgetGuide" component={ForgetGuide} />
               </Stack.Group>
             )
         }
         <Stack.Group>
-          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

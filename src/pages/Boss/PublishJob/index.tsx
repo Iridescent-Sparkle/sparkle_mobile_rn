@@ -13,6 +13,7 @@ import TextArea from '@/core/components/TextArea'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import { useJobStore } from '@/store/job'
+import Page from '@/core/components/Page'
 
 export default function PublishJob() {
   const insets = useSafeAreaInsets()
@@ -136,7 +137,7 @@ export default function PublishJob() {
   }, [])
 
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom || 16 }]}>
+    <Page title="发布职位">
       <ScrollView>
         <Form form={form}>
           <Form.Item title="职位名称" name="jobName" rules={[{ required: true, message: '请输入职位名称' }]}>
@@ -188,17 +189,11 @@ export default function PublishJob() {
         </Form>
       </ScrollView>
       <Button style={styles.button} onPress={handleConfirmClick}>提交</Button>
-    </View>
+    </Page>
   )
 }
 
 const styles = create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 44,
-    backgroundColor: '#FFF',
-
-  },
   button: {
     borderRadius: 24,
   },

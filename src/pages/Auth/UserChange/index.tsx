@@ -7,6 +7,7 @@ import { useChatContext } from 'react-native-chat-uikit'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { create } from '@/core/styleSheet'
 import { useUserStore } from '@/store/user'
+import Page from '@/core/components/Page'
 
 const GUIDE_DATA = {
   genius: {
@@ -42,17 +43,20 @@ function UserChange() {
   }
 
   return (
-    <View style={styles.container}>
-      <FastImage
-        style={styles.banner}
-        source={{
-          uri: `${IMAGE_PREFIX}/${GUIDE_DATA[userStore.role]?.img}`,
-        }}
-      >
-      </FastImage>
-      <Text style={styles.title}>{GUIDE_DATA[userStore.role]?.title}</Text>
-      <Button style={styles.button} onPress={handleContinueClick}>{GUIDE_DATA[userStore.role]?.button}</Button>
-    </View>
+    <Page title="切换角色" isScrollView={false}>
+      <View style={styles.container}>
+        <FastImage
+          style={styles.banner}
+          source={{
+            uri: `${IMAGE_PREFIX}/${GUIDE_DATA[userStore.role]?.img}`,
+          }}
+        >
+        </FastImage>
+        <Text style={styles.title}>{GUIDE_DATA[userStore.role]?.title}</Text>
+        <Button style={styles.button} onPress={handleContinueClick}>{GUIDE_DATA[userStore.role]?.button}</Button>
+      </View>
+    </Page>
+
   )
 }
 

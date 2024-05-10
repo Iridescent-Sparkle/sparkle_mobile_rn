@@ -9,6 +9,8 @@ import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import { useUserStore } from '@/store/user'
+import Page from '@/core/components/Page'
+
 
 export default function IntegralList() {
   const userStore = useUserStore()
@@ -115,85 +117,90 @@ export default function IntegralList() {
     )
   }
   return (
-    <FlatList
-      style={styles.container}
-      ListHeaderComponent={(
-        <>
-          {/* 标题 */}
-          <View style={styles.header}>
-            <View>
-              <Text style={styles.headerTitle}>
-                {`当前积分 ${userStore.userInfo.integral}`}
-              </Text>
-              <Text style={styles.headerDesc}>积分可用于发布职位、发起聊天</Text>
+    <Page title='我的积分' isScrollView={false} conntentStyle={styles.page}>
+      <FlatList
+        style={styles.container}
+        ListHeaderComponent={(
+          <>
+            {/* 标题 */}
+            <View style={styles.header}>
+              <View>
+                <Text style={styles.headerTitle}>
+                  {`当前积分 ${userStore.userInfo.integral}`}
+                </Text>
+                <Text style={styles.headerDesc}>积分可用于发布职位、发起聊天</Text>
+              </View>
+              <Button onPress={handleRechargeClick} type="hazy" style={styles.headerButton} size="s">去充值</Button>
             </View>
-            <Button onPress={handleRechargeClick} type="hazy" style={styles.headerButton} size="s">去充值</Button>
-          </View>
-          {/* 饼图 */}
-          {
-            pieData && (
-              <View style={styles.pieWrapper}>
-                <Text style={styles.title}>积分使用分布情况</Text>
-                <PieChart
-                  data={pieData}
-                  textColor="black"
-                  radius={pxToDp(200)}
-                  textSize={pxToDp(24)}
-                  showValuesAsLabels
-                  showTextBackground
-                  onPress={(value) => { setSelectPie(value) }}
-                  centerLabelComponent={() => {
-                    return (
-                      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Text
-                          style={{ fontSize: 22, color: themeColor.black85, fontWeight: 'bold' }}
-                        >
-                          {`${Number(selectPie.value) / Number(pieTotal) * 100}%`}
-                        </Text>
-                        <Text style={{ fontSize: 14, color: themeColor.black85 }}>{selectPie.text}</Text>
-                      </View>
-                    )
-                  }}
-                  textBackgroundRadius={pxToDp(26)}
-                />
-                <View style={{ marginTop: 20 }}>
-                  {renderLegendComponent()}
+            {/* 饼图 */}
+            {
+              pieData && (
+                <View style={styles.pieWrapper}>
+                  <Text style={styles.title}>积分使用分布情况</Text>
+                  <PieChart
+                    data={pieData}
+                    textColor="black"
+                    radius={pxToDp(200)}
+                    textSize={pxToDp(24)}
+                    showValuesAsLabels
+                    showTextBackground
+                    onPress={(value) => { setSelectPie(value) }}
+                    centerLabelComponent={() => {
+                      return (
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                          <Text
+                            style={{ fontSize: 22, color: themeColor.black85, fontWeight: 'bold' }}
+                          >
+                            {`${Number(selectPie.value) / Number(pieTotal) * 100}%`}
+                          </Text>
+                          <Text style={{ fontSize: 14, color: themeColor.black85 }}>{selectPie.text}</Text>
+                        </View>
+                      )
+                    }}
+                    textBackgroundRadius={pxToDp(26)}
+                  />
+                  <View style={{ marginTop: 20 }}>
+                    {renderLegendComponent()}
+                  </View>
                 </View>
-              </View>
-            )
-          }
-          {/* 折线图 */}
-          {
-            barData && (
-              <View style={styles.barWrapper}>
-                <Text style={styles.title}>近七日积分使用情况</Text>
-                <BarChart
-                  barWidth={pxToDp(36)}
-                  barBorderRadius={pxToDp(24)}
-                  frontColor="lightgray"
-                  data={barData}
-                  showXAxisIndices
-                  showYAxisIndices
-                  yAxisTextStyle={{ color: 'black' }}
-                  xAxisLabelTextStyle={{ color: 'black' }}
-                  yAxisThickness={0}
-                  xAxisThickness={0}
-                />
-              </View>
-            )
-          }
-        </>
-      )}
-      data={consumeList}
-      renderItem={item => (
-        <ConsumeListCard data={item.item}></ConsumeListCard>
-      )}
-    />
-
+              )
+            }
+            {/* 折线图 */}
+            {
+              barData && (
+                <View style={styles.barWrapper}>
+                  <Text style={styles.title}>近七日积分使用情况</Text>
+                  <BarChart
+                    barWidth={pxToDp(36)}
+                    barBorderRadius={pxToDp(24)}
+                    frontColor="lightgray"
+                    data={barData}
+                    showXAxisIndices
+                    showYAxisIndices
+                    yAxisTextStyle={{ color: 'black' }}
+                    xAxisLabelTextStyle={{ color: 'black' }}
+                    yAxisThickness={0}
+                    xAxisThickness={0}
+                  />
+                </View>
+              )
+            }
+          </>
+        )}
+        data={consumeList}
+        renderItem={item => (
+          <ConsumeListCard data={item.item}></ConsumeListCard>
+        )}
+      />
+    </Page>
   )
 }
 
 const styles = create({
+  page:{
+    paddingHorizontal: 0,
+    backgroundColor: '#F5F6FA',
+  },
   container: {
     backgroundColor: '#F5F6FA',
     paddingHorizontal: 24,

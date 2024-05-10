@@ -1,13 +1,14 @@
-import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { Pressable, Text, View } from 'react-native'
 import { Button, Toast } from '@fruits-chain/react-native-xiaoshu'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import Alipay from 'alipay-rn'
-import { create, pxToDp, s } from '@/core/styleSheet'
-import { request } from '@/core/api'
-import { themeColor } from '@/core/styleSheet/themeColor'
+import React, { useEffect, useState } from 'react'
+import { Pressable, ScrollView, Text, View } from 'react-native'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useUserStore } from '@/store/user'
+import { themeColor } from '@/core/styleSheet/themeColor'
+import { create, pxToDp } from '@/core/styleSheet'
+import Page from '@/core/components/Page'
+import { request } from '@/core/api'
 
 const alipayErrorReason = {
   6001: '支付取消',
@@ -86,8 +87,8 @@ export default function RechargeIntegral() {
     navigation.dispatch(StackActions.replace('IntegralList'))
   }
   return (
-    <View style={styles.container}>
-      <View>
+    <Page title="积分充值" conntentStyle={styles.container} isScrollView={false}>
+      <ScrollView>
         <View style={styles.header}>
           <View>
             <Text style={styles.headerTitle}>{`剩余积分 ${userStore.userInfo.integral}`}</Text>
@@ -114,7 +115,6 @@ export default function RechargeIntegral() {
                 )
               })
             }
-
           </View>
         </View>
         <View style={styles.payway}>
@@ -122,12 +122,10 @@ export default function RechargeIntegral() {
             <AntDesign name="alipay-square" size={pxToDp(48)} color="#1678FF" />
             <Text style={styles.payDesc}>支付宝支付</Text>
           </View>
-
           <AntDesign name="checkcircle" size={pxToDp(48)} color={themeColor.primary} />
           {/* <AntDesign name="checkcircleo" size={pxToDp(48)} color={themeColor.primary} /> */}
-
         </View>
-      </View>
+      </ScrollView>
       <View style={styles.footer}>
         <View style={styles.footerTitle}>
           <Text style={styles.payTitle}>订单金额：</Text>
@@ -138,14 +136,13 @@ export default function RechargeIntegral() {
         </View>
         <Button style={styles.payButton} onPress={handlePayClick}>立即支付</Button>
       </View>
-    </View>
+    </Page>
   )
 }
 
 const styles = create({
   container: {
-    flex: 1,
-    justifyContent: 'space-between',
+    paddingHorizontal: 0,
     backgroundColor: '#F5F6FA',
   },
   header: {
