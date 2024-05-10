@@ -135,7 +135,7 @@ function RouteProvider() {
                   <Stack.Screen name="GeniusChatDetail" component={GeniusChatDetail} options={{ headerShown: false }} />
                   <Stack.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
                   <Stack.Screen name="UserChange" component={UserChange} options={{ title: '切换角色' }} />
-                  <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ title: '修改个人信息' }} />
+                  <Stack.Screen name="GeniusUpdateProfile" component={GeniusUpdateProfile} options={{ headerShown: false }} />
                   <Stack.Screen name="CompanyAuth" component={CompanyAuth} options={{ title: '企业信息' }} />
                   <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={{ headerShown: false }} />
                   <Stack.Screen name="BindEmail" component={BindEmail} options={{ headerShown: false }} />
