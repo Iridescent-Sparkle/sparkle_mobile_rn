@@ -49,7 +49,47 @@ export class Request {
     this.axios.interceptors.response.use((response) => {
       return response
     }, async (error) => {
-      return Promise.reject(error)
+      const { data, config } = error.response
+
+      if (refreshing) {
+        return new Promise((resolve) => {
+          queue.push({
+            config,
+            resolve,
+          })
+        })
+      }
+
+      if (data.code === 401 && !config.url.includes('/user/refresh')) {
+        refreshing = true
+
+        const data = await refreshToken()
+
+        refreshing = false
+
+        if (data.code === 200) {
+          const accessToken = await AsyncStorage.getItem('accessToken')
+
+          queue.forEach(({ config, resolve }: any) => {
+            config.headers.Authorization = `Bearer ${accessToken}`
+            resolve(axios(config))
+          })
+          queue.length = 0
+          config.headers.Authorization = `Bearer ${accessToken}`
+          return axios(config)
+        }
+        else {
+          Toast.fail('登录过期，请重新登录')
+          await AsyncStorage.setItem('role', 'genius')
+          await AsyncStorage.setItem('refreshToken', '')
+          await AsyncStorage.setItem('accessToken', '')
+          useUserStore.getState().logout()
+          return Promise.reject(error)
+        }
+      }
+      else {
+        return Promise.reject(error)
+      }
     })
   }
 
@@ -71,47 +111,7 @@ export class Request {
           resolve(res.data)
         }
       }).catch(async (error) => {
-        const { data, config } = error.response
-
-        if (refreshing) {
-          return new Promise((resolve) => {
-            queue.push({
-              config,
-              resolve,
-            })
-          })
-        }
-
-        if (data.code === 401 && !config.url.includes('/user/refresh')) {
-          refreshing = true
-
-          const data = await refreshToken()
-
-          refreshing = false
-
-          if (data.code === 200) {
-            const accessToken = await AsyncStorage.getItem('accessToken')
-
-            queue.forEach(({ config, resolve }: any) => {
-              config.headers.Authorization = `Bearer ${accessToken}`
-              resolve(axios(config))
-            })
-            queue.length = 0
-            config.headers.Authorization = `Bearer ${accessToken}`
-            return axios(config)
-          }
-          else {
-            Toast.fail('登录过期，请重新登录')
-            await AsyncStorage.setItem('role', 'genius')
-            await AsyncStorage.setItem('refreshToken', '')
-            await AsyncStorage.setItem('accessToken', '')
-            useUserStore.getState().logout()
-            return reject(error)
-          }
-        }
-        else {
-          return reject(error)
-        }
+        reject(error)
       })
     })
   }
