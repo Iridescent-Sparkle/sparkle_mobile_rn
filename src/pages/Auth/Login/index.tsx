@@ -50,8 +50,8 @@ function Login() {
       await jobStore.getJobOptions()
     }
     catch (error: any) {
-      if (error.code)
-        Toast.fail('登录失败，请检查用户名和密码是否正确')
+      if (error.code && error.data)
+        Toast.fail(error.data.split(':').at(-1))
     }
     finally {
       setLoading(false)

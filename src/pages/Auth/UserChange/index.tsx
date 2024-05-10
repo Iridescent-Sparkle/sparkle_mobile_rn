@@ -1,6 +1,6 @@
 import { Button } from '@fruits-chain/react-native-xiaoshu'
 import FastImage from 'react-native-fast-image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import { useChatContext } from 'react-native-chat-uikit'
@@ -24,8 +24,11 @@ const GUIDE_DATA = {
 
 function UserChange() {
   const userStore = useUserStore()
+
   const navigation = useNavigation()
+
   const im = useChatContext()
+
   const handleContinueClick = async () => {
     if (userStore.userInfo.company && userStore.userInfo.company.status === 1) {
       await im.logout({})
@@ -42,6 +45,10 @@ function UserChange() {
     }
   }
 
+  useEffect(() => {
+    userStore.getUserInfo()
+  }, [])
+  
   return (
     <Page title="切换角色" isScrollView={false}>
       <View style={styles.container}>

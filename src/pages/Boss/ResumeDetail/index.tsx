@@ -19,11 +19,17 @@ import ResumeVolunteerInfoCard from './components/ResumeVolunteerCard'
 
 export default function ResumeDetail() {
   const navigation = useNavigation()
+
   const userStore = useUserStore()
+
   const [confirmLoading, setConfirmLoading] = useState(false)
+
   const [resumeList, setResumeList] = useState({} as UserProfileList)
+
   const [deliverStatusData, setDeliverStatusData] = useState({} as any)
+
   const route = useRoute<{ key: any, name: any, params: { from: 'home' | 'manage', profileId: number, deliverId: number, status: number } }>()
+  
   const getInitData = async () => {
     try {
       const [{ data: { data: resumeListData } }, { data: deliverStatusData }] = await Promise.all([

@@ -45,12 +45,14 @@ export default function CompanyAuth() {
       })
       navigation.goBack()
     }
-    catch (error) {
-      Notify({
-        type: 'error',
-        duration: 1000,
-        message: '保存失败',
-      })
+    catch (error: any) {
+      if (error.code) {
+        Notify({
+          type: 'error',
+          duration: 1000,
+          message: '保存失败',
+        })
+      }
     }
     finally {
       close()
@@ -82,17 +84,20 @@ export default function CompanyAuth() {
       <View style={styles.container}>
         <ScrollView>
           <Form form={form}>
-            <Form.Item name="companyAvatar" title="企业头像">
+            <Form.Item name="companyAvatar" title="企业头像" rules={[{ required: true, message: '请上传企业头像' }]}>
               <ImageUploader />
             </Form.Item>
-            <Form.Item name="companyName" title="企业名称">
-              <Input />
+            <Form.Item name="companyName" title="企业名称" rules={[{ required: true, message: '请输入企业名称' }]}>
+              <Input placeholder='请输入企业名称' />
             </Form.Item>
-            <Form.Item name="companyLicense" title="上传营业执照">
+            <Form.Item name="companyAddress" title="企业地址" rules={[{ required: true, message: '请输入企业地址' }]}>
+              <Input placeholder='请输入企业地址' />
+            </Form.Item>
+            <Form.Item name="companyDesc" title="企业描述" rules={[{ required: true, message: '请输入企业描述' }]}>
+              <Input placeholder='请输入企业描述' />
+            </Form.Item>
+            <Form.Item name="companyLicense" title="上传营业执照" rules={[{ required: true, message: '请上传营业执照' }]}>
               <LicenseUploader />
-            </Form.Item>
-            <Form.Item name="companyDesc" title="企业描述">
-              <Input />
             </Form.Item>
           </Form>
         </ScrollView>

@@ -46,12 +46,14 @@ export default function GeniusUpdateProfile() {
       
       navigation.goBack()
     }
-    catch (error) {
-      Notify({
-        type: 'error',
-        duration: 1000,
-        message: '保存失败',
-      })
+    catch (error: any) {
+      if (error.code) {
+        Notify({
+          type: 'error',
+          duration: 1000,
+          message: '保存失败',
+        })
+      }
     }
     finally {
       close()

@@ -125,7 +125,6 @@ function RouteProvider() {
                         <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} />
                         <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} />
                         <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} />
-
                         <Stack.Screen name="SearchResult" component={SearchResult} />
                         <Stack.Screen name="FilterOptions" component={FilterOptions} />
                       </Stack.Group>

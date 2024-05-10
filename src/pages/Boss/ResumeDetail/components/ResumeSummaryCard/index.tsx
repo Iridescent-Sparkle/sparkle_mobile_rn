@@ -1,4 +1,3 @@
-import { Card } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
 import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
@@ -26,7 +25,6 @@ const styles = create({
   },
   container: {
     borderBottomWidth: 4,
-    // paddingBottom: 24,
     borderBottomColor: '#F2F2F2',
   },
 })
