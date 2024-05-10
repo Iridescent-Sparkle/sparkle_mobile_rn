@@ -125,7 +125,7 @@ function RouteProvider() {
                         <Stack.Screen name="GeniusUpdateProject" component={GeniusUpdateProject} options={{ headerShown: false}} />
                         <Stack.Screen name="GeniusUpdateVolunteer" component={GeniusUpdateVolunteer} options={{ headerShown: false }} />
                         <Stack.Screen name="GeniusUpdateResume" component={GeniusUpdateResume} options={{ headerShown: false}} />
-                        <Stack.Screen name="ResumePreview" component={ResumePreview} options={{ title: '预览简历' }} />
+                 
                         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false }} />
                         <Stack.Screen name="FilterOptions" component={FilterOptions} options={{ headerShown: false }} />
                       </Stack.Group>
@@ -142,6 +142,7 @@ function RouteProvider() {
                   <Stack.Screen name="ResetGuide" component={ResetGuide} options={{ headerShown: false }} />
                   <Stack.Screen name="JobDetail" component={JobDetail} options={{ headerShown: false }} />
                   <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} options={{ headerShown: false }} />
+                  <Stack.Screen name="ResumePreview" component={ResumePreview} options={{  headerShown: false }} />
                 </Stack.Group>
               </>
             )

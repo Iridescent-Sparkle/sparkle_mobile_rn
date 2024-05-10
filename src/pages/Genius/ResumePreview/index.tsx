@@ -1,15 +1,15 @@
 import { Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useRoute } from '@react-navigation/native'
 import React from 'react'
-import { View } from 'react-native'
 import Pdf from 'react-native-pdf'
 import { create } from '@/core/styleSheet'
+import Page from '@/core/components/Page'
 
 function ResumePreview() {
   const route = useRoute<{ key: any, name: any, params: { accessUrl: string, fileName: string, fileSize: number } }>()
 
   return (
-    <View style={styles.container}>
+    <Page title="预览简历" isScrollView={false}>
       <Pdf
         trustAllCerts={false}
         onError={() => {
@@ -22,7 +22,7 @@ function ResumePreview() {
         }}
         style={styles.pdf}
       />
-    </View>
+    </Page>
   )
 }
 

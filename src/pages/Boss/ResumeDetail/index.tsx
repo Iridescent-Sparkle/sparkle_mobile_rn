@@ -1,8 +1,14 @@
-import { Button, Dialog, NavBar } from '@fruits-chain/react-native-xiaoshu'
+import { request } from '@/core/api'
+import Page from '@/core/components/Page'
+import Visible from '@/core/components/Visible'
+import { JOB_DELIVER_STATUS } from '@/core/constants'
+import { create, pxToDp } from '@/core/styleSheet'
+import { useUserStore } from '@/store/user'
+import { Button, Dialog } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import ResumeCvCard from './components/ResumeCvCard'
 import ResumeEducationCard from './components/ResumeEducationCard'
 import ResumeExperienceCard from './components/ResumeExperienceCard'
 import ResumeProjectsInfoCard from './components/ResumeProjectsCard'
@@ -10,14 +16,8 @@ import ResumeSalaryCard from './components/ResumeSalaryCard'
 import ResumeSummaryCard from './components/ResumeSummaryCard'
 import ResumeUserCard from './components/ResumeUserCard'
 import ResumeVolunteerInfoCard from './components/ResumeVolunteerCard'
-import { useUserStore } from '@/store/user'
-import { create, pxToDp } from '@/core/styleSheet'
-import Visible from '@/core/components/Visible'
-import { request } from '@/core/api'
-import { JOB_DELIVER_STATUS } from '@/core/constants'
 
 export default function ResumeDetail() {
-  const insets = useSafeAreaInsets()
   const navigation = useNavigation()
   const userStore = useUserStore()
   const [confirmLoading, setConfirmLoading] = useState(false)
@@ -98,6 +98,7 @@ export default function ResumeDetail() {
                 convId: resumeList.user.contactIdToB,
                 convName: '',
               }))
+              userStore.getUserInfo()
             }
           }
         })
@@ -114,10 +115,6 @@ export default function ResumeDetail() {
         convName: '',
       }))
     }
-  }
-
-  const handleBackClick = () => {
-    navigation.goBack()
   }
 
   const handleUnbefittingClick = async () => {
@@ -159,10 +156,9 @@ export default function ResumeDetail() {
   }
 
   return (
-    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom || 16 }]}>
-      <NavBar onPressBackArrow={handleBackClick} />
+    <Page title="简历详情">
       <View style={styles.content}>
-        <ScrollView style={styles.body}>
+        <ScrollView>
           <ResumeUserCard data={resumeList} />
           <ResumeSummaryCard data={resumeList} />
           <ResumeSalaryCard data={resumeList} />
@@ -170,6 +166,7 @@ export default function ResumeDetail() {
           <ResumeEducationCard data={resumeList} />
           <ResumeProjectsInfoCard data={resumeList} />
           <ResumeVolunteerInfoCard data={resumeList} />
+          <ResumeCvCard data={resumeList} />
         </ScrollView>
         <Visible visible={resumeList.user?.id !== userStore.userInfo.id}>
           <Visible visible={deliverStatusData.status === 3 || !deliverStatusData.status}>
@@ -188,7 +185,7 @@ export default function ResumeDetail() {
           </Visible>
         </Visible>
       </View>
-    </View>
+    </Page>
   )
 }
 
@@ -201,9 +198,7 @@ const styles = create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  body: {
-    paddingHorizontal: 56,
-  },
+
   button: {
     height: 100,
   },

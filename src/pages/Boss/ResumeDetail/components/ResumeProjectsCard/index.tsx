@@ -36,37 +36,39 @@ function ResumeProjectsInfoCard(props: Props) {
       <View style={styles.container}>
         <ResumeCardHeader title="项目经历" />
         {
-        data.project?.map((item) => {
-          const startTime = dayjs(item.startTime).format('YYYY-MM')
-          const endTime = dayjs(item.endTime).format('YYYY-MM')
-          const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
-          return (
-            <View key={item.id}>
-              <Space direction="horizontal" style={styles.header}>
-                <Space direction="horizontal" gap={pxToDp(32)}>
-                  <View style={styles.logo}>
-                    <MaterialCommunityIcons name="chart-box" size={pxToDp(64)} color={themeColor.primary} />
-                  </View>
-                  <Space gap={pxToDp(20)}>
-                    <Text style={styles.title}>{item.projectName}</Text>
-                    <Text style={styles.company}>{item.role}</Text>
-                    <Text style={styles.date}>
-                      {`${startTime} - ${endTime}（${totalTime}）`}
-                    </Text>
-                    <Pressable onPress={() => handleDisplayProject(item.website)} style={styles.button}>
-                      <Text style={styles.buttonText}>展示项目</Text>
-                      <FontAwesome5 name="telegram-plane" size={pxToDp(32)} color={themeColor.primary} />
-                    </Pressable>
+          data.project?.map((item) => {
+            const startTime = dayjs(item.startTime).format('YYYY-MM')
+            const endTime = dayjs(item.endTime).format('YYYY-MM')
+            const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
+            return (
+              <View key={item.id}>
+                <Space direction="horizontal" style={styles.header}>
+                  <Space direction="horizontal" gap={pxToDp(32)}>
+                    <View style={styles.logo}>
+                      <MaterialCommunityIcons name="chart-box" size={pxToDp(64)} color={themeColor.primary} />
+                    </View>
+                    <Space gap={pxToDp(20)}>
+                      <Text style={styles.title}>{item.projectName}</Text>
+                      <Text style={styles.company}>{item.role}</Text>
+                      <Text style={styles.date}>
+                        {`${startTime} - ${endTime}（${totalTime}）`}
+                      </Text>
+                      <Visible visible={item.website}>
+                        <Pressable onPress={() => handleDisplayProject(item.website)} style={styles.button}>
+                          <Text style={styles.buttonText}>展示项目</Text>
+                          <FontAwesome5 name="telegram-plane" size={pxToDp(32)} color={themeColor.primary} />
+                        </Pressable>
+                      </Visible>
+                    </Space>
                   </Space>
                 </Space>
-              </Space>
-              <Text style={styles.content}>
-                {item.description}
-              </Text>
-            </View>
-          )
-        })
-       }
+                <Text style={styles.content}>
+                  {item.description}
+                </Text>
+              </View>
+            )
+          })
+        }
       </View>
     </Visible>
 

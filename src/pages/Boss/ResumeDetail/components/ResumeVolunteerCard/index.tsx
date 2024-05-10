@@ -35,10 +35,9 @@ function ResumeVolunteerInfoCard(props: Props) {
                       </Text>
                     </Space>
                   </Space>
-
                 </Space>
                 <Text style={styles.content}>
-                  {data.summary}
+                  {item.description}
                 </Text>
               </View>
             )

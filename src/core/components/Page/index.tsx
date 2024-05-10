@@ -47,8 +47,7 @@ function Page(props: Props) {
               {children}
             </View>
             )
-}
-
+      }
     </View>
   )
 }

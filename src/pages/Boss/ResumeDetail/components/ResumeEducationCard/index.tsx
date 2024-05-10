@@ -2,6 +2,7 @@ import { Space } from '@fruits-chain/react-native-xiaoshu'
 import dayjs from 'dayjs'
 import { Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import Entypo from 'react-native-vector-icons/Entypo'
 import ResumeCardHeader from '../ResumeCardHeader'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
@@ -18,42 +19,38 @@ function ResumeEducationCard(props: Props) {
       <View style={styles.container}>
         <ResumeCardHeader title="教育经历" />
         {
-        data.eduction?.map((item) => {
-          const startTime = dayjs(item.startTime).format('YYYY-MM')
-          const endTime = dayjs(item.endTime).format('YYYY-MM')
-          const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
-          return (
-            <View key={item.id}>
-              <Space direction="horizontal" style={styles.header}>
-                <Space direction="horizontal" gap={pxToDp(32)}>
-                  <FastImage
-                    style={styles.logo}
-                    source={{
-                      uri: `${IMAGE_PREFIX}/stars.png`,
-                    }}
-                  />
-                  <Space gap={pxToDp(20)}>
-                    <Text style={styles.title}>{item.school}</Text>
-                    <Text style={styles.company}>{item.profession}</Text>
-                    <Text style={styles.date}>
-                      {' '}
-                      {`${startTime} - ${endTime}（${totalTime}）`}
-                    </Text>
-                    <Text style={styles.gpa}>
-                      GPA:
-                      {item.gpa}
-                      (5.0 满)
-                    </Text>
+          data.eduction?.map((item) => {
+            const startTime = dayjs(item.startTime).format('YYYY-MM')
+            const endTime = dayjs(item.endTime).format('YYYY-MM')
+            const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
+            return (
+              <View key={item.id}>
+                <Space direction="horizontal" style={styles.header}>
+                  <Space direction="horizontal" gap={pxToDp(32)}>
+                    <View style={styles.logo}>
+                      <Entypo name="graduation-cap" size={pxToDp(64)} color={themeColor.primary} />
+                    </View>
+                    <Space gap={pxToDp(20)}>
+                      <Text style={styles.title}>{item.school}</Text>
+                      <Text style={styles.company}>{item.profession}</Text>
+                      <Text style={styles.date}>
+                        {`${startTime} - ${endTime}（${totalTime}）`}
+                      </Text>
+                      <Text style={styles.gpa}>
+                        GPA:
+                        {item.gpa}
+                        (5.0 满)
+                      </Text>
+                    </Space>
                   </Space>
                 </Space>
-              </Space>
-              <Text style={styles.content}>
-                {item.description}
-              </Text>
-            </View>
-          )
-        })
-       }
+                <Text style={styles.content}>
+                  {item.description}
+                </Text>
+              </View>
+            )
+          })
+        }
       </View>
     </Visible>
   )
@@ -88,11 +85,12 @@ const styles = create({
     color: themeColor.black65,
   },
   logo: {
-    width: 116,
-    height: 116,
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: themeColor.black12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 124,
+    height: 124,
+    borderRadius: 62,
+    backgroundColor: themeColor.hazy,
   },
   content: {
     fontSize: 28,
