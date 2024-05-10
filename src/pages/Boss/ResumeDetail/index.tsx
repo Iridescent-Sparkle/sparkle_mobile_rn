@@ -29,7 +29,7 @@ export default function ResumeDetail() {
   const [deliverStatusData, setDeliverStatusData] = useState({} as any)
 
   const route = useRoute<{ key: any, name: any, params: { from: 'home' | 'manage', profileId: number, deliverId: number, status: number } }>()
-  
+
   const getInitData = async () => {
     try {
       const [{ data: { data: resumeListData } }, { data: deliverStatusData }] = await Promise.all([
@@ -56,6 +56,7 @@ export default function ResumeDetail() {
           url: `/genius/deliveries/update`,
         })
       }
+      userStore.getUserInfo()
     }
     catch (error) {
 
@@ -67,7 +68,7 @@ export default function ResumeDetail() {
   }, [])
 
   const handleChatClick = async () => {
-    if (route.params.from === 'home' && userStore.userInfo.contactId.includes(resumeList.user.profileId)) {
+    if (route.params.from === 'home' && !userStore.userInfo.contact?.map(item => item.profileId).includes(resumeList.user.profileId)) {
       if (Number(userStore.userInfo.integral) < 1) {
         Dialog.confirm({
           title: '积分不足',
@@ -162,7 +163,7 @@ export default function ResumeDetail() {
   }
 
   return (
-    <Page title="简历详情">
+    <Page title="简历详情" isScrollView={false}>
       <View style={styles.content}>
         <ScrollView>
           <ResumeUserCard data={resumeList} />
@@ -204,9 +205,9 @@ const styles = create({
     flex: 1,
     justifyContent: 'space-between',
   },
-
   button: {
     height: 100,
+    borderRadius: 24
   },
   disableButton: {
     flex: 1,

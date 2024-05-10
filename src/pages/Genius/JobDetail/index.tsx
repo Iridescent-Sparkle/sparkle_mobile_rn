@@ -1,6 +1,6 @@
 import { Button, Card, Dialog, NavBar, Notify, Popup, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Skeleton from '../Skeleton'
@@ -13,6 +13,7 @@ import RecruitDescriptionCard from '@/pages/Boss/RecruitDetail/RecruitDescriptio
 import RecruitTagCard from '@/pages/Boss/RecruitDetail/RecruitTagsCard'
 import RecruitSummaryCard from '@/pages/Boss/RecruitDetail/RecruitSummaryCard'
 import RecruitAboutCard from '@/pages/Boss/RecruitDetail/RecruitAboutCard'
+import RecruitDetailCard from '@/pages/Boss/RecruitDetail/RecruitDetailCard'
 
 const TAB_DATA = [{
   id: '1',
@@ -84,14 +85,13 @@ function JobDetail() {
             { title: '工作水平', desc: jobStore.jobLevelOptions.find(option => option.value === jobDetail.jobLevelId)?.label || '' },
             { title: '工作类型 ', desc: jobStore.jobCategoryOptions.find(option => option.value === jobDetail.jobCategoryId)?.label || '' },
             { title: '空缺', desc: String(jobDetail.headCount) },
-            { title: '网站', desc: jobDetail.website },
           ].filter(item => !!item.desc)}
-                   />,
+        />,
       },
       {
         id: '6',
         title: '关于',
-        component: <RecruitAboutCard title="关于" content={jobDetail.companyDescription} />,
+        component: <RecruitAboutCard title="关于" content={jobDetail.company.companyDesc} />,
       },
     ]
   }
@@ -176,13 +176,13 @@ function JobDetail() {
       {
         loading
           ? (
-            <>
+            <Fragment>
               <NavBar onPressBackArrow={onPressBackArrow} rightStyle={styles.rightExtra} divider={false} />
               <Skeleton />
-            </>
-            )
+            </Fragment>
+          )
           : (
-            <>
+            <Fragment>
               <NavBar title={jobDetail.jobName || ''} onPressBackArrow={onPressBackArrow} rightExtra={route.params.type === 'manage' ? undefined : <CollectButton jobDetail={jobDetail} handleCollectClick={getInitData} />} rightStyle={styles.rightExtra} divider={false} />
               <View style={styles.list}>
                 <FlatList
@@ -203,23 +203,23 @@ function JobDetail() {
                         <Button style={styles.dangerButton} onPress={handlePopupCloseJobShow}>
                           关闭职位
                         </Button>
-                        )
+                      )
                       : jobDetail.jobDeliverStatus === 0
                         ? (
                           <Button style={styles.button} onPress={handlePopupShow}>
                             投递
                           </Button>
-                          )
+                        )
                         : (
                           <View style={[styles.disableButton, { backgroundColor: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].bgColor }]}>
                             <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].color }}>{JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].label}</Text>
                           </View>
-                          )
+                        )
                   }
                 </View>
               </Card>
-            </>
-            )
+            </Fragment>
+          )
       }
       <Popup
         safeAreaInsetBottom

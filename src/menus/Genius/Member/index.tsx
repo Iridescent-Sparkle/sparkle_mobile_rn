@@ -47,7 +47,7 @@ export default function GeniusMember() {
           url: '/genius/volunteer/user',
         }),
       ])
-      console.log(profileData.data)
+
       setProfileData(profileData.data)
       setEducationData(educationData.data)
       setProjectData(projectData.data)

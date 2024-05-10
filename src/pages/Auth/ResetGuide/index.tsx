@@ -10,6 +10,7 @@ import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 import Page from '@/core/components/Page'
+import Visible from '@/core/components/Visible'
 
 function ResetGuide() {
   const userStore = useUserStore()
@@ -54,23 +55,25 @@ function ResetGuide() {
           </Text>
         </Space>
       </Pressable>
-      <Pressable
-        onPress={() => setSelectWay({
-          type: 'email',
-          value: userStore.userInfo.email,
-        })}
-        style={[styles.card, selectWay.type === 'email' ? styles.cardActive : null]}
-      >
-        <View style={styles.circle}>
-          <MaterialCommunityIcons name="email-outline" size={pxToDp(48)} color="#3E7CFD" />
-        </View>
-        <Space>
-          <Text style={styles.desc}>通过邮箱：</Text>
-          <Text style={styles.content}>
-            {userStore.userInfo.email}
-          </Text>
-        </Space>
-      </Pressable>
+      <Visible visible={userStore.userInfo.email}>
+        <Pressable
+          onPress={() => setSelectWay({
+            type: 'email',
+            value: userStore.userInfo.email,
+          })}
+          style={[styles.card, selectWay.type === 'email' ? styles.cardActive : null]}
+        >
+          <View style={styles.circle}>
+            <MaterialCommunityIcons name="email-outline" size={pxToDp(48)} color="#3E7CFD" />
+          </View>
+          <Space>
+            <Text style={styles.desc}>通过邮箱：</Text>
+            <Text style={styles.content}>
+              {userStore.userInfo.email}
+            </Text>
+          </Space>
+        </Pressable>
+      </Visible>
       <Button style={styles.button} onPress={handleContinueClick}>继续</Button>
     </Page>
   )

@@ -6,12 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { create } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import ResumeListCard from '@/core/components/ResumeCard'
+import Page from '@/core/components/Page'
 
 export default function ContactList() {
-  const insets = useSafeAreaInsets()
-
-  const navigation = useNavigation()
-
   const [resumeList, setResumeList] = useState([] as UserProfileList[])
 
   const getInitData = async () => {
@@ -33,17 +30,12 @@ export default function ContactList() {
     getInitData()
   }, []))
 
-  const handleBackClick = () => {
-    navigation.goBack()
-  }
-
   return (
-    <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom || 16 }]}>
-      <NavBar title="联系列表" onPressBackArrow={handleBackClick} />
+    <Page title="联系记录" isScrollView={false}>
       {resumeList.length
-        ? <FlatList style={styles.list} data={resumeList} renderItem={job => <ResumeListCard data={job.item} />} keyExtractor={job => String(job.id)} />
+        ? <FlatList style={styles.list} data={resumeList} renderItem={job => <ResumeListCard data={job.item.profile} />} keyExtractor={job => String(job.id)} />
         : <View style={styles.empty}><Empty /></View>}
-    </View>
+    </Page>
   )
 }
 

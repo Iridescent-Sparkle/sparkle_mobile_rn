@@ -12,17 +12,18 @@ interface Props {
 }
 function RecruitDetailCard(props: Props) {
   const { data } = props
+
   return (
     <Card style={styles.container}>
       <Space style={styles.header}>
         <FastImage
           style={styles.logo}
           source={{
-            uri: data.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
+            uri: data.company?.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
           }}
         />
         <Text style={styles.title}>{data.jobName}</Text>
-        <Text style={styles.company}>{data.companyName}</Text>
+        <Text style={styles.company}>{data.company?.companyName}</Text>
       </Space>
       <Space style={styles.body}>
         <Text style={styles.address}>{data.address}</Text>

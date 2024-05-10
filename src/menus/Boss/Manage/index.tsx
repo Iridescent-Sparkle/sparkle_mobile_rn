@@ -21,6 +21,7 @@ export default function BossManage() {
         url: `boss/job/all`,
       })
       setJobList(jobListData)
+
     }
     catch (error) {
 

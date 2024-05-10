@@ -248,7 +248,15 @@ interface DeliverListIem {
   updateTime: string
   user: User
 }
-
+interface Contact {
+  createTime: string
+  id: number
+  isDelete: boolean
+  isFrozen: boolean
+  profileId: number
+  updateTime: string
+  userId: number
+}
 interface User {
   id: number
   username: string
@@ -269,6 +277,7 @@ interface User {
   updateTime: string
   profile: Profile
   company: Company
+  contact: Contact[]
 }
 
 interface Profile {

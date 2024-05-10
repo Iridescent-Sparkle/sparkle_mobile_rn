@@ -45,7 +45,7 @@ function RecruitJobCard(props: Props) {
           <FastImage
             style={styles.logo}
             source={{
-              uri: data.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
+              uri: data.company.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
             }}
           />
           <Space gap={pxToDp(20)}>
@@ -74,9 +74,9 @@ function RecruitJobCard(props: Props) {
             : (
               <Space direction="vertical" gap={pxToDp(70)}>
                 <FontAwesome6 name="pen-to-square" size={pxToDp(30)} color={themeColor.primary} onPress={handleEditJob} />
-                <Badge dot offset={[5, -2]}>
-                  <Feather name="list" size={pxToDp(32)} color={themeColor.primary} onPress={handleViewJob} />
-                </Badge>
+                {/* <Badge dot offset={[5, -2]}> */}
+                <Feather name="list" size={pxToDp(32)} color={themeColor.primary} onPress={handleViewJob} />
+                {/* </Badge> */}
               </Space>
               )
         }

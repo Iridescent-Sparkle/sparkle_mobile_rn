@@ -62,7 +62,7 @@ const initUserInfo = {
     createTime: '',
     updateTime: '',
   },
-}
+} as any
 
 export const useUserStore = create<State & Action>(set => ({
   accessToken: '',
@@ -126,7 +126,6 @@ export const useUserStore = create<State & Action>(set => ({
     const userInfo = await request.post({}, {
       url: '/user/info',
     })
-    await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo.data))
 
     return set(state => ({
       ...state,
