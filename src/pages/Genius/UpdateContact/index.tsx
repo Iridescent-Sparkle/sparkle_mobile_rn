@@ -74,7 +74,17 @@ export default function GeniusUpdateContact() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
+    if (route.params.isEdit) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+          "address": "成都",
+          "phone": "18398527538",
+          "email": "2389504513@qq.com",
+        }
+      )
+    }
   }, [route.params.isEdit])
 
   return (

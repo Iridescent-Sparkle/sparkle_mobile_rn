@@ -19,7 +19,7 @@ export default function GeniusUpdateSalary() {
   const [loading, setLoading] = useState(false)
 
   const route = useRoute<{ key: any, name: any, params: { isEdit: string } }>()
-  
+
   const handleComfirmClick = async () => {
     const { close } = Toast.loading({
       forbidPress: true,
@@ -65,7 +65,7 @@ export default function GeniusUpdateSalary() {
       const { data: profileData } = await request.get({}, {
         url: '/genius/profile/user',
       })
-     
+
       form.setFieldsValue({
         minSalary: profileData.minSalary,
         maxSalary: profileData.maxSalary,
@@ -77,7 +77,16 @@ export default function GeniusUpdateSalary() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
+    if (route.params.isEdit) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+          minSalary: '8',
+          maxSalary: '15',
+        }
+      )
+    }
   }, [route.params.isEdit])
 
   return (
@@ -86,10 +95,10 @@ export default function GeniusUpdateSalary() {
         <ScrollView>
           <Form form={form}>
             <Form.Item name="minSalary" title="最低薪资 千元/月" rules={[{ required: true, message: '请输入最低薪资' }]}>
-              <Input placeholder='请输入最低薪资'/>
+              <Input placeholder='请输入最低薪资' />
             </Form.Item>
             <Form.Item name="maxSalary" title="最高薪资 千元/月" rules={[{ required: true, message: '请输入最高薪资' }]}>
-              <Input placeholder='请输入最高薪资'/>
+              <Input placeholder='请输入最高薪资' />
             </Form.Item>
           </Form>
         </ScrollView>

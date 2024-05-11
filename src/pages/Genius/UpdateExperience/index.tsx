@@ -96,7 +96,19 @@ export default function GeniusUpdateExperience() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
+    if (route.params.isEdit) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+          profession: "前端开发工程师",
+          companyName: "鱼泡网",
+          workTime: [new Date("2023-05-25T06:27:53.000Z"), new Date("2024-05-25T06:27:53.000Z")],
+          isWork: true,
+          description: "参与鱼泡网app，web端，h5，小程序的开发",
+        }
+      )
+    }
   }, [route.params.isEdit])
 
   return (

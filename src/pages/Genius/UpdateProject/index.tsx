@@ -95,7 +95,19 @@ export default function GeniusUpdateProject() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
+    if (route.params.isEdit) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+          projectName: "招聘app",
+          role: "前端，后端",
+          projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
+          website: "manage.iridescent.icu",
+          description: "完成招聘app从零到一开发到上线",
+        }
+      )
+    }
   }, [route.params.isEdit])
 
   return (

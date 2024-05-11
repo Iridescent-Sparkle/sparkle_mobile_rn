@@ -56,8 +56,8 @@ function ResumeListCard(props: Props) {
             <Visible visible={data.address}>
               <Tag type="ghost" color="#1976D2">{data.address}</Tag>
             </Visible>
-            <Visible visible={data.eduction?.[data.eduction?.length - 1]?.school}>
-              <Tag type="ghost" color="#1976D2">{data.eduction?.[data.eduction?.length - 1]?.school}</Tag>
+            <Visible visible={data.education?.[data.education?.length - 1]?.school}>
+              <Tag type="ghost" color="#1976D2">{data.education?.[data.education?.length - 1]?.school}</Tag>
             </Visible>
           </Space>
         </Space>

@@ -74,7 +74,15 @@ export default function GeniusUpdateSummary() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
+    if (route.params.isEdit) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+          summary: '拥有一年工作经验，擅长react、react native、Next和微信小程序的开发',
+        }
+      )
+    }
   }, [route.params.isEdit])
 
   return (

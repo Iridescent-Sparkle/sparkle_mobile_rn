@@ -44,7 +44,7 @@ export default function ResumeDetail() {
           url: `/genius/deliveries/query`,
         }),
       ])
-
+      console.log(JSON.stringify(resumeListData))
       setResumeList(resumeListData[0])
 
       setDeliverStatusData(deliverStatusData || {})

@@ -15,11 +15,11 @@ interface Props {
 function ResumeEducationCard(props: Props) {
   const { data } = props
   return (
-    <Visible visible={data.eduction?.length}>
+    <Visible visible={data.education?.length}>
       <View style={styles.container}>
         <ResumeCardHeader title="教育经历" />
         {
-          data.eduction?.map((item) => {
+          data.education?.map((item) => {
             const startTime = dayjs(item.startTime).format('YYYY-MM')
             const endTime = dayjs(item.endTime).format('YYYY-MM')
             const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`

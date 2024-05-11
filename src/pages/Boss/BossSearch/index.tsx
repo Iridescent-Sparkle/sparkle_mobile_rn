@@ -15,9 +15,11 @@ import { FlatList, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TabList from './components/TabList'
 
+const pageSize = 5
+
 export const useSearchHistory = () => {
   const [searchHistory, setSearchHistory] = useState<string[]>([])
-  
+
   const route = useRoute<{ key: any, name: any, params: { keyword: string } }>()
 
   const getSearchHistoryFromStorage = async () => {
@@ -89,6 +91,7 @@ export default function BossSearch() {
       if (!keyword?.trim()) {
         setJobList([])
         currentPage.current = 1
+
         return
       }
 
@@ -98,22 +101,22 @@ export default function BossSearch() {
 
       const { data: { data: jobListData, total } } = await request.post({
         current: currentPage.current,
-        pageSize: 10,
-        occupation: keyword,
-      }, { url: '/genius/profile/all' })
+        pageSize,
+        keyword: keyword,
+      }, { url: '/genius/profile/search' })
 
-      if (currentPage.current * 10 >= total) {
+      setJobList(jobListData)
+
+      if (currentPage.current * pageSize >= total) {
         setIsLoadEnd(true)
+        return
       } else {
         setIsLoadEnd(false)
       }
 
       currentPage.current += 1
-
-      setJobList(jobListData)
     }
     catch (error) {
-      console.log(error)
       Toast.fail({
         message: '网络错误',
         duration: 500,
@@ -134,12 +137,12 @@ export default function BossSearch() {
 
       const { data: { data: jobListData, total } } = await request.post({
         current: currentPage.current,
-        pageSize: 10,
-        occupation: keywordRef.current,
-      }, { url: '/genius/profile/all' })
+        pageSize,
+        keyword: keywordRef.current,
+      }, { url: '/genius/profile/search' })
 
-      setJobList(jobListData)
-      if (currentPage.current * 10 >= total) {
+      setJobList([...jobList,...jobListData])
+      if (currentPage.current * pageSize >= total) {
         setIsLoadEnd(true)
         return
       }
@@ -162,13 +165,15 @@ export default function BossSearch() {
   }, [route.params.keyword])
 
   const ListFooterComponent = () => {
-    if (isLoadEnd) {
-      return <Text style={{ textAlign: 'center' }}>没有更多了</Text>
-    }
+    if (isLoadEnd)
+      return <Text style={{ textAlign: 'center', color: themeColor.black65 }}>没有更多了</Text>
+
     if (loading) {
-      return <View style={{ height: pxToDp(100) }}>
-        <Loading vertical>加载中...</Loading>
-      </View>
+      return (
+        <View style={{ height: pxToDp(100), marginBottom: pxToDp(20) }}>
+          <Loading vertical size={pxToDp(40)}>加载中...</Loading>
+        </View>
+      )
     }
     return null
   }

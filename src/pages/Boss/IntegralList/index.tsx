@@ -1,3 +1,9 @@
+import { request } from '@/core/api'
+import Page from '@/core/components/Page'
+import { useRefState } from '@/core/hooks/useRefState'
+import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
+import { useUserStore } from '@/store/user'
 import { Button, Loading, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { Fragment, useCallback, useRef, useState } from 'react'
@@ -5,12 +11,8 @@ import { FlatList, Text, View } from 'react-native'
 import type { barDataItem, pieDataItem } from 'react-native-gifted-charts'
 import { BarChart, PieChart } from 'react-native-gifted-charts'
 import ConsumeListCard from './components/ConsumeListCard'
-import { themeColor } from '@/core/styleSheet/themeColor'
-import { create, pxToDp } from '@/core/styleSheet'
-import { request } from '@/core/api'
-import { useUserStore } from '@/store/user'
-import Page from '@/core/components/Page'
-import { useRefState } from '@/core/hooks/useRefState'
+
+const pageSize = 5
 
 export default function IntegralList() {
   const userStore = useUserStore()
@@ -33,10 +35,10 @@ export default function IntegralList() {
 
   const getInitData = async () => {
     try {
-      const [{ data: consumeListData }, { data: pieData }, { data: barData }] = await Promise.all([
+      const [{ data: { data: consumeListData, total } }, { data: pieData }, { data: barData }] = await Promise.all([
         request.post({
-          current: currentPage.current,
-          pageSize: 5,
+          current: 1,
+          pageSize,
         }, {
           url: `/boss/consume/user`,
         }),
@@ -47,16 +49,30 @@ export default function IntegralList() {
           url: `/boss/consume/usage/days`,
         }),
       ])
-      currentPage.current += 1
+
       setConsumeList(consumeListData)
       const formatPieData = pieData.map((item: any) => ({ value: Number(item.totalIntegral), color: PIE_DATA_MAP[item.type].color, text: PIE_DATA_MAP[item.type].label }))
       setPieData(formatPieData)
       setBarData(barData.map((item: any) => ({ ...item, frontColor: '#177AD5' })))
       setSelectPie(formatPieData[0])
+      if (pageSize >= total) {
+        setIsLoadEnd(true)
+        return
+      }
+      setIsLoadEnd(false)
+      currentPage.current = 2
     }
     catch (error) {
 
     }
+  }
+
+  useFocusEffect(useCallback(() => {
+    getInitData()
+  }, []))
+
+  const handleRechargeClick = () => {
+    navigation.dispatch(StackActions.replace('RechargeIntegral'))
   }
 
   const onReachBottom = async () => {
@@ -69,14 +85,14 @@ export default function IntegralList() {
 
       const { data: { data: consumeListData, total } } = await request.post({
         current: currentPage.current,
-        pageSize: 5,
+        pageSize,
       }, {
         url: `/boss/consume/user`,
       })
 
       setConsumeList([...consumeList, ...consumeListData])
 
-      if (currentPage.current * 5 >= total) {
+      if (currentPage.current * pageSize >= total) {
         setIsLoadEnd(true)
         return
       }
@@ -95,12 +111,6 @@ export default function IntegralList() {
     }
   }
 
-  useFocusEffect(useCallback(() => {
-    getInitData()
-  }, []))
-  const handleRechargeClick = () => {
-    navigation.dispatch(StackActions.replace('RechargeIntegral'))
-  }
   const ListFooterComponent = () => {
     if (isLoadEnd) {
       return <Text style={{ textAlign: 'center', color: themeColor.black65 }}>没有更多了</Text>
@@ -112,6 +122,7 @@ export default function IntegralList() {
     }
     return null
   }
+
   const PIE_DATA_MAP = {
     publish: { color: '#006DFF', label: '发布职位' },
     chat: { color: '#79D2DE', label: '发起聊天' },

@@ -94,7 +94,18 @@ export default function GeniusUpdateVolunteer() {
   }
 
   useEffect(() => {
-    route.params.isEdit && getInitData()
+    if (route.params.isEdit) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+          activityName: "三下乡",
+          role: "队长",
+          activityTime: [new Date("2021-05-01T07:23:40.000Z"), new Date("2021-08-31T07:23:40.000Z")],
+          description: "参观成都博物馆",
+        }
+      )
+    }
   }, [route.params.isEdit])
 
   return (

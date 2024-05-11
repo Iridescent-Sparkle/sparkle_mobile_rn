@@ -45,7 +45,7 @@ const initUserInfo = {
     isDelete: false,
     createTime: '',
     updateTime: '',
-    eduction: [],
+    education: [],
     experience: [],
     project: [],
     volunteer: [],

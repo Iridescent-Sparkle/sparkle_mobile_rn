@@ -87,7 +87,7 @@ interface UserProfileList {
   createTime: string
   updateTime: string
   user: User
-  eduction: Eduction[]
+  education: Eduction[]
   project: Project[]
   volunteer: Volunteer[]
   experience: Experience[]
@@ -293,7 +293,7 @@ interface Profile {
   isDelete: boolean
   createTime: string
   updateTime: string
-  eduction: any[]
+  education: any[]
   experience: any[]
   project: any[]
   volunteer: any[]

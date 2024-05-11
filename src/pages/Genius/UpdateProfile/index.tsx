@@ -68,7 +68,7 @@ export default function GeniusUpdateProfile() {
       form.setFieldsValue({
         avatar: userStore.userInfo.avatar,
         nickname: userStore.userInfo.nickname,
-        occupation: userStore.userInfo.occupation,
+        occupation: userStore.userInfo.occupation||'前端开发工程师',
       })
     }
     catch (error) {
@@ -81,7 +81,7 @@ export default function GeniusUpdateProfile() {
   }, [])
 
   return (
-    <Page isScrollView={false} title='修改个人信息'>
+    <Page isScrollView={false} title='个人信息'>
       <View style={styles.container}>
         <ScrollView>
           <Form form={form}>
