@@ -1,6 +1,6 @@
-import { Button } from '@fruits-chain/react-native-xiaoshu'
+import { Button, Loading, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
-import React, { useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import type { barDataItem, pieDataItem } from 'react-native-gifted-charts'
 import { BarChart, PieChart } from 'react-native-gifted-charts'
@@ -10,20 +10,34 @@ import { create, pxToDp } from '@/core/styleSheet'
 import { request } from '@/core/api'
 import { useUserStore } from '@/store/user'
 import Page from '@/core/components/Page'
-
+import { useRefState } from '@/core/hooks/useRefState'
 
 export default function IntegralList() {
   const userStore = useUserStore()
+
   const navigation = useNavigation()
+
   const [consumeList, setConsumeList] = useState([] as IntegralRecord[])
 
   const [pieData, setPieData] = useState([] as pieDataItem[])
+
   const [barData, setBarData] = useState([] as barDataItem[])
+
   const [selectPie, setSelectPie] = useState({})
+
+  const [loading, setLoading, getLoading] = useRefState(false)
+
+  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(false)
+
+  const currentPage = useRef(1)
+
   const getInitData = async () => {
     try {
       const [{ data: consumeListData }, { data: pieData }, { data: barData }] = await Promise.all([
-        request.post({}, {
+        request.post({
+          current: currentPage.current,
+          pageSize: 5,
+        }, {
           url: `/boss/consume/user`,
         }),
         request.post({}, {
@@ -33,6 +47,7 @@ export default function IntegralList() {
           url: `/boss/consume/usage/days`,
         }),
       ])
+      currentPage.current += 1
       setConsumeList(consumeListData)
       const formatPieData = pieData.map((item: any) => ({ value: Number(item.totalIntegral), color: PIE_DATA_MAP[item.type].color, text: PIE_DATA_MAP[item.type].label }))
       setPieData(formatPieData)
@@ -44,17 +59,65 @@ export default function IntegralList() {
     }
   }
 
+  const onReachBottom = async () => {
+    if (getLoading() || getIsLoaded()) {
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const { data: { data: consumeListData, total } } = await request.post({
+        current: currentPage.current,
+        pageSize: 5,
+      }, {
+        url: `/boss/consume/user`,
+      })
+
+      setConsumeList([...consumeList, ...consumeListData])
+
+      if (currentPage.current * 5 >= total) {
+        setIsLoadEnd(true)
+        return
+      }
+      setIsLoadEnd(false)
+      currentPage.current += 1
+    }
+    catch (error) {
+      Toast.fail({
+        message: '网络错误',
+        duration: 500,
+      })
+    }
+    finally {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      setLoading(false)
+    }
+  }
+
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
   const handleRechargeClick = () => {
     navigation.dispatch(StackActions.replace('RechargeIntegral'))
   }
-
+  const ListFooterComponent = () => {
+    if (isLoadEnd) {
+      return <Text style={{ textAlign: 'center', color: themeColor.black65 }}>没有更多了</Text>
+    }
+    if (loading) {
+      return <View style={{ height: pxToDp(100), marginBottom: pxToDp(20) }}>
+        <Loading vertical size={pxToDp(40)}>加载中...</Loading>
+      </View>
+    }
+    return null
+  }
   const PIE_DATA_MAP = {
     publish: { color: '#006DFF', label: '发布职位' },
     chat: { color: '#79D2DE', label: '发起聊天' },
     recharge: { color: '#ED6665', label: '充值积分' },
+    refund: { color: '#dfef4e', label: '退款积分' },
+
   } as Record<string, any>
 
   const pieTotal = pieData.reduce((acc, cur) => acc + cur.value, 0)
@@ -72,13 +135,16 @@ export default function IntegralList() {
       />
     )
   }
+
   const renderLegendComponent = () => {
     return (
-      <>
+      <Fragment>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
             marginBottom: 10,
           }}
         >
@@ -87,7 +153,6 @@ export default function IntegralList() {
               flexDirection: 'row',
               alignItems: 'center',
               width: 120,
-              marginRight: 20,
             }}
           >
             {renderDot('#006DFF')}
@@ -100,20 +165,31 @@ export default function IntegralList() {
             <Text style={{ color: themeColor.black85 }}>发起聊天</Text>
           </View>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', }}>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               width: 120,
-              marginRight: 20,
             }}
           >
             {renderDot('#ED6665')}
             <Text style={{ color: themeColor.black85 }}>充值积分</Text>
           </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 120,
+              }}
+            >
+              {renderDot('#dfef4e')}
+              <Text style={{ color: themeColor.black85 }}>退款积分</Text>
+            </View>
+          </View>
         </View>
-      </>
+      </Fragment>
     )
   }
   return (
@@ -121,7 +197,7 @@ export default function IntegralList() {
       <FlatList
         style={styles.container}
         ListHeaderComponent={(
-          <>
+          <Fragment>
             {/* 标题 */}
             <View style={styles.header}>
               <View>
@@ -136,7 +212,7 @@ export default function IntegralList() {
             {
               pieData && (
                 <View style={styles.pieWrapper}>
-                  <Text style={styles.title}>积分使用分布情况</Text>
+                  <Text style={styles.title}>积分记录分布情况</Text>
                   <PieChart
                     data={pieData}
                     textColor="black"
@@ -151,7 +227,7 @@ export default function IntegralList() {
                           <Text
                             style={{ fontSize: 22, color: themeColor.black85, fontWeight: 'bold' }}
                           >
-                            {`${Number(selectPie.value) / Number(pieTotal) * 100}%`}
+                            {`${Math.floor(Number(selectPie.value) / Number(pieTotal) * 100)}%`}
                           </Text>
                           <Text style={{ fontSize: 14, color: themeColor.black85 }}>{selectPie.text}</Text>
                         </View>
@@ -185,19 +261,21 @@ export default function IntegralList() {
                 </View>
               )
             }
-          </>
+          </Fragment>
         )}
         data={consumeList}
         renderItem={item => (
           <ConsumeListCard data={item.item}></ConsumeListCard>
         )}
+        onEndReached={onReachBottom}
+        ListFooterComponent={ListFooterComponent}
       />
     </Page>
   )
 }
 
 const styles = create({
-  page:{
+  page: {
     paddingHorizontal: 0,
     backgroundColor: '#F5F6FA',
   },

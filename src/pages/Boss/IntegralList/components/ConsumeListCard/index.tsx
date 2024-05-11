@@ -21,11 +21,11 @@ const DESC_MAP = {
   },
   recharge: {
     title: '充值积分',
-    icon: <Entypo name="rocket" size={pxToDp(36)} color={themeColor.primary} />,
+    icon: <AntDesign name="rocket1" size={pxToDp(36)} color={themeColor.primary} />,
   },
   refund: {
     title: '退款',
-    icon: <MaterialIcons name="currency-yuan" size={pxToDp(36)} color={themeColor.primary} />,
+    icon: <AntDesign name="pay-circle-o1" size={pxToDp(36)} color={themeColor.primary} />,
   },
 }
 export default function ConsumeListCard(props: Props) {
@@ -58,7 +58,6 @@ const styles = create({
     paddingHorizontal: 32,
     width: '100%',
     height: 120,
-    // borderRadius: 16,
     backgroundColor: '#fff',
   },
   left: {
