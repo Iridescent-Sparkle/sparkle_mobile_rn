@@ -5,11 +5,12 @@ import { FlatList, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import RecruitListHeader from '../Home/components/RecruitJobHeader'
 import { create } from '@/core/styleSheet'
-import { request } from '@/core/api'
 import RecruitJobCard from '@/core/components/RecruitJobCard'
+import { request } from '@/core/api'
 
 export default function GeniusDeliver() {
   const insets = useSafeAreaInsets()
+
   const [jobList, setJobList] = useState([] as JobDetail[])
 
   const getInitData = async () => {
@@ -27,6 +28,7 @@ export default function GeniusDeliver() {
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <RecruitListHeader title="我的投递" />

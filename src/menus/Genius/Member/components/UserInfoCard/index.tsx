@@ -69,10 +69,13 @@ const styles = create({
     color: themeColor.black65,
   },
   button: {
-    justifyContent: 'center',
-    alignItems: 'center',
     width: 80,
     height: 80,
+    borderRadius: 40,
+    borderWidth: 4,
+    borderColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

@@ -17,6 +17,7 @@ interface Props {
 
 function RecruitJobCard(props: Props) {
   const { type, data } = props
+
   const navigation = useNavigation()
 
   const handleEditJob = () => {
@@ -34,7 +35,7 @@ function RecruitJobCard(props: Props) {
   const handleManageJob = () => {
     navigation.dispatch(StackActions.push('JobDetail', {
       jobId: data.id,
-      type: 'manage',
+      type,
     }))
   }
 
@@ -45,7 +46,7 @@ function RecruitJobCard(props: Props) {
           <FastImage
             style={styles.logo}
             source={{
-              uri: data.company.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
+              uri: data.company?.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
             }}
           />
           <Space gap={pxToDp(20)}>

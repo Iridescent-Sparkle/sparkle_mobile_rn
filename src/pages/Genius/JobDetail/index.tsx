@@ -14,6 +14,9 @@ import RecruitTagCard from '@/pages/Boss/RecruitDetail/RecruitTagsCard'
 import RecruitSummaryCard from '@/pages/Boss/RecruitDetail/RecruitSummaryCard'
 import RecruitAboutCard from '@/pages/Boss/RecruitDetail/RecruitAboutCard'
 import RecruitDetailCard from '@/pages/Boss/RecruitDetail/RecruitDetailCard'
+import CollectButton from './components/CollectButton'
+import Visible from '@/core/components/Visible'
+import { useUserStore } from '../../../store/user/index';
 
 const TAB_DATA = [{
   id: '1',
@@ -36,7 +39,7 @@ function JobDetail() {
   const insets = useSafeAreaInsets()
 
   const navigation = useNavigation()
-
+  const userStore = useUserStore()
   const route = useRoute<{ key: any, name: any, params: { jobId: string, type: string } }>()
 
   const jobStore = useJobStore()
@@ -170,9 +173,9 @@ function JobDetail() {
       Toast.fail('关闭失败')
     }
   }
+ 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom || 16 }]}>
-
       {
         loading
           ? (
@@ -196,15 +199,14 @@ function JobDetail() {
               </View>
               <Card>
                 <View style={styles.buttonWrapper}>
-                  {
-
-                    route.params.type === 'manage'
-                      ? (
-                        <Button style={styles.dangerButton} onPress={handlePopupCloseJobShow}>
-                          关闭职位
-                        </Button>
-                      )
-                      : jobDetail.jobDeliverStatus === 0
+                  <Visible visible={route.params.type === 'manage' || jobDetail.userId === userStore.userInfo.id}>
+                    <Button style={styles.dangerButton} onPress={handlePopupCloseJobShow}>
+                      关闭职位
+                    </Button>
+                  </Visible>
+                  <Visible visible={route.params.type !== 'manage' && jobDetail.userId !== userStore.userInfo.id}>
+                    {
+                      jobDetail.jobDeliverStatus === 0
                         ? (
                           <Button style={styles.button} onPress={handlePopupShow}>
                             投递
@@ -215,7 +217,8 @@ function JobDetail() {
                             <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].color }}>{JOB_DELIVER_STATUS[jobDetail.jobDeliverStatus].label}</Text>
                           </View>
                         )
-                  }
+                    }
+                  </Visible>
                 </View>
               </Card>
             </Fragment>

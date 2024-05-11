@@ -14,6 +14,8 @@ import { FlatList, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
+const pageSize = 5
+
 export default function SearchResult() {
   const navigation = useNavigation()
 
@@ -54,14 +56,14 @@ export default function SearchResult() {
       searchRef.current?.setValue(keyword)
       const { data: { data: jobListData, total } } = await request.post({
         current: currentPage.current,
-        pageSize: 10,
+        pageSize,
         jobName: keyword,
         ...filterValues || {},
       }, { url: '/boss/job/all' })
 
       setTotal(total)
 
-      if (currentPage.current * 10 >= total) {
+      if (currentPage.current * pageSize >= total) {
         setIsLoadEnd(true)
       } else {
         setIsLoadEnd(false)
@@ -92,14 +94,14 @@ export default function SearchResult() {
 
       const { data: { data: jobListData, total } } = await request.post({
         current: currentPage.current,
-        pageSize: 10,
+        pageSize,
         jobName: keywordRef.current,
         ...filterValues || {},
       }, { url: '/boss/job/all' })
 
       setTotal(total)
       setJobList(jobListData)
-      if (currentPage.current * 10 >= total) {
+      if (currentPage.current * pageSize >= total) {
         setIsLoadEnd(true)
         return
       }

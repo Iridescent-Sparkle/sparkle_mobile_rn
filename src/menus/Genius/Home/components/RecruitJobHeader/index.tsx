@@ -1,10 +1,12 @@
 import { Space } from '@fruits-chain/react-native-xiaoshu'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import { default as React } from 'react'
+import { Pressable, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import React from 'react'
-import { Text, View } from 'react-native'
-import { create } from '@/core/styleSheet'
-import { IMAGE_PREFIX } from '@/core/constants'
+import Feather from 'react-native-vector-icons/Feather'
 import { themeColor } from '@/core/styleSheet/themeColor'
+import { create, pxToDp } from '@/core/styleSheet'
+import { IMAGE_PREFIX } from '@/core/constants'
 
 interface Props {
   title: string
@@ -12,6 +14,12 @@ interface Props {
 
 function RecruitListHeader(props: Props) {
   const { title } = props
+
+  const navigation = useNavigation()
+
+  const handleSettingClick = () => {
+    navigation.dispatch(StackActions.push('Setting'))
+  }
   return (
     <View style={styles.container}>
       <Space direction="horizontal">
@@ -20,9 +28,9 @@ function RecruitListHeader(props: Props) {
           {title}
         </Text>
       </Space>
-      {/* <View style={styles.button}>
-        <Feather name="bell" size={pxToDp(48)} color="black" />
-      </View> */}
+      <Pressable style={styles.button} onPress={handleSettingClick}>
+        <Feather name="settings" size={pxToDp(46)} color={themeColor.black85} />
+      </Pressable>
     </View>
   )
 }

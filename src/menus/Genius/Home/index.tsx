@@ -1,15 +1,18 @@
-import { Loading, Tabs, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { request } from '@/core/api'
+import { useRefState } from '@/core/hooks/useRefState'
+import { create, pxToDp } from '@/core/styleSheet'
+import { themeColor } from '@/core/styleSheet/themeColor'
+import { useJobStore } from '@/store/job'
+import { Empty, Loading, Tabs, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import { useEffect, useRef, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import RecruitSearchBar from '../../../core/components/SearchBar'
 import RecruitListCard from '../../../core/components/RecruitListCard'
+import RecruitSearchBar from '../../../core/components/SearchBar'
 import UserCard from './components/RecruitUserCard'
-import { useJobStore } from '@/store/job'
-import { themeColor } from '@/core/styleSheet/themeColor'
-import { create, pxToDp } from '@/core/styleSheet'
-import { request } from '@/core/api'
+
+const pageSize = 5
 
 export default function GeniusHome() {
   const insets = useSafeAreaInsets()
@@ -20,15 +23,15 @@ export default function GeniusHome() {
 
   const [jobList, setJobList] = useState([] as any)
 
-  const [loading, setLoading] = useState(true)
-
   const [refreshing, setRefreshing] = useState(false)
 
   const [activeTab, setActiveTab] = useState('1')
 
-  const currentPage = useRef(1)
+  const [loading, setLoading, getLoading] = useRefState(false)
 
-  const total = useRef(0)
+  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(false)
+
+  const currentPage = useRef(1)
 
   const getInitData = async () => {
     try {
@@ -36,10 +39,19 @@ export default function GeniusHome() {
 
       const { data: { data: jobListData, total } } = await request.post({
         categoryId: 1,
-        pageSize: 4,
+        pageSize,
+        current: 1,
       }, { url: '/boss/category/job' })
-      total.current = total
+
       setJobList(jobListData)
+
+      if (pageSize >= total) {
+        setIsLoadEnd(true)
+        return
+      }
+
+      setIsLoadEnd(false)
+      currentPage.current = 2
     }
     catch (error) {
       Toast.fail({
@@ -55,45 +67,25 @@ export default function GeniusHome() {
   const onTabChange = async (tab: string) => {
     setActiveTab(tab)
     currentPage.current = 1
-    total.current = 0
+
     try {
       setLoading(true)
-
+      setRefreshing(true)
       const { data: { data: jobListData, total } } = await request.post({
         categoryId: tab,
-        pageSize: 4,
+        pageSize,
         current: currentPage.current,
       }, {
         url: '/boss/category/job',
       })
-      total.current = total
-
       setJobList(jobListData)
-    }
-    catch (error) {
-      Toast.fail({
-        message: '网络错误',
-        duration: 500,
-      })
-    }
-    finally {
-      setLoading(false)
-    }
-  }
 
-  const onPageChange = async (tab: string) => {
-    try {
-      currentPage.current += 1
-      if (currentPage.current * 3 < total.current) {
-        const { data: { data: jobListData, total } } = await request.post({
-          categoryId: tab,
-          pageSize: currentPage.current,
-          current: currentPage.current,
-        }, {
-          url: '/boss/category/job',
-        })
-        total.current = total
-        setJobList([...jobList, ...jobListData])
+      if (pageSize >= total) {
+        setIsLoadEnd(true)
+
+      } else {
+        setIsLoadEnd(false)
+        currentPage.current = 2
       }
     }
     catch (error) {
@@ -102,12 +94,55 @@ export default function GeniusHome() {
         duration: 500,
       })
     }
+    finally {
+      setRefreshing(false)
+      setLoading(false)
+    }
   }
 
-  const handleTabChange = (tab: string) => {
-    onTabChange && onTabChange(tab)
+  const onReachBottom = async (tab: string) => {
+    try {
+      if (getLoading() || getIsLoaded()) {
+        return
+      }
+      const { data: { data: jobListData, total } } = await request.post({
+        categoryId: tab,
+        pageSize,
+        current: currentPage.current,
+      }, {
+        url: '/boss/category/job',
+      })
+
+      setJobList([...jobList, ...jobListData])
+
+      if (currentPage.current * pageSize >= total) {
+        setIsLoadEnd(true)
+        return
+      }
+      setIsLoadEnd(false)
+      currentPage.current += 1
+    }
+    catch (error) {
+      Toast.fail({
+        message: '网络错误',
+        duration: 500,
+      })
+    }
   }
 
+  const ListFooterComponent = () => {
+    if (isLoadEnd)
+      return <Text style={{ textAlign: 'center', color: themeColor.black65 }}>没有更多了</Text>
+
+    if (loading) {
+      return (
+        <View style={{ height: pxToDp(100), marginBottom: pxToDp(20) }}>
+          <Loading vertical size={pxToDp(40)}>加载中...</Loading>
+        </View>
+      )
+    }
+    return null
+  }
   useEffect(() => {
     getInitData()
   }, [])
@@ -117,28 +152,28 @@ export default function GeniusHome() {
       keyword: value,
     }))
   }
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <UserCard />
       <RecruitSearchBar onSearch={onSearch} />
-      <Tabs activeKey={activeTab} indicatorHeight={0} tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={handleTabChange}>
+      <Tabs activeKey={activeTab} indicatorHeight={0} tabBarStyle={styles.tabBar} tabAlign="left" indicatorColor={themeColor.primary} indicatorWidth={pxToDp(64)} activeTextColor={themeColor.primary} onChange={onTabChange}>
         {
-           jobStore.jobCategoryOptions.map(category => (
-             <Tabs.TabPane key={String(category?.value)} tab={category?.label}>
-               <FlatList
-                 data={jobList}
-                 onEndReachedThreshold={0.2}
-                 onEndReached={() => onPageChange(String(category?.value))}
-                 refreshing={refreshing}
-                 onRefresh={() => setRefreshing(true)}
-                 ListFooterComponent={() => {
-                   return loading ? <View style={styles.loading}><Loading size={pxToDp(56)} /></View> : null
-                 }}
-                 renderItem={jobDetail => <RecruitListCard data={jobDetail.item} />}
-                 keyExtractor={jobDetail => String(jobDetail.id)}
-               />
-             </Tabs.TabPane>
-           ))
+          jobStore.jobCategoryOptions.map(category => (
+            <Tabs.TabPane key={String(category?.value)} tab={category?.label}>
+              <FlatList
+                data={jobList}
+                onEndReachedThreshold={0.2}
+                onEndReached={() => onReachBottom(String(category?.value))}
+                refreshing={refreshing}
+                onRefresh={() => onTabChange(String(category?.value))}
+                ListFooterComponent={ListFooterComponent}
+                renderItem={jobDetail => <RecruitListCard data={jobDetail.item} />}
+                keyExtractor={jobDetail => String(jobDetail.id)}
+                ListEmptyComponent={<View style={styles.empty}><Empty /></View>}
+              />
+            </Tabs.TabPane>
+          ))
         }
       </Tabs>
 
@@ -165,5 +200,10 @@ const styles = create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 32,
+  },
+  empty: {
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

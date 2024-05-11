@@ -39,12 +39,12 @@ export default function ResumeDetail() {
           url: `/genius/profile/all`,
         }),
         request.post({
-          id: route.params.deliverId,
+          deliverId: route.params.deliverId,
         }, {
           url: `/genius/deliveries/query`,
         }),
       ])
-      console.log(JSON.stringify(resumeListData))
+      console.log(route.params.deliverId, deliverStatusData)
       setResumeList(resumeListData[0])
 
       setDeliverStatusData(deliverStatusData || {})
@@ -127,6 +127,7 @@ export default function ResumeDetail() {
   const handleUnbefittingClick = async () => {
     try {
       setConfirmLoading(true)
+
       await request.post({
         deliverId: route.params.deliverId,
         status: 4,
@@ -136,7 +137,7 @@ export default function ResumeDetail() {
       await getInitData()
     }
     catch (error) {
-
+      console.log(error)
     }
     finally {
       setConfirmLoading(false)
@@ -221,9 +222,8 @@ const styles = create({
   },
   popupWrapper: {
     flexDirection: 'row',
-    paddingHorizontal: 40,
     justifyContent: 'space-between',
-    paddingBottom: 40,
+    paddingVertical: 20,
   },
   popupButton: {
     width: 320,

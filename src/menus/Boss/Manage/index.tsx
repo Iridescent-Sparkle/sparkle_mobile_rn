@@ -27,6 +27,7 @@ export default function BossManage() {
 
     }
   }
+  
   useFocusEffect(useCallback(() => {
     getInitData()
   }, []))
