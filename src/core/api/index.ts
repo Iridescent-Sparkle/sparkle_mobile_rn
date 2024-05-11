@@ -4,10 +4,10 @@ import type { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults } from 'axi
 import axios from 'axios'
 import { useUserStore } from '@/store/user'
 
-const baseUrl = 'http://10.254.0.148:3000'
-// baseURL: 'http://192.168.1.5:3000',
-// baseURL: 'https://api.iridescent.icu',
-// baseURL: 'http://101.42.153.172:3000',
+const BASE_URL = {
+  development: 'http://192.168.1.3:3000',
+  production: 'https://iridescent.icu',
+}[process?.env?.NODE_ENV ?? 'development']
 
 interface CustomConfig {
   showMsg?: boolean
@@ -21,8 +21,8 @@ let refreshing = false
 const queue: PendingTask[] = []
 async function refreshToken() {
   const refreshToken = await AsyncStorage.getItem('refreshToken')
-  console.log('refresh', `${baseUrl}/user/refresh`)
-  const { data } = await axios.get(`${baseUrl}/user/refresh`, {
+  console.log('refresh', `${BASE_URL}/user/refresh`)
+  const { data } = await axios.get(`${BASE_URL}/user/refresh`, {
     params: {
       refreshToken,
     },
@@ -50,7 +50,7 @@ export class Request {
       return response
     }, async (error) => {
       const { data, config } = error.response
-
+      console.log(data)
       if (refreshing) {
         return new Promise((resolve) => {
           queue.push({
@@ -150,7 +150,7 @@ export class Request {
 }
 
 export const request = new Request({
-  baseURL: baseUrl,
+  baseURL: BASE_URL,
   httpsAgent: {
     rejectUnauthorized: false,
   },

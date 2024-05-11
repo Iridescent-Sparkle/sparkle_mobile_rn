@@ -9,6 +9,7 @@ import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
 import Visible from '@/core/components/Visible'
 import CollectButton from '@/pages/Genius/JobDetail/components/CollectButton'
+import { useJobStore } from '@/store/job'
 
 interface Props {
   data: JobDetail
@@ -17,7 +18,7 @@ interface Props {
 
 function RecruitListCard(props: Props) {
   const { data, handleCollectClick } = props
-
+  const jobStore = useJobStore()
   const navigation = useNavigation()
 
   const handleCardClick = () => {
@@ -34,12 +35,12 @@ function RecruitListCard(props: Props) {
             <FastImage
               style={styles.logo}
               source={{
-                uri: data.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
+                uri: data.company?.companyAvatar || `${IMAGE_PREFIX}/stars.png`,
               }}
             />
             <Space gap={pxToDp(20)}>
               <Text style={styles.title}>{data.jobName}</Text>
-              <Text style={styles.company}>{data.companyName || ''}</Text>
+              <Text style={styles.company}>{data.company?.companyName || ''}</Text>
             </Space>
           </Space>
           <Visible visible={handleCollectClick}>
@@ -55,12 +56,8 @@ function RecruitListCard(props: Props) {
             k
           </Text>
           <Space direction="horizontal">
-            {data.isFullTime
-              ? <Tag type="ghost" color="#979797">全职</Tag>
-              : <Tag type="ghost" color="#979797">兼职</Tag>}
-            {data.isOnsite
-              ? <Tag type="ghost" color="#979797">远程</Tag>
-              : <Tag type="ghost" color="#979797">线下办公</Tag>}
+            <Tag type="ghost" color="#979797">{jobStore.jobExperienceOptions?.find(item => item.value === data.jobExperienceId)?.label}</Tag>
+            <Tag type="ghost" color="#979797">{jobStore.jobEducationOptions?.find(item => item.value === data.jobEducationId)?.label}</Tag>
           </Space>
         </Space>
       </Card>

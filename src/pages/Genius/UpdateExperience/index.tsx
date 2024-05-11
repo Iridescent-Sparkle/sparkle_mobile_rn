@@ -102,10 +102,10 @@ export default function GeniusUpdateExperience() {
       form.setFieldsValue(
         {
           profession: "前端开发工程师",
-          companyName: "鱼泡网",
+          companyName: "成都鱼泡科技有限公司",
           workTime: [new Date("2023-05-25T06:27:53.000Z"), new Date("2024-05-25T06:27:53.000Z")],
           isWork: true,
-          description: "参与鱼泡网app，web端，h5，小程序的开发",
+          description: "1、与产品、UI  和后端工程师配合，使用 React和 Antd  进行后台管理系统和 CRM  系统的搭建 2、与原生 App  团队配合，使用 React Native  进行鱼泡网 App  的业务迭代 3、使用微信小程序开发框架，开发和维护鱼泡网小程序 4、使用 Next.js  和 Umi  对鱼泡 PC  官网和H5进行业务迭代和维护 5、参与团队建设，积极与各部门同事交流学习，并进行技术分享",
         }
       )
     }

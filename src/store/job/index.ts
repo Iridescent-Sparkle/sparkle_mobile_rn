@@ -49,7 +49,9 @@ export const useJobStore = create<State & Action>(set => ({
   getJobOptions: async () => {
     try {
       const [jobBonusOptions, jobExperienceOptions, jobEducationOptions, jobLevelOptions, jobCategoryOptions] = await Promise.all([
-        request.post({}, {
+        request.post({
+          pageSize: 100,
+        }, {
           url: '/boss/bonus/all',
         }),
         request.post({}, {
@@ -61,7 +63,9 @@ export const useJobStore = create<State & Action>(set => ({
         request.post({}, {
           url: '/boss/level/all',
         }),
-        request.post({}, {
+        request.post({
+          pageSize: 100,
+        }, {
           url: '/boss/category/all',
         }),
       ])

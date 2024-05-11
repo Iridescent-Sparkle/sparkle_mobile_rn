@@ -31,7 +31,7 @@ export default function PublishJob() {
         userStore.getUserInfo()
 
         const { data: jobDetail }: { data: JobDetail } = await request.get({}, { url: `boss/job/${route.params.jobId}` })
-        console.log(jobDetail)
+
         form.setFieldsValue({
           jobName: jobDetail.jobName,
           salary: [parseInt(jobDetail.minSalary, 10), parseInt(jobDetail.maxSalary, 10)],
@@ -49,19 +49,34 @@ export default function PublishJob() {
         })
       }
       else {
+        // form.setFieldsValue({
+        //   jobName: '前端开发工程师',
+        //   salary: [15, 20],
+        //   isFullTime: true,
+        //   isOnsite: false,
+        //   jobExperienceId: 3,
+        //   jobEducationId: 5,
+        //   jobLevelId: 3,
+        //   jobCategoryId: 2,
+        //   jobDescription: '1、负责产品web页面、小程序、RN的前端代码设计、编写与开发 2、与pm、产品及运营人员沟通，保证产品的质量和开发进度 3、负责优化相关的产品的质量、性能、用户体验 4、负责前端基础设施建设，业务组件、工程化设施等',
+        //   jobRequirements: '1、JS基础扎实，熟悉typescript超集，还有语法规则ES6；  2、熟悉VUE、React等前端框架； 3、熟练使用Echart、Element UI、D3等组件，具备修改或自定义绘图组件的能力；  4、具备基本的架构设计能力； 5、具备前端性能优化能力；  6、熟悉Docker与K8S部署优先； 7、熟悉后端与Java基础优先； 8、具备一定项目管理能力者优先；  9.统招全日制本科及以上学历。',
+        //   address: '成都',
+        //   jobBonus: [3, 4, 9, 10, 11, 13, 14, 16, 17, 20],
+        //   headCount: '3',
+        // })
         form.setFieldsValue({
           jobName: '前端开发工程师',
-          salary: [1, 50],
+          salary: [15, 20],
           isFullTime: true,
           isOnsite: false,
-          jobExperienceId: 1,
-          jobEducationId: 1,
-          jobLevelId: 1,
-          jobCategoryId: 1,
-          jobDescription: '前端开发工程师',
-          jobRequirements: '前端开发工程师',
+          jobExperienceId: 4,
+          jobEducationId: 5,
+          jobLevelId: 4,
+          jobCategoryId: 2,
+          jobDescription: '1、负责产品web页面、小程序、RN的前端代码设计、编写与开发 2、与pm、产品及运营人员沟通，保证产品的质量和开发进度 3、负责优化相关的产品的质量、性能、用户体验 4、负责前端基础设施建设，业务组件、工程化设施等5、带领团队完成部分历史项目重构工作  6、编写高质量、可维护的代码，遵循团队编码规范 7、指导初级和中级前端工程师，参与技术分享，提升团队整体技术水平',
+          jobRequirements: '1、JS基础扎实，熟悉typescript超集，还有语法规则ES6；  2、熟悉VUE、React等前端框架； 3、熟练使用Echart、Element UI、D3等组件，具备修改或自定义绘图组件的能力；  4、具备基本的架构设计能力； 5、具备前端性能优化能力；  6、熟悉Docker与K8S部署优先； 7、熟悉后端与Java基础优先； 8、具备一定项目管理能力者优先；  9.统招全日制本科及以上学历。',
           address: '成都',
-          jobBonus: [9],
+          jobBonus: [3, 4, 9, 10, 11, 13, 14, 16, 17, 20],
           headCount: '2',
         })
       }
@@ -149,7 +164,7 @@ export default function PublishJob() {
             <Input placeholder="请输入职位名称" />
           </Form.Item>
           <Form.Item title="薪资" name="salary" rules={[{ required: true, message: '请输入薪资' }]}>
-            <Slider min={1} max={100}>
+            <Slider min={1} max={50}>
             </Slider>
           </Form.Item>
           <Form.Item title="是否全职" name="isFullTime" rules={[{ required: true, message: '请选择是否全职' }]}>

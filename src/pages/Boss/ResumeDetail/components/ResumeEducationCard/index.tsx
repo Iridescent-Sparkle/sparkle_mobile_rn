@@ -39,7 +39,7 @@ function ResumeEducationCard(props: Props) {
                       <Text style={styles.gpa}>
                         GPA:
                         {item.gpa}
-                        (5.0 满)
+                       /5.0
                       </Text>
                     </Space>
                   </Space>

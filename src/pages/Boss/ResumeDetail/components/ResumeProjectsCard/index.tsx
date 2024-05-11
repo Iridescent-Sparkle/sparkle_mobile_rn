@@ -35,7 +35,8 @@ function ResumeProjectsInfoCard(props: Props) {
     <Visible visible={data.project?.length}>
       <View style={styles.container}>
         <ResumeCardHeader title="项目经历" />
-        {
+        <View style={styles.wrapper}>
+          {
           data.project?.map((item) => {
             const startTime = dayjs(item.startTime).format('YYYY-MM')
             const endTime = dayjs(item.endTime).format('YYYY-MM')
@@ -69,6 +70,7 @@ function ResumeProjectsInfoCard(props: Props) {
             )
           })
         }
+        </View>
       </View>
     </Visible>
 
@@ -80,6 +82,9 @@ const styles = create({
     borderBottomWidth: 4,
     paddingBottom: 24,
     borderBottomColor: '#F2F2F2',
+  },
+  wrapper: {
+    gap: 24,
   },
   header: {
     flexDirection: 'row',

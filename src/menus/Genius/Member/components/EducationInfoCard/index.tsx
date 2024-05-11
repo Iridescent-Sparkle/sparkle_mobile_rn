@@ -48,7 +48,7 @@ function MemberEducationInfoCard(props: { data: UserEducation[], loading: boolea
                       <Text style={styles.gpa}>
                         绩点:
                         {item.gpa}
-                        (5.0 满)
+                        /5.0
                       </Text>
                     </Space>
                   </Space>

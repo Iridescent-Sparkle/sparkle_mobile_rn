@@ -23,16 +23,16 @@ const TAB_DATA = [{
   title: '工作描述',
 }, {
   id: '2',
-  title: '最低资格',
+  title: '工作要求',
 }, {
   id: '3',
   title: '福利',
 }, {
   id: '4',
-  title: '工作总结',
+  title: '其他信息',
 }, {
   id: '5',
-  title: '关于',
+  title: '关于公司',
 }]
 
 function JobDetail() {
@@ -69,8 +69,8 @@ function JobDetail() {
       },
       {
         id: '3',
-        title: '最低资格',
-        component: <RecruitDescriptionCard title="最低资格" data={jobDetail.jobRequirements.split(',')} />,
+        title: '工作要求',
+        component: <RecruitDescriptionCard title="工作要求" data={jobDetail.jobRequirements.split(',')} />,
       },
       {
         id: '4',
@@ -79,9 +79,9 @@ function JobDetail() {
       },
       {
         id: '5',
-        title: '工作总结',
+        title: '其他信息',
         component: <RecruitSummaryCard
-          title="工作总结"
+          title="其他信息"
           data={[
             { title: '经验', desc: jobStore.jobExperienceOptions.find(option => option.value === jobDetail.jobExperienceId)?.label || '' },
             { title: '教育', desc: jobStore.jobEducationOptions.find(option => option.value === jobDetail.jobEducationId)?.label || '' },
@@ -93,8 +93,8 @@ function JobDetail() {
       },
       {
         id: '6',
-        title: '关于',
-        component: <RecruitAboutCard title="关于" content={jobDetail.company.companyDesc} />,
+        title: '关于公司',
+        component: <RecruitAboutCard title="关于公司" content={jobDetail.company.companyDesc} />,
       },
     ]
   }
@@ -104,7 +104,7 @@ function JobDetail() {
       url: `/boss/job/${route.params.jobId}`,
     })
     setJobDetail(data)
-
+console.log(JSON.stringify(data))
     setTimeout(() => { setLoading(false) }, 300)
   }
 

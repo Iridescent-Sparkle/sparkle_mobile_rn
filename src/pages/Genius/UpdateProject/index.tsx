@@ -76,11 +76,13 @@ export default function GeniusUpdateProject() {
 
   const getInitData = async () => {
     try {
+      console.log(route.params.id)
       const { data: projectData } = await request.get({
         id: route.params.id,
       }, {
         url: '/genius/project/single',
       })
+  
       form.setFieldsValue({
         projectName: projectData.projectName,
         role: projectData.role,
@@ -90,6 +92,7 @@ export default function GeniusUpdateProject() {
       })
     }
     catch (error) {
+      console.log(error)
       Toast.fail('获取数据失败')
     }
   }
@@ -100,12 +103,19 @@ export default function GeniusUpdateProject() {
     } else {
       form.setFieldsValue(
         {
-          projectName: "招聘app",
-          role: "前端，后端",
+          projectName: "Pexels图片素材网站",
+          role: "前端开发",
           projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
-          website: "manage.iridescent.icu",
-          description: "完成招聘app从零到一开发到上线",
+          website: "https://github.com/Iridescent-cdu/pexels-club",
+          description: "提供免费的图片下载的素材网站，使用瀑布流展示图片列表，用户能够查看图片，下载图片素材，支持PC端和移动端,主要工作：利用Tailwind实现主题变更，编写自定义指令实现图片懒加载、 封装可复用的组件：如瀑布流组件，确认框组件、进行响应式处理，支持PC端和移动端，在路由切换时添加过渡动效、 集成第三方登录和支付宝支付功能，对接阿里云OSS对象存储",
         }
+        // {
+        //   projectName: "仿Jira项目管理系统",
+        //   role: "前端开发",
+        //   projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
+        //   website: "https://github.com/Iridescent-cdu/react-jira",
+        //   description: "基于React+Typescript的仿Jira项目管理系统，实现了登录注册、及项目列表和任务看板的添加、修改和删除功能主要工作：  使用URL查询参数同步状态，根据同步后的状态获取数据、使用React query并封装Hook实现任务列表乐观更新、实现拖拽排序任务列表并进行持久化、 封装Hook统一处理加载和错误状态，优化用户体验",
+        // }
       )
     }
   }, [route.params.isEdit])

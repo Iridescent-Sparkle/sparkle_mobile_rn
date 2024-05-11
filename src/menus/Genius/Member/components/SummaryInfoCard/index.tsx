@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-03-12 16:51:31
- * @Description: C端个人总结编辑卡片
+ * @Description: C端个人优势编辑卡片
  */
 import { Text } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -32,7 +32,7 @@ function MemberSummaryCard(props: Props) {
   }
 
   return (
-    <BaseCollapseCard title="个人总结" titleLeftExtra={<MaterialCommunityIcons name="file-document" size={pxToDp(32)} color={themeColor.primary} />} onAdd={onAdd} onEdit={onEdit} loading={loading} showContent={!!data.summary}>
+    <BaseCollapseCard title="个人优势" titleLeftExtra={<MaterialCommunityIcons name="file-document" size={pxToDp(32)} color={themeColor.primary} />} onAdd={onAdd} onEdit={onEdit} loading={loading} showContent={!!data.summary}>
       <Card>
         <Text style={styles.content}>
           {data.summary}

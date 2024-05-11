@@ -46,9 +46,9 @@ function MemberResumeCvCard(props: Props) {
                   <Space direction="horizontal" gap={pxToDp(32)}>
                     <AntDesign name="pdffile1" size={pxToDp(84)} color="#F75555" />
                     <Space gap={pxToDp(20)}>
-                      <Text style={styles.title}>{data.resume?.fileName}</Text>
+                      <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{data.resume?.fileName}</Text>
                       <Text style={styles.size}>
-                        {data.resume?.fileSize}
+                        {Math.floor(data.resume?.fileSize)}
                         KB
                       </Text>
                     </Space>
@@ -75,6 +75,7 @@ const styles = create({
     alignItems: 'center',
   },
   title: {
+    width: 400,
     fontSize: 32,
     fontWeight: '700',
     color: themeColor.black85,

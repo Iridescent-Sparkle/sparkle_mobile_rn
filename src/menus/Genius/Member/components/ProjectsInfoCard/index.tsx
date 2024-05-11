@@ -58,7 +58,7 @@ function MemberProjectsInfoCard(props: { data: UserProject[], loading: boolean }
           data.map((item) => {
             const startTime = dayjs(item.startTime).format('YYYY-MM')
             const endTime = dayjs(item.endTime).format('YYYY-MM')
-            const totalTime = dayjs(item.endTime).diff(item.startTime, 'year') >= 1 ? `${dayjs(item.endTime).diff(item.startTime, 'year')}年` : `${dayjs(item.endTime).diff(item.startTime, 'month') || 1}月`
+
             return (
               <Card key={item.id}>
                 <Space direction="horizontal" style={styles.header}>
@@ -69,7 +69,7 @@ function MemberProjectsInfoCard(props: { data: UserProject[], loading: boolean }
                     <Space gap={pxToDp(20)}>
                       <Text style={styles.title}>{item.projectName}</Text>
                       <Text style={styles.company}>{item.role}</Text>
-                      <Text style={styles.date}>{`${startTime} - ${endTime}（${totalTime}）`}</Text>
+                      <Text style={styles.date}>{`${startTime} - ${endTime}`}</Text>
                       <Visible visible={item.website}>
                         <Pressable style={styles.button} onPress={() => handleShowClick(item.website)}>
                           <Text style={styles.buttonText}>展示项目</Text>

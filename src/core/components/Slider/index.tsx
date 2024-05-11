@@ -15,7 +15,6 @@ function Slider(props: Props) {
 
   return (
     <A11ySlider
-
       onChange={onChange}
       labelStyle={styles.label}
       labelTextStyle={styles.labelText}
@@ -37,7 +36,8 @@ const styles = create({
   },
   label: {
     backgroundColor: themeColor.primary,
-    borderRadius: 8,
+    borderRadius: 20,
+    paddingHorizontal: 12,
 
   },
   labelText: {

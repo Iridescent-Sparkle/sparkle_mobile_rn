@@ -1,7 +1,6 @@
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { Space } from '@fruits-chain/react-native-xiaoshu'
 import { Text, View } from 'react-native'
-import { create, pxToDp } from '@/core/styleSheet'
+import { create } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
 
 interface Props {
@@ -18,7 +17,6 @@ function RecruitDescriptionCard(props: Props) {
       {
         data.map((text, index) => (
           <Space key={index} direction="horizontal" style={styles.desc}>
-            <FontAwesome name="circle" size={pxToDp(8)} color={themeColor.black45} />
             <Text style={styles.text}>{text}</Text>
           </Space>
         ))

@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import LicenseUploader from './components/LicenseUploader'
+import TextArea from '@/core/components/TextArea'
 
 export default function CompanyAuth() {
   const form = Form.useForm()
@@ -68,6 +69,8 @@ export default function CompanyAuth() {
         companyAvatar: userStore.userInfo.company.companyAvatar,
         companyName: userStore.userInfo.company.companyName,
         companyLicense: userStore.userInfo.company.companyLicense,
+        companyDesc: userStore.userInfo.company.companyDesc,
+        companyAddress: userStore.userInfo.company.companyAddress,
       })
     }
     catch (error) {
@@ -76,7 +79,20 @@ export default function CompanyAuth() {
   }
 
   useEffect(() => {
-    userStore.userInfo.company && getInitData()
+    if (userStore.userInfo.company) {
+      getInitData()
+    } else {
+      form.setFieldsValue(
+        {
+
+          companyName: "成都鱼泡科技有限公司(鱼泡网)",
+          companyAddress: "中国（四川）自由贸易试验区成都高新区益州大道中段1858号3F",
+          companyDesc: "成都鱼泡科技有限公司(鱼泡网)成立于2017年，是中国领先的招聘服务平台，总部（研发中心）坐落于成都高新区天府软件园G5，运营中心位于宜宾市三江新区。公司依托大数据、AI算法等数字科技，布局以鱼泡网、鱼泡到家为核心的生态矩阵，为用户提供智能高效的招聘求职及工作协同服务。拥有2项发明专利、6项实用新型专利、72项计算机软件著作权，研发团队规模300+人，曾获人社部“全国优秀创业创新项目”、四川省专精特新中小企业、四川省新经济示范企业、四川省新经济重点平台、四川省人力资源服务行业龙头企业、成都市新经济示范企业、成都独角兽（潜在）企业等荣誉资质，于2021、2022年先后完成A、B两轮数亿元人民币融资。",
+        }
+
+      )
+    }
+
   }, [])
 
   return (
@@ -94,7 +110,7 @@ export default function CompanyAuth() {
               <Input placeholder='请输入企业地址' />
             </Form.Item>
             <Form.Item name="companyDesc" title="企业描述" rules={[{ required: true, message: '请输入企业描述' }]}>
-              <Input placeholder='请输入企业描述' />
+              <TextArea placeholder='请输入企业描述' />
             </Form.Item>
             <Form.Item name="companyLicense" title="上传营业执照" rules={[{ required: true, message: '请上传营业执照' }]}>
               <LicenseUploader />

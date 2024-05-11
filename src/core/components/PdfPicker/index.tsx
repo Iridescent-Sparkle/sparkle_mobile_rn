@@ -1,6 +1,6 @@
 import { Card, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
 import React, { useState } from 'react'
-import { Pressable, Text } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { pick, types } from 'react-native-document-picker'
 import RNFS from 'react-native-fs'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -99,13 +99,13 @@ function PdfPicker(props: Props) {
             <Space direction="horizontal" style={styles.header}>
               <Space direction="horizontal" gap={pxToDp(32)}>
                 <AntDesign name="pdffile1" size={pxToDp(84)} color="#F75555" />
-                <Space gap={pxToDp(20)}>
-                  <Text style={styles.title}>{value?.fileName}</Text>
+                <View style={styles.info}>
+                  <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{value?.fileName}</Text>
                   <Text style={styles.size}>
-                    {value?.fileSize}
+                    {Math.floor(value?.fileSize)}
                     KB
                   </Text>
-                </Space>
+                </View>
               </Space>
               <AntDesign name="close" size={pxToDp(32)} color="#F76564" onPress={() => onChange!(null)} />
             </Space>
@@ -142,7 +142,12 @@ const styles = create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  info: {
+    width: '100%',
+    gap: 24,
+  },
   title: {
+    width: 400,
     fontSize: 32,
     fontWeight: '700',
     color: themeColor.black85,

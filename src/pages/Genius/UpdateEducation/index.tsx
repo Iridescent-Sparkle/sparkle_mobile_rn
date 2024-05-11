@@ -105,7 +105,7 @@ export default function GeniusUpdateEducation() {
           profession: "软件工程",
           studyTime: [new Date("2020-09-01T06:52:27.000Z"), new Date("2024-06-30T06:52:27.000Z")],
           gpa: "3.2",
-          description: "多次获得校级一等、二等、三等奖学金和三好学生称号",
+          description: "多次获得校级奖学金和校三好学生称号",
         }
       )
     }
