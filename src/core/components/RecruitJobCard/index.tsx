@@ -9,6 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { useJobStore } from '@/store/job'
 
 interface Props {
   type: 'deliver' | 'manage'
@@ -19,6 +20,8 @@ function RecruitJobCard(props: Props) {
   const { type, data } = props
 
   const navigation = useNavigation()
+
+  const jobStore = useJobStore()
 
   const handleEditJob = () => {
     navigation.dispatch(StackActions.push('PublishJob', {
@@ -60,12 +63,8 @@ function RecruitJobCard(props: Props) {
                 k
               </Tag>
               <Tag type="ghost" color="#979797">{data.address}</Tag>
-              {data.isFullTime
-                ? <Tag type="ghost" color="#979797">全职</Tag>
-                : <Tag type="ghost" color="#979797">兼职</Tag>}
-              {data.isOnsite
-                ? <Tag type="ghost" color="#979797">远程</Tag>
-                : <Tag type="ghost" color="#979797">线下办公</Tag>}
+              <Tag type="ghost" color="#979797">{jobStore.jobExperienceOptions?.find(item => item.value === data.jobExperienceId)?.label}</Tag>
+              <Tag type="ghost" color="#979797">{jobStore.jobEducationOptions?.find(item => item.value === data.jobEducationId)?.label}</Tag>
             </Space>
           </Space>
         </Pressable>

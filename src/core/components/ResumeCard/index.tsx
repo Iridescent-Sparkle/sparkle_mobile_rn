@@ -8,6 +8,7 @@ import Visible from '../Visible'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { useJobStore } from '@/store/job'
 
 interface Props {
   data: UserProfileList
@@ -19,6 +20,8 @@ function ResumeListCard(props: Props) {
   const { data, from } = props
 
   const navigation = useNavigation()
+
+  const jobStore = useJobStore()
 
   const handleCardClick = () => {
     navigation.dispatch(StackActions.push('ResumeDetail', {
@@ -58,6 +61,13 @@ function ResumeListCard(props: Props) {
             </Visible>
             <Visible visible={data.education?.[data.education?.length - 1]?.school}>
               <Tag type="ghost" color="#1976D2">{data.education?.[data.education?.length - 1]?.school}</Tag>
+            </Visible>
+            <Visible visible={data.education?.[data.education?.length - 1]?.school}>
+              <Tag type="ghost" color="#1976D2">
+                {
+                  jobStore.jobEducationOptions?.find(option => option.value === data.education?.[data.education?.length - 1]?.educationLevel)?.label
+                }
+              </Tag>
             </Visible>
           </Space>
         </Space>

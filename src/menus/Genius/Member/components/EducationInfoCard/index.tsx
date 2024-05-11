@@ -11,9 +11,12 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import BaseCollapseCard from '../BaseCollapseCard'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
+import { useJobStore } from '@/store/job'
 
 function MemberEducationInfoCard(props: { data: UserEducation[], loading: boolean }) {
   const { data, loading } = props
+
+  const jobStore = useJobStore()
 
   const navigation = useNavigation()
 
@@ -44,7 +47,10 @@ function MemberEducationInfoCard(props: { data: UserEducation[], loading: boolea
                     </View>
                     <Space gap={pxToDp(20)}>
                       <Text style={styles.title}>{item.school}</Text>
-                      <Text style={styles.company}>{item.profession}</Text>
+                      <Space direction="horizontal" gap={pxToDp(20)}>
+                        <Text style={styles.company}>{item.profession}</Text>
+                        <Text style={styles.company}>{jobStore.jobEducationOptions?.find(option => option.value === item.educationLevel)?.label}</Text>
+                      </Space>
                       <Text style={styles.gpa}>
                         绩点:
                         {item.gpa}

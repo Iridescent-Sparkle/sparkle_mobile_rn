@@ -3,8 +3,10 @@ import Form from '@/core/components/Form'
 import Input from '@/core/components/Input'
 import Page from '@/core/components/Page'
 import RangeDatePicker from '@/core/components/RangeDatePicker'
+import SingleSelect from '@/core/components/SingleSelect'
 import TextArea from '@/core/components/TextArea'
 import { create } from '@/core/styleSheet'
+import { useJobStore } from '@/store/job'
 import { useUserStore } from '@/store/user'
 import { Button, Notify, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -22,6 +24,8 @@ export default function GeniusUpdateEducation() {
   const [loading, setLoading] = useState(false)
 
   const userStore = useUserStore()
+
+  const jobStore = useJobStore()
 
   const handleComfirmClick = async () => {
     const { close } = Toast.loading({
@@ -121,6 +125,9 @@ export default function GeniusUpdateEducation() {
             </Form.Item>
             <Form.Item name="profession" title="专业" rules={[{ required: true, message: '请输入专业' }]}>
               <Input placeholder='请输入专业' />
+            </Form.Item>
+            <Form.Item title="学历" name="educationLevel" rules={[{ required: true, message: '请选择学历' }]}>
+              <SingleSelect options={jobStore.jobEducationOptions?.slice(1)} visible={false} title="学历" placeholder="请选择学历" />
             </Form.Item>
             <Form.Item name="studyTime" title="起止时间" rules={[{ required: true, message: '请选择起止时间' }]}>
               <RangeDatePicker />

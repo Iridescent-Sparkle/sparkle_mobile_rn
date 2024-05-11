@@ -1,12 +1,11 @@
 import { Space } from '@fruits-chain/react-native-xiaoshu'
 import dayjs from 'dayjs'
 import { Text, View } from 'react-native'
-import FastImage from 'react-native-fast-image'
 import Entypo from 'react-native-vector-icons/Entypo'
 import ResumeCardHeader from '../ResumeCardHeader'
+import { useJobStore } from '@/store/job'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create, pxToDp } from '@/core/styleSheet'
-import { IMAGE_PREFIX } from '@/core/constants'
 import Visible from '@/core/components/Visible'
 
 interface Props {
@@ -14,6 +13,9 @@ interface Props {
 }
 function ResumeEducationCard(props: Props) {
   const { data } = props
+
+  const jobStore = useJobStore()
+
   return (
     <Visible visible={data.education?.length}>
       <View style={styles.container}>
@@ -32,14 +34,17 @@ function ResumeEducationCard(props: Props) {
                     </View>
                     <Space gap={pxToDp(20)}>
                       <Text style={styles.title}>{item.school}</Text>
-                      <Text style={styles.company}>{item.profession}</Text>
+                      <Space direction="horizontal" gap={pxToDp(20)}>
+                        <Text style={styles.company}>{item.profession}</Text>
+                        <Text style={styles.company}>{jobStore.jobEducationOptions?.find(option => option.value === item.educationLevel)?.label}</Text>
+                      </Space>
                       <Text style={styles.date}>
                         {`${startTime} - ${endTime}（${totalTime}）`}
                       </Text>
                       <Text style={styles.gpa}>
                         GPA:
                         {item.gpa}
-                       /5.0
+                        /5.0
                       </Text>
                     </Space>
                   </Space>

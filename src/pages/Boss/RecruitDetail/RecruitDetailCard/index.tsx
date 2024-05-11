@@ -6,12 +6,15 @@ import dayjs from 'dayjs'
 import { themeColor } from '@/core/styleSheet/themeColor'
 import { create } from '@/core/styleSheet'
 import { IMAGE_PREFIX } from '@/core/constants'
+import { useJobStore } from '@/store/job'
 
 interface Props {
   data: JobDetail
 }
 function RecruitDetailCard(props: Props) {
   const { data } = props
+
+  const jobStore = useJobStore()
 
   return (
     <Card style={styles.container}>
@@ -34,12 +37,8 @@ function RecruitDetailCard(props: Props) {
           k
         </Text>
         <Space direction="horizontal">
-          {data.isFullTime
-            ? <Tag type="ghost" color="#979797">全职</Tag>
-            : <Tag type="ghost" color="#979797">兼职</Tag>}
-          {data.isOnsite
-            ? <Tag type="ghost" color="#979797">远程</Tag>
-            : <Tag type="ghost" color="#979797">线下办公</Tag>}
+          <Tag type="ghost" color="#979797">{jobStore.jobExperienceOptions?.find(item => item.value === data.jobExperienceId)?.label}</Tag>
+          <Tag type="ghost" color="#979797">{jobStore.jobEducationOptions?.find(item => item.value === data.jobEducationId)?.label}</Tag>
         </Space>
         <Text style={styles.deadline}>
           {dayjs(data.updateTime).format('YYYY-MM-DD HH:mm:ss')}
