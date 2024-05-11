@@ -1,4 +1,4 @@
-import { Empty } from '@fruits-chain/react-native-xiaoshu'
+import { Empty, Toast } from '@fruits-chain/react-native-xiaoshu'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useCallback, useState } from 'react'
 import { FlatList, View } from 'react-native'
@@ -26,7 +26,7 @@ export default function BossManage() {
       setResumeList(resumeListData)
     }
     catch (error) {
-
+      Toast.fail('数据获取失败')
     }
   }
 
@@ -63,7 +63,6 @@ export default function BossManage() {
           </View>
           )
         : <View style={styles.empty}><Empty /></View>}
-
     </View>
   )
 }

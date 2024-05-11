@@ -21,9 +21,9 @@ export default function SearchResult() {
 
   const [jobList, setJobList] = useState([] as any)
 
-  const [loading, setLoading, getLoading] = useRefState(true)
+  const [loading, setLoading, getLoading] = useRefState(false)
 
-  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(true)
+  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(false)
 
   const currentPage = useRef(1)
 
@@ -51,7 +51,7 @@ export default function SearchResult() {
       setLoading(true)
       keywordRef.current = keyword
       currentPage.current = 1
-
+      searchRef.current?.setValue(keyword)
       const { data: { data: jobListData, total } } = await request.post({
         current: currentPage.current,
         pageSize: 10,

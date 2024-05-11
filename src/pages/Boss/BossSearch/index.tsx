@@ -1,65 +1,81 @@
 import { request } from '@/core/api'
 import Page from '@/core/components/Page'
+import ResumeListCard from '@/core/components/ResumeCard'
+import SearchBar from '@/core/components/SearchBar'
 import { IMAGE_PREFIX } from '@/core/constants'
 import { useRefState } from '@/core/hooks/useRefState'
 import { create, pxToDp } from '@/core/styleSheet'
 import { themeColor } from '@/core/styleSheet/themeColor'
-import { Loading, Search, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
+import { useUserStore } from '@/store/user'
+import { Loading, Space, Toast } from '@fruits-chain/react-native-xiaoshu'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRoute } from '@react-navigation/native'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TabList from './components/TabList'
-import ResumeListCard from '@/core/components/ResumeCard'
 
-const useSearchHistory = () => {
+export const useSearchHistory = () => {
   const [searchHistory, setSearchHistory] = useState<string[]>([])
-
-  const searchHistoryRef = useRef<string[]>([])
+  
+  const route = useRoute<{ key: any, name: any, params: { keyword: string } }>()
 
   const getSearchHistoryFromStorage = async () => {
-    const data = await AsyncStorage.getItem('bossSearchHistory')
+    const data = await AsyncStorage.getItem(`bossSearchHistory_${useUserStore.getState().userInfo.id}`)
     return JSON.parse(data || '[]')
   }
 
   const setSearchHistoryToStorage = useCallback(async (keyword: string) => {
+    const searchHistory = await getSearchHistoryFromStorage()
 
-    searchHistoryRef.current = [keyword, ...searchHistoryRef.current]
+    const index = searchHistory.findIndex((item: string) => item === keyword)
 
-    AsyncStorage.setItem('bossSearchHistory', JSON.stringify(searchHistoryRef.current))
+    if (index !== -1) {
+      searchHistory.splice(index, 1)
+    }
 
-    setSearchHistory(searchHistoryRef.current)
+    const newHistory = [keyword, ...searchHistory].slice(0, 3)
+
+    await AsyncStorage.setItem(`bossSearchHistory_${useUserStore.getState().userInfo.id}`, JSON.stringify(newHistory))
+
+    setSearchHistory(newHistory)
+  }, [])
+
+  const clearSearchHistory = useCallback(async () => {
+    setSearchHistory([])
+
+    await AsyncStorage.setItem(`bossSearchHistory_${useUserStore.getState().userInfo.id}`, JSON.stringify([]))
   }, [])
 
   useEffect(() => {
     getSearchHistoryFromStorage().then(data => {
       setSearchHistory(data)
-      searchHistoryRef.current = data
     })
-  }, [])
+  }, [route.params.keyword])
 
   return [
     searchHistory,
-    setSearchHistoryToStorage
+    setSearchHistoryToStorage,
+    clearSearchHistory
   ] as const
 }
 
 export default function BossSearch() {
-  const [searchHistory, setSearchHistory] = useSearchHistory()
+  const [searchHistory, setSearchHistory, clearSearchHistory] = useSearchHistory()
 
-  const route = useRoute<{ key: any, name: any, params: { keyword: string, filter: any } }>()
+  const route = useRoute<{ key: any, name: any, params: { keyword: string } }>()
 
   const [jobList, setJobList] = useState([] as any)
 
-  const [loading, setLoading, getLoading] = useRefState(true)
+  const [loading, setLoading, getLoading] = useRefState(false)
 
-  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(true)
+  const [isLoadEnd, setIsLoadEnd, getIsLoaded] = useRefState(false)
 
   const currentPage = useRef(1)
 
-
   const keywordRef = useRef<string | null>()
+
+  const searchRef = useRef<{ setValue: (value: string) => void }>(null)
 
   const onSearch = async (keyword: string) => {
     if (getLoading()) {
@@ -67,6 +83,9 @@ export default function BossSearch() {
     }
 
     try {
+      searchRef.current?.setValue(keyword)
+      keywordRef.current = keyword
+
       if (!keyword?.trim()) {
         setJobList([])
         currentPage.current = 1
@@ -74,7 +93,6 @@ export default function BossSearch() {
       }
 
       setLoading(true)
-      keywordRef.current = keyword
       setSearchHistory(keyword)
       currentPage.current = 1
 
@@ -95,6 +113,7 @@ export default function BossSearch() {
       setJobList(jobListData)
     }
     catch (error) {
+      console.log(error)
       Toast.fail({
         message: '网络错误',
         duration: 500,
@@ -139,8 +158,8 @@ export default function BossSearch() {
   }
 
   useEffect(() => {
-    onSearch(route.params.keyword || keywordRef.current || '')
-  }, [])
+    onSearch(route.params.keyword)
+  }, [route.params.keyword])
 
   const ListFooterComponent = () => {
     if (isLoadEnd) {
@@ -155,9 +174,9 @@ export default function BossSearch() {
   }
 
   return (
-    <Page title="搜索">
-      <Search style={styles.search} showSearchButton={true} />
-      <TabList title="搜索历史" data={searchHistory} />
+    <Page title="搜索" isScrollView={false} conntentStyle={{ paddingTop: pxToDp(20) }}>
+      <SearchBar onSearch={onSearch} ref={searchRef} />
+      <TabList title="搜索历史" data={searchHistory} onClearSearchHistory={clearSearchHistory} onClickItem={onSearch} />
       <View style={styles.list}>
         {
           jobList.length

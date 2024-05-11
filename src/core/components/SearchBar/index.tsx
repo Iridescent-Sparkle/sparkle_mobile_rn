@@ -22,7 +22,7 @@ const RecruitSearchBar: React.ForwardRefRenderFunction<Ref, Props> = (props, ref
     <Search
       key="keyword"
       placeholder="请输入关键词搜索"
-      onSearch={onSearch}
+      onSearch={() => { onSearch(value) }}
       style={styles.search}
       value={value}
       onChangeText={setValue}
