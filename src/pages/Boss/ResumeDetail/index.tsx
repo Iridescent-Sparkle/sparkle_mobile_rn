@@ -44,7 +44,7 @@ export default function ResumeDetail() {
           url: `/genius/deliveries/query`,
         }),
       ])
-      console.log(route.params.deliverId, deliverStatusData)
+      console.log(route.params, deliverStatusData, '测试')
       setResumeList(resumeListData[0])
 
       setDeliverStatusData(deliverStatusData || {})
@@ -162,7 +162,7 @@ export default function ResumeDetail() {
       setConfirmLoading(false)
     }
   }
-
+console.log(route.params)
   return (
     <Page title="简历详情" isScrollView={false}>
       <View style={styles.content}>
@@ -177,7 +177,7 @@ export default function ResumeDetail() {
           <ResumeCvCard data={resumeList} />
         </ScrollView>
         <Visible visible={resumeList.user?.id !== userStore.userInfo.id}>
-          <Visible visible={deliverStatusData.status === 3 || !deliverStatusData.status}>
+          <Visible visible={deliverStatusData.status === 3 || !deliverStatusData.status || route.params.from === 'home'}>
             <Button style={styles.button} onPress={handleChatClick}>发起聊天</Button>
           </Visible>
           <Visible visible={deliverStatusData.status === 4}>
@@ -185,11 +185,13 @@ export default function ResumeDetail() {
               <Text style={{ fontSize: pxToDp(32), color: JOB_DELIVER_STATUS[deliverStatusData.status]?.color }}>{JOB_DELIVER_STATUS[deliverStatusData.status]?.desc}</Text>
             </View>
           </Visible>
-          <Visible visible={deliverStatusData.status === 1 || deliverStatusData.status === 2}>
-            <View style={styles.popupWrapper}>
-              <Button style={styles.popupDangerButton} onPress={handleUnbefittingClick}>不合适</Button>
-              <Button style={styles.popupButton} onPress={handleSuitableClick}>合适</Button>
-            </View>
+          <Visible visible={route.params.from === 'manage'}>
+            <Visible visible={deliverStatusData.status === 1 || deliverStatusData.status === 2}>
+              <View style={styles.popupWrapper}>
+                <Button style={styles.popupDangerButton} onPress={handleUnbefittingClick}>不合适</Button>
+                <Button style={styles.popupButton} onPress={handleSuitableClick}>合适</Button>
+              </View>
+            </Visible>
           </Visible>
         </Visible>
       </View>

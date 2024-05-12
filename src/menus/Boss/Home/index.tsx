@@ -126,9 +126,9 @@ export default function BossManage() {
       <SearchBar onSearch={onSearch} />
       {resumeList.length
         ? (
-          <View style={styles.list}>
-            <FlatList data={resumeList} renderItem={resume => <ResumeListCard data={resume.item} from="home" />} keyExtractor={item => String(item.id)} onEndReached={onReachBottom} ListFooterComponent={ListFooterComponent} />
-          </View>
+        
+            <FlatList  style={styles.list} data={resumeList} renderItem={resume => <ResumeListCard data={resume.item} from="home" />} keyExtractor={item => String(item.id)} onEndReached={onReachBottom} ListFooterComponent={ListFooterComponent} />
+        
         )
         : <View style={styles.empty}><Empty /></View>}
     </View>
@@ -152,8 +152,8 @@ const styles = create({
     width: '80%',
   },
   list: {
+    flex: 1,
     width: '100%',
-    height: 960,
     marginTop: 24,
   },
   empty: {

@@ -102,19 +102,33 @@ export default function GeniusUpdateProject() {
       getInitData()
     } else {
       form.setFieldsValue(
-        {
-          projectName: "Pexels图片素材网站",
-          role: "前端开发",
-          projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
-          website: "https://github.com/Iridescent-cdu/pexels-club",
-          description: "提供免费的图片下载的素材网站，使用瀑布流展示图片列表，用户能够查看图片，下载图片素材，支持PC端和移动端,主要工作：利用Tailwind实现主题变更，编写自定义指令实现图片懒加载、 封装可复用的组件：如瀑布流组件，确认框组件、进行响应式处理，支持PC端和移动端，在路由切换时添加过渡动效、 集成第三方登录和支付宝支付功能，对接阿里云OSS对象存储",
-        }
+        // {
+        //   projectName: "Pexels图片素材网站",
+        //   role: "前端开发",
+        //   projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
+        //   website: "https://github.com/Iridescent-cdu/pexels-club",
+        //   description: "提供免费的图片下载的素材网站，使用瀑布流展示图片列表，用户能够查看图片，下载图片素材，支持PC端和移动端,主要工作：利用Tailwind实现主题变更，编写自定义指令实现图片懒加载、 封装可复用的组件：如瀑布流组件，确认框组件、进行响应式处理，支持PC端和移动端，在路由切换时添加过渡动效、 集成第三方登录和支付宝支付功能，对接阿里云OSS对象存储",
+        // }
         // {
         //   projectName: "仿Jira项目管理系统",
         //   role: "前端开发",
         //   projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
         //   website: "https://github.com/Iridescent-cdu/react-jira",
         //   description: "基于React+Typescript的仿Jira项目管理系统，实现了登录注册、及项目列表和任务看板的添加、修改和删除功能主要工作：  使用URL查询参数同步状态，根据同步后的状态获取数据、使用React query并封装Hook实现任务列表乐观更新、实现拖拽排序任务列表并进行持久化、 封装Hook统一处理加载和错误状态，优化用户体验",
+        // }
+        {
+          projectName: "nika-cloud 企业级脚手架",
+          role: "后端开发",
+          projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
+          website: "https://github.com/Poison02/nika-cloud",
+          description: "nika-cloud是一款专门企业级开发脚手架，内部进行高度封装集成，覆盖企业级开发常用的工具及业务场景。  达到开箱即用，上手快，学习成本低的价值导向。用于解决中小项目进行开发时，每次要进行框架搭建选择的痛点。进行统一的规范和组件封装，使开发者更加专注于业务价值。",
+        }
+        // {
+        //   projectName: "hades-club",
+        //   role: "后端开发",
+        //   projectTime: [new Date("2024-01-01T07:03:47.000Z"), new Date("2024-05-12T07:03:47.000Z")],
+        //   website: "https://github.com/Poison02/hades-club",
+        //   description: "hades-club是一款专门为程序员打造的沟通交流社区，采用主流的微服务框架+主流C端技术栈来做为技术架构。旨在统一程序员信息差，进行平台统一化，程序员可以在平台，完善自身知识，刷自身薄弱点面试题，配合练习，模拟面试，简历分析模块来提升程序员面试能力。",
         // }
       )
     }

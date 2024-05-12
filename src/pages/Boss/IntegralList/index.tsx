@@ -35,6 +35,7 @@ export default function IntegralList() {
 
   const getInitData = async () => {
     try {
+      setLoading(true)
       const [{ data: { data: consumeListData, total } }, { data: pieData }, { data: barData }] = await Promise.all([
         request.post({
           current: 1,
@@ -64,6 +65,8 @@ export default function IntegralList() {
     }
     catch (error) {
 
+    }finally{
+      setLoading(false)
     }
   }
 

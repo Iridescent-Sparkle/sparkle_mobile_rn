@@ -104,17 +104,26 @@ export default function GeniusUpdateEducation() {
       getInitData()
     } else {
       form.setFieldsValue(
+        // {
+        //   school: "成都大学",
+        //   profession: "软件工程",
+        //   educationLevel: 5,
+        //   studyTime: [new Date("2020-09-01T06:52:27.000Z"), new Date("2024-06-30T06:52:27.000Z")],
+        //   gpa: "3.2",
+        //   description: "多次获得校级奖学金和校三好学生称号",
+        // }
         {
           school: "成都大学",
           profession: "软件工程",
+          educationLevel: 5,
           studyTime: [new Date("2020-09-01T06:52:27.000Z"), new Date("2024-06-30T06:52:27.000Z")],
-          gpa: "3.2",
-          description: "多次获得校级奖学金和校三好学生称号",
+          gpa: "3.6",
+          description: "担任学习委员，负责班级学习事务的组织、协调与沟通； 担任学院科创室助理，负责协助老师进行科技创新课程的备课、授课及学生辅导。",
         }
       )
     }
   }, [route.params.isEdit])
-
+console.log(jobStore.jobEducationOptions)
   return (
     <Page isScrollView={false} title='教育信息'>
       <View style={styles.container}>

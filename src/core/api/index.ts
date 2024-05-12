@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useUserStore } from '@/store/user'
 
 const BASE_URL = {
-  development: 'http://192.168.1.3:3000',
+  development: 'http://192.168.250.175:3000',
   production: 'https://iridescent.icu',
 }[process?.env?.NODE_ENV ?? 'development']
 

@@ -42,7 +42,7 @@ export default function DeliverList() {
     <View style={[styles.container, { top: insets.top, paddingBottom: insets.bottom || 16 }]}>
       <NavBar title="投递者列表" onPressBackArrow={handleBackClick} />
       {resumeList.length
-        ? <FlatList style={styles.list} data={resumeList} renderItem={job => <ResumeListCard data={job.item} />} keyExtractor={job => String(job.id)} />
+        ? <FlatList style={styles.list} data={resumeList} renderItem={job => <ResumeListCard data={job.item} from='manage'/>} keyExtractor={job => String(job.id)} />
         : <View style={styles.empty}><Empty /></View>}
     </View>
   )

@@ -100,12 +100,19 @@ export default function GeniusUpdateExperience() {
       getInitData()
     } else {
       form.setFieldsValue(
+        // {
+        //   profession: "前端开发工程师",
+        //   companyName: "成都鱼泡科技有限公司",
+        //   workTime: [new Date("2023-05-25T06:27:53.000Z"), new Date("2024-05-25T06:27:53.000Z")],
+        //   isWork: true,
+        //   description: "1、与产品、UI  和后端工程师配合，使用 React和 Antd  进行后台管理系统和 CRM  系统的搭建 2、与原生 App  团队配合，使用 React Native  进行鱼泡网 App  的业务迭代 3、使用微信小程序开发框架，开发和维护鱼泡网小程序 4、使用 Next.js  和 Umi  对鱼泡 PC  官网和H5进行业务迭代和维护 5、参与团队建设，积极与各部门同事交流学习，并进行技术分享",
+        // }
         {
-          profession: "前端开发工程师",
-          companyName: "成都鱼泡科技有限公司",
+          profession: "Java工程师",
+          companyName: "四川差旅壹号科技股份有限公司",
           workTime: [new Date("2023-05-25T06:27:53.000Z"), new Date("2024-05-25T06:27:53.000Z")],
           isWork: true,
-          description: "1、与产品、UI  和后端工程师配合，使用 React和 Antd  进行后台管理系统和 CRM  系统的搭建 2、与原生 App  团队配合，使用 React Native  进行鱼泡网 App  的业务迭代 3、使用微信小程序开发框架，开发和维护鱼泡网小程序 4、使用 Next.js  和 Umi  对鱼泡 PC  官网和H5进行业务迭代和维护 5、参与团队建设，积极与各部门同事交流学习，并进行技术分享",
+          description: "参与酒店部门自研EBooing商家端入驻和酒店认领查重优化，共同参与项目整个周期，包括项目评审会，项目计划书编写，开发，联调，测试，上线整个流程;以及优化部分接口一些耦合逻辑。",
         }
       )
     }

@@ -47,7 +47,7 @@ function MemberWorkExperienceCard(props: { data: UserExperience[], loading: bool
                     </View>
                     <Space gap={pxToDp(20)}>
                       <Text style={styles.title}>{item.profession}</Text>
-                      <Text style={styles.company}>{item.companyName}</Text>
+                      <Text style={styles.company} numberOfLines={1} ellipsizeMode="tail">{item.companyName}</Text>
                       <Text style={styles.date}>
                         {`${startTime} - ${endTime}（${totalTime}）`}
                       </Text>
@@ -78,6 +78,7 @@ const styles = create({
     color: themeColor.black85,
   },
   company: {
+    width: 320,
     fontSize: 28,
     color: themeColor.black65,
   },

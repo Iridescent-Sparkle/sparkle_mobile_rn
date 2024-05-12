@@ -13,7 +13,7 @@ import { useJobStore } from '@/store/job'
 interface Props {
   data: UserProfileList
   showCollectBtn?: boolean
-  from?: 'home'
+  from?: 'home' | 'manage'
 }
 
 function ResumeListCard(props: Props) {
