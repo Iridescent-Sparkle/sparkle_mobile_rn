@@ -1,0 +1,1 @@
+{"version":3,"names":["gHeaderHeight","gIndicatorWidth","gIndicatorHeight","gIndicatorBorderRadius","gAnimatedDuration"],"sourceRoot":"../../../../src","sources":["ui/TabPage/TabPage.const.tsx"],"mappings":"AAAA,OAAO,MAAMA,aAAa,GAAG,EAAE;AAC/B,OAAO,MAAMC,eAAe,GAAG,EAAE;AACjC,OAAO,MAAMC,gBAAgB,GAAG,CAAC;AACjC,OAAO,MAAMC,sBAAsB,GAAG,CAAC;AACvC,OAAO,MAAMC,iBAAiB,GAAG,GAAG"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"DefaultSlide.d.ts","sourceRoot":"","sources":["../../../../../src/ui/Modal/DefaultSlide.tsx"],"names":[],"mappings":";AACA,OAAO,KAAK,EAAE,wBAAwB,EAAE,SAAS,EAAE,MAAM,cAAc,CAAC;AAMxE,MAAM,MAAM,SAAS,GAAG,YAAY,GAAG,OAAO,CAAC;AAC/C,MAAM,MAAM,UAAU,GAAG,SAAS,GAChC,wBAAwB,GAAG;IAAE,SAAS,EAAE,SAAS,CAAA;CAAE,CAAC;AACtD,eAAO,MAAM,YAAY,UAAW,UAAU,gBAU7C,CAAC"}

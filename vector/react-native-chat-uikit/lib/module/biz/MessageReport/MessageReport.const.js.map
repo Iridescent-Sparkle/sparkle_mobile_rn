@@ -1,0 +1,1 @@
+{"version":3,"names":["gAspectRatio","gTabHeaderHeight","gMessageReportItemHeight","gSearchTimeout"],"sourceRoot":"../../../../src","sources":["biz/MessageReport/MessageReport.const.tsx"],"mappings":"AAAA,OAAO,MAAMA,YAAY,GAAG,GAAG,GAAG,GAAG;AACrC,OAAO,MAAMC,gBAAgB,GAAG,EAAE;AAClC,OAAO,MAAMC,wBAAwB,GAAG,EAAE;AAC1C,OAAO,MAAMC,cAAc,GAAG,GAAG"}

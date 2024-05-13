@@ -1,0 +1,45 @@
+import * as React from 'react';
+import { GroupModel } from '../../chat';
+import type { AlertRef } from '../../ui/Alert';
+import type { FlatListRef } from '../../ui/FlatList';
+import type { BottomSheetNameMenuRef } from '../BottomSheetMenu';
+import type { ListStateType } from '../types';
+import type { GroupListItemComponentType, GroupListItemProps, GroupListProps } from './types';
+export declare function useGroupList(props: GroupListProps): {
+    onMore: () => void;
+    onClicked: (data?: GroupModel | undefined) => void;
+    onLongPress: (data?: GroupModel | undefined) => void;
+    tr: (key: string, ...args: any[]) => string;
+    ListItemRender: GroupListItemComponentType;
+    alertRef: React.RefObject<AlertRef>;
+    menuRef: React.RefObject<BottomSheetNameMenuRef>;
+    closeMenu: (onFinished?: (() => void) | undefined) => void;
+    flatListProps: Omit<import("../../ui/FlatList").FlatListProps<GroupListItemProps>, "ref" | "data" | "renderItem"> | undefined;
+    groupCount: number;
+    dataRef: React.MutableRefObject<GroupListItemProps[]>;
+    data: readonly GroupListItemProps[];
+    setData: React.Dispatch<React.SetStateAction<readonly GroupListItemProps[]>>;
+    ListItem: React.FunctionComponent<GroupListItemProps>;
+    ref: React.MutableRefObject<FlatListRef<GroupListItemProps>>;
+    listState: ListStateType;
+    setListState: React.Dispatch<React.SetStateAction<ListStateType>>;
+    listType: "FlatList" | "SectionList";
+    onRefresh: (() => void) | undefined;
+    isAutoLoad: boolean;
+    isSort: boolean;
+    isLoadAll: boolean;
+    isShowAfterLoaded: boolean;
+    loadType: "multiple" | "once";
+    isVisibleUpdate: boolean;
+    isAutoUpdate: boolean;
+    isEventUpdate: boolean;
+    refreshing: boolean | undefined;
+    viewabilityConfig: import("react-native/types").ViewabilityConfig | undefined;
+    onViewableItemsChanged: ((info: {
+        viewableItems: import("react-native/types").ViewToken[];
+        changed: import("react-native/types").ViewToken[];
+    }) => void) | undefined;
+    deferSearch: (keyword: string) => void;
+    setOnSearch: (onSearch: (keyword: string) => void) => void;
+};
+//# sourceMappingURL=GroupList.hooks.d.ts.map

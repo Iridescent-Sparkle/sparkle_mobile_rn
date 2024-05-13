@@ -1,0 +1,1 @@
+{"version":3,"file":"useCheckType.d.ts","sourceRoot":"","sources":["../../../../src/hook/useCheckType.tsx"],"names":[],"mappings":"AAIA,QAAA,MAAM,YAAY,6FAAY,CAAC;AAE/B;;;;;;;;;;;;;;;;;;;;;;;;;;;GA2BG;AACH,wBAAgB,YAAY,CAAC,MAAM,CAAC,EAAE;IAAE,OAAO,CAAC,EAAE,OAAO,CAAA;CAAE;wBAK3C,GAAG,gBACG,mBAAmB,WACxB;QAAE,UAAU,CAAC,EAAE,MAAM,CAAC;QAAC,UAAU,CAAC,EAAE,MAAM,CAAA;KAAE;EAqB5D"}

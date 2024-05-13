@@ -1,0 +1,43 @@
+import * as React from 'react';
+import { NewRequestModel } from '../../chat';
+import type { AlertRef } from '../../ui/Alert';
+import type { BottomSheetNameMenuRef } from '../BottomSheetMenu';
+import type { NewRequestsItemComponentType, NewRequestsItemProps, NewRequestsProps } from './types';
+export declare function useNewRequests(props: NewRequestsProps): {
+    onClicked: (data?: NewRequestModel | undefined) => void;
+    onLongPressed: (data?: NewRequestModel | undefined) => void;
+    onButtonClicked: (data?: NewRequestModel | undefined) => void;
+    tr: (key: string, ...args: any[]) => string;
+    ListItemRender: NewRequestsItemComponentType;
+    onAddContact: () => void;
+    menuRef: React.MutableRefObject<BottomSheetNameMenuRef>;
+    alertRef: React.MutableRefObject<AlertRef>;
+    onRequestCloseMenu: (onFinished?: (() => void) | undefined) => void;
+    dataRef: React.MutableRefObject<NewRequestsItemProps[]>;
+    data: readonly NewRequestsItemProps[];
+    setData: React.Dispatch<React.SetStateAction<readonly NewRequestsItemProps[]>>;
+    ListItem: React.FunctionComponent<NewRequestsItemProps>;
+    ref: React.MutableRefObject<import("../..").FlatListRef<NewRequestsItemProps>>;
+    listState: import("../types").ListStateType;
+    setListState: React.Dispatch<React.SetStateAction<import("../types").ListStateType>>;
+    listType: "FlatList" | "SectionList";
+    onRefresh: (() => void) | undefined;
+    onMore: (() => void) | undefined;
+    isAutoLoad: boolean;
+    isSort: boolean;
+    isLoadAll: boolean;
+    isShowAfterLoaded: boolean;
+    loadType: "multiple" | "once";
+    isVisibleUpdate: boolean;
+    isAutoUpdate: boolean;
+    isEventUpdate: boolean;
+    refreshing: boolean | undefined;
+    viewabilityConfig: import("react-native/types").ViewabilityConfig | undefined;
+    onViewableItemsChanged: ((info: {
+        viewableItems: import("react-native/types").ViewToken[];
+        changed: import("react-native/types").ViewToken[];
+    }) => void) | undefined;
+    deferSearch: (keyword: string) => void;
+    setOnSearch: (onSearch: (keyword: string) => void) => void;
+};
+//# sourceMappingURL=NewRequests.hooks.d.ts.map

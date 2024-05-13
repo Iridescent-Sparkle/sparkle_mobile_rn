@@ -1,0 +1,1 @@
+{"version":3,"names":["React","View","TriangleView","props","createElement"],"sourceRoot":"../../../../src","sources":["biz/ConversationDetail/TriangeView.tsx"],"mappings":"AAAA,OAAO,KAAKA,KAAK,MAAM,OAAO;AAC9B,SAASC,IAAI,QAAQ,cAAc;AAGnC,OAAO,SAASC,YAAYA,CAACC,KAAwB,EAAE;EACrD,MAAM,CAAC,CAAC,GAAGA,KAAK;EAChB,oBAAOH,KAAA,CAAAI,aAAA,CAACH,IAAI,MAAE,CAAC;AACjB"}

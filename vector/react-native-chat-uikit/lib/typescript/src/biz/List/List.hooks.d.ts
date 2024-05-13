@@ -1,0 +1,88 @@
+import * as React from 'react';
+import type { DefaultSectionT, SectionListData, ViewabilityConfig, ViewToken } from 'react-native';
+import type { FlatListRef } from '../../ui/FlatList';
+import type { SectionListRef } from '../../ui/SectionList';
+import type { DefaultListIndexPropsT, ListStateType } from '../types';
+import type { UseListBasicProps } from './types';
+export declare function useListBasic<ItemT>(props: UseListBasicProps<ItemT>): {
+    listState: ListStateType;
+    setListState: React.Dispatch<React.SetStateAction<ListStateType>>;
+    listType: "FlatList" | "SectionList";
+    onRefresh: (() => void) | undefined;
+    onMore: (() => void) | undefined;
+    isAutoLoad: boolean;
+    isSort: boolean;
+    isLoadAll: boolean;
+    isShowAfterLoaded: boolean;
+    loadType: "multiple" | "once";
+    isVisibleUpdate: boolean;
+    isAutoUpdate: boolean;
+    isEventUpdate: boolean;
+    refreshing: boolean | undefined;
+    viewabilityConfig: ViewabilityConfig | undefined;
+    onViewableItemsChanged: ((info: {
+        viewableItems: Array<ViewToken>;
+        changed: Array<ViewToken>;
+    }) => void) | undefined;
+    deferSearch: (keyword: string) => void;
+    setOnSearch: (onSearch: (keyword: string) => void) => void;
+};
+export declare function useFlatList<ItemT>(props: Omit<UseListBasicProps<ItemT>, 'listType'>): {
+    dataRef: React.MutableRefObject<ItemT[]>;
+    data: readonly ItemT[];
+    setData: React.Dispatch<React.SetStateAction<readonly ItemT[]>>;
+    ListItem: React.FunctionComponent<ItemT>;
+    ref: React.MutableRefObject<FlatListRef<ItemT>>;
+    listState: ListStateType;
+    setListState: React.Dispatch<React.SetStateAction<ListStateType>>;
+    listType: "FlatList" | "SectionList";
+    onRefresh: (() => void) | undefined;
+    onMore: (() => void) | undefined;
+    isAutoLoad: boolean;
+    isSort: boolean;
+    isLoadAll: boolean;
+    isShowAfterLoaded: boolean;
+    loadType: "multiple" | "once";
+    isVisibleUpdate: boolean;
+    isAutoUpdate: boolean;
+    isEventUpdate: boolean;
+    refreshing: boolean | undefined;
+    viewabilityConfig: ViewabilityConfig | undefined;
+    onViewableItemsChanged: ((info: {
+        viewableItems: ViewToken[];
+        changed: ViewToken[];
+    }) => void) | undefined;
+    deferSearch: (keyword: string) => void;
+    setOnSearch: (onSearch: (keyword: string) => void) => void;
+};
+export declare function useSectionList<ItemT, SectionT extends DefaultSectionT, ListIndexPropsT extends DefaultListIndexPropsT>(props: Omit<UseListBasicProps<ItemT>, 'listType'>): {
+    sectionsRef: React.MutableRefObject<SectionListData<ItemT, SectionT>[]>;
+    sections: readonly SectionListData<ItemT, SectionT>[];
+    setSection: React.Dispatch<React.SetStateAction<readonly SectionListData<ItemT, SectionT>[]>>;
+    indexTitles: string[];
+    setIndexTitles: React.Dispatch<React.SetStateAction<string[]>>;
+    AlphabeticIndex: React.FC<ListIndexPropsT>;
+    ref: React.MutableRefObject<SectionListRef<ItemT, SectionT>>;
+    listState: ListStateType;
+    setListState: React.Dispatch<React.SetStateAction<ListStateType>>;
+    listType: "FlatList" | "SectionList";
+    onRefresh: (() => void) | undefined;
+    onMore: (() => void) | undefined;
+    isAutoLoad: boolean;
+    isSort: boolean;
+    isLoadAll: boolean;
+    isShowAfterLoaded: boolean;
+    loadType: "multiple" | "once";
+    isVisibleUpdate: boolean;
+    isAutoUpdate: boolean;
+    isEventUpdate: boolean;
+    refreshing: boolean | undefined;
+    viewabilityConfig: ViewabilityConfig | undefined;
+    onViewableItemsChanged: ((info: {
+        viewableItems: ViewToken[];
+        changed: ViewToken[];
+    }) => void) | undefined;
+    deferSearch: (keyword: string) => void;
+    setOnSearch: (onSearch: (keyword: string) => void) => void;
+};
+//# sourceMappingURL=List.hooks.d.ts.map

@@ -1,0 +1,37 @@
+import * as React from 'react';
+import type { AlertRef } from '../../ui/Alert';
+import type { SimpleToastRef } from '../../ui/Toast';
+import type { BottomSheetNameMenuRef } from '../BottomSheetMenu';
+import type { ContactInfoProps } from './types';
+export declare function useContactInfo(props: ContactInfoProps): {
+    doNotDisturb: boolean | undefined;
+    onDoNotDisturb: (value: boolean) => void;
+    onClearChat: () => void;
+    userName: string | undefined;
+    userAvatar: string | undefined;
+    userId: string;
+    isContact: boolean | undefined;
+    menuRef: React.MutableRefObject<BottomSheetNameMenuRef>;
+    onRequestCloseMenu: () => void;
+    onMore: () => void;
+    alertRef: React.MutableRefObject<AlertRef>;
+    toastRef: React.MutableRefObject<SimpleToastRef>;
+    tr: (key: string, ...args: any[]) => string;
+    isSelf: boolean;
+    onSendMessage: () => void;
+    onAudioCall: () => void;
+    onVideoCall: () => void;
+    onAddContact: () => void;
+    onCopyId: () => void;
+    onBack?: ((data?: any) => void) | undefined;
+    navigationBarVisible?: boolean | undefined;
+    customNavigationBar?: React.ReactElement<any, string | React.JSXElementConstructor<any>> | undefined;
+    onClickedNavigationBarButton?: (() => void) | undefined;
+    hasSendMessage?: boolean | undefined;
+    hasAudioCall?: boolean | undefined;
+    hasVideoCall?: boolean | undefined;
+    containerStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
+    onInitMenu?: ((initItems: import("../BottomSheetMenu").InitMenuItemsType[]) => import("../BottomSheetMenu").InitMenuItemsType[]) | undefined;
+    onInitButton?: ((initButtons: React.ReactElement<import("../..").BlockButtonProps, string | React.JSXElementConstructor<any>>[]) => React.ReactElement<import("../..").BlockButtonProps, string | React.JSXElementConstructor<any>>[]) | undefined;
+};
+//# sourceMappingURL=ContactInfo.hooks.d.ts.map
